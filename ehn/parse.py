@@ -1,8 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
 __author__    = 'Mu Yang <emfomy@gmail.com>'
-__copyright__ = 'Copyright 2018'
+__copyright__ = 'Copyright 2019'
 
 import os
 import re
@@ -22,7 +22,7 @@ def main():
 
     args = argparser.parse_args()
 
-    lexer = EhnLexer()
+    # lexer = EhnLexer()
     parser = EhnParser()
 
     for text in args.text:
@@ -54,8 +54,8 @@ class EhnLexer:
 
     # Define the lexer
     def t_ANY_error(self, t):
-        # raise SyntaxError(f'Illegal character {t.value[0]} at {t.lineno}:{t.lexpos}.')
-        raise SyntaxError(f'Illegal character ‘{t.value[0]}’ at position {t.lexpos}.')
+        # raise SyntaxError('Illegal character ‘{}’ at {}:{}.'.format(t.value[0], t.lineno, t.lexpos,))
+        raise SyntaxError('Illegal character ‘{}’ at position {}.'.format(t.value[0], t.lexpos,))
         t.lexer.skip(1)
 
     # Skip all spaces
@@ -95,10 +95,10 @@ class EhnParser:
 
     # Define the parser
     def p_error(self, t):
-        # raise SyntaxError(f'Unexpected symbol {t.type} {t.value} at {t.lineno}:{t.lexpos}.')
+        # raise SyntaxError('Unexpected symbol {} ‘{}’ at {}:{}.'.format(t.type, t.value, t.lineno, t.lexpos,))
         if t is None:
-            raise SyntaxError(f'Unexpected ending.')
-        raise SyntaxError(f'Unexpected symbol ‘{t.value}’ at position {t.lexpos}.')
+            raise SyntaxError('Unexpected ending.')
+        raise SyntaxError('Unexpected symbol ‘{}’ at position {}.'.format(t.value, t.lexpos,))
 
     # Object
     def p_objs(self, p):
@@ -214,9 +214,9 @@ class EhnEntity(EhnEntityLike):
         self.name      = name
         self.relations = relations
 
-        assert isinstance(name, str), f'{name} is not str!'
+        assert isinstance(name, str), '{} is not str!'.format(name,)
         for relation in relations:
-            assert isinstance(relation, EhnRelationLike), f'{relation} is not EhnRelationLike!'
+            assert isinstance(relation, EhnRelationLike), '{} is not EhnRelationLike!'.format(relation,)
 
     @property
     def child(self):
@@ -230,17 +230,17 @@ class EhnEntity(EhnEntityLike):
 
     def str(self, indent):
         ret = []
-        ret.append(' '*indent + f'<Entity {self.name}>')
+        ret.append(' '*indent + '<Entity {}>'.format(self.name))
         for relation in self.relations:
             ret+=relation.str(indent+1)
-        ret.append(' '*indent + f'</Entity>')
+        ret.append(' '*indent + '</Entity>')
         return ret
 
     def validate(self, ehn, warning):
         if self.name != '~' and self.name != 'ANY' and '"' not in self.name and \
             not self.name.isdigit() and not len(self.name) == 1:
             if self.name not in ehn.concept:
-                warning.append(f'Unknown entity {self.name}')
+                warning.append('Unknown entity {}'.format(self.name))
         for relation in self.relations:
             relation.validate(ehn, warning)
 
@@ -252,8 +252,8 @@ class EhnRelation(EhnRelationLike):
         self.name   = name
         self.target = target
 
-        assert isinstance(name, str), f'{name} is not str!'
-        assert isinstance(target, EhnEntityLike), f'{target} is not EhnEntityLike!'
+        assert isinstance(name, str), '{} is not str!'.format(name)
+        assert isinstance(target, EhnEntityLike), '{} is not EhnEntityLike!'.format(target)
 
     @property
     def child(self):
@@ -267,15 +267,15 @@ class EhnRelation(EhnRelationLike):
 
     def str(self, indent):
         ret = []
-        ret.append(' '*indent + f'<Relation {self.name}>')
+        ret.append(' '*indent + '<Relation {}>'.format(self.name))
         ret += self.target.str(indent+1)
-        ret.append(' '*indent + f'</Relation>')
+        ret.append(' '*indent + '</Relation>')
         return ret
 
     def validate(self, ehn, warning):
         if self.name != 'RESTRICT':
             if self.name not in ehn.concept:
-                warning.append(f'Unknown relation {self.name}')
+                warning.append('Unknown relation {}'.format(self.name))
         self.target.validate(ehn, warning)
 
 ################################################################################################################################
@@ -286,9 +286,9 @@ class EhnFunction(EhnFunctionLike):
         self.name      = name
         self.arguments = arguments
 
-        assert isinstance(name, str), f'{name} is not str!'
+        assert isinstance(name, str), '{} is not str!'.format(name)
         for argument in arguments:
-            assert isinstance(argument, EhnEntityLike), f'{argument} is not EhnEntityLike!'
+            assert isinstance(argument, EhnEntityLike), '{} is not EhnEntityLike!'.format(argument)
 
     @property
     def child(self):
@@ -302,15 +302,15 @@ class EhnFunction(EhnFunctionLike):
 
     def str(self, indent):
         ret = []
-        ret.append(' '*indent + f'<Function {self.name}>')
+        ret.append(' '*indent + '<Function {}>'.format(self.name))
         for argument in self.arguments:
             ret+=argument.str(indent+1)
-        ret.append(' '*indent + f'</Function>')
+        ret.append(' '*indent + '</Function>')
         return ret
 
     def validate(self, ehn, warning):
         if self.name not in ehn.concept:
-            warning.append(f'Unknown function {self.name}')
+            warning.append('Unknown function {}'.format(self.name))
         for argument in self.arguments:
             argument.validate(ehn, warning)
 
@@ -322,9 +322,9 @@ class EhnFunctionEntity(EhnEntityLike):
         self.function  = function
         self.relations = relations
 
-        assert isinstance(function, EhnFunctionLike), f'{function} is not EhnFunctionLike!'
+        assert isinstance(function, EhnFunctionLike), '{} is not EhnFunctionLike!'.format(function)
         for relation in relations:
-            assert isinstance(relation, EhnRelationLike), f'{relation} is not EhnRelationLike!'
+            assert isinstance(relation, EhnRelationLike), '{} is not EhnRelationLike!'.format(relation)
 
     @property
     def name(self):
@@ -342,11 +342,11 @@ class EhnFunctionEntity(EhnEntityLike):
 
     def str(self, indent):
         ret = []
-        ret.append(' '*indent + f'<Entity>')
+        ret.append(' '*indent + '<Entity>')
         ret += self.function.str(indent+1)
         for relation in self.relations:
             ret+=relation.str(indent+1)
-        ret.append(' '*indent + f'</Entity>')
+        ret.append(' '*indent + '</Entity>')
         return ret
 
     def validate(self, ehn, warning):
@@ -362,8 +362,8 @@ class EhnFunctionRelation(EhnRelationLike):
         self.function = function
         self.target   = target
 
-        assert isinstance(function, EhnFunctionLike), f'{function} is not EhnFunctionLike!'
-        assert isinstance(target,   EhnEntityLike), f'{target} is not EhnEntityLike!'
+        assert isinstance(function, EhnFunctionLike), '{} is not EhnFunctionLike!'.format(function)
+        assert isinstance(target,   EhnEntityLike), '{} is not EhnEntityLike!'.format(target)
 
     @property
     def name(self):
@@ -381,10 +381,10 @@ class EhnFunctionRelation(EhnRelationLike):
 
     def str(self, indent):
         ret = []
-        ret.append(' '*indent + f'<Relation>')
+        ret.append(' '*indent + '<Relation>')
         ret += self.function.str(indent+1)
         ret += self.target.str(indent+1)
-        ret.append(' '*indent + f'</Relation>')
+        ret.append(' '*indent + '</Relation>')
         return ret
 
     def validate(self, ehn, warning):
@@ -394,5 +394,4 @@ class EhnFunctionRelation(EhnRelationLike):
 ################################################################################################################################
 
 if __name__ == '__main__':
-
     main()
