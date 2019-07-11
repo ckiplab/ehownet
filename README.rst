@@ -1,7 +1,7 @@
 E-HowNet
 ========
 
-E-HowNet Utilities
+Official E-HowNet Utilities
 
 Introduction
 ------------
@@ -57,6 +57,8 @@ Requirements
 
 * `Python <http://www.python.org>`_ 3.5+
 * `PLY (Python Lex-Yacc) <https://www.dabeaz.com/ply>`_ 3.11+
+* `TreeLib <https://pypi.org/project/treelib>`_ 1.5.5+
+* `wcwidth <https://pypi.org/project/wcwidth>`_ 0.1.7+
 
 Installation
 ^^^^^^^^^^^^
@@ -76,12 +78,38 @@ CLI
 
 .. code-block:: bash
 
+   # Usage
    ehn-parser <text> [<text> ...]
 
    # Example
    ehn-parser \
-      "{InstitutePlace|場所:telic={or({experiment|實驗:location={~}},{research|研究:location={~}})}}" \
-      "{facilities|設施:telic={GoUpAndGoDown|上下:theme={飛機|airplane},location={~}}}"
+      "{MusicTool|樂器_x:predication={own|有:possession={按鈕|PushingButton:whole={x}}}}" \
+      "{InstitutePlace|場所:telic={or({experiment|實驗:location={~}},{research|研究:location={~}})}}"
+
+Output:
+
+.. code-block::
+
+   #1
+   [Entity $x] MusicTool|樂器
+   └── [Feature] predication
+       └── [Entity] own|有
+           └── [Feature] possession
+               └── [Entity] 按鈕|PushingButton
+                   └── [Feature] whole
+                       └── $x
+
+   #2
+   [Entity] InstitutePlace|場所
+   └── [Feature] telic
+       └── [Entity]
+           └── [Function] or
+               ├── [Entity] experiment|實驗
+               │   └── [Feature] location
+               │       └── [TildeEntity]
+               └── [Entity] research|研究
+                   └── [Feature] location
+                       └── [TildeEntity]
 
 
 Python API
@@ -91,12 +119,24 @@ Python API
 
    from ehn.parse import EhnParser
 
-   text = '{InstitutePlace|場所:telic={or({experiment|實驗:location={~}},{research|研究:location={~}})}}'
+   text = '{MusicTool|樂器_x:predication={own|有:possession={按鈕|PushingButton:whole={x}}}}'
 
    parser = EhnParser()
-   tree = parser(text, debug=False)
-   print(tree)
+   ress = parser(text, debug=False)
+   for res in ress:
+      print(res)
 
+Output:
+
+.. code-block::
+
+   [Entity $x] MusicTool|樂器
+   └── [Feature] predication
+       └── [Entity] own|有
+           └── [Feature] possession
+               └── [Entity] 按鈕|PushingButton
+                   └── [Feature] whole
+                       └── $x
 
 License
 -------

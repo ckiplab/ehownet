@@ -6,7 +6,7 @@ __author_email__  = 'emfomy@gmail.com'
 __copyright__     = 'Copyright 2019'
 
 __title__         = 'ehownet'
-__version__       = '0.1.1'
+__version__       = '0.2.0'
 __description__   = 'EHowNet Utilities'
 __license__       = "CC-BY-NC-SA 4.0"
 
