@@ -36,10 +36,12 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     install_requires=[
         'ply>=3.11',
+        'treelib>=1.5.5',
+        'wcwidth>=0.1.7',
     ],
     entry_points={
         'console_scripts': [
-            'ehn-parser = ehn.parse:main',
+            'ehn-parser = ehn.bin.parser:main',
         ],
     },
 )
