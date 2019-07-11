@@ -11,7 +11,7 @@ Git
 
 https://github.com/emfomy/ehownet
 
-|Github Release| |Github License| |Github Forks| |Github Stars| |Github Watchers|
+|Github Release| |Github Forks| |Github Stars| |Github Watchers|
 
 .. |Github Release| image:: https://img.shields.io/github/release/emfomy/ehownet/all.svg?maxAge=3600
    :target: https://github.com/emfomy/ehownet/releases
