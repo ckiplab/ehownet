@@ -25,7 +25,6 @@ def main():
     parser = EhnParser()
 
     for (i, text,) in enumerate(args.text):
-        ress = parser(text, debug=args.debug)
+        res = parser(text, debug=args.debug)
         print('#{}'.format(i+1))
-        for res in ress:
-            print(res)
+        print(res)

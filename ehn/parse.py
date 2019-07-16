@@ -142,13 +142,8 @@ class EhnParser:
 
     # Object
     def p_expr(self, p):
-        '''expr : obj
-                | expr COMMA obj'''
-        if len(p) == 2:
-            p[0] = [p[1]]
-        else:
-            p[1].append(p[3])
-            p[0] = p[1]
+        '''expr : obj'''
+        p[0] = p[1]
 
     def p_obj(self, p):
         '''obj : entity
