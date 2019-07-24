@@ -24,10 +24,16 @@ class EhnNode:
         assert isinstance(head, str), '"{}" is not str!'.format(head)
         self._head = head
 
+    @property
+    def nodes(self):
+        yield self
+        for child in self._children:
+            yield from child.nodes
+
     ################################################################
 
     @property
-    def childs(self):
+    def _children(self):
         return
         yield
 
@@ -57,7 +63,7 @@ class EhnNode:
 
     def _tree(self, tree, parent):
         idx = tree.create_node(parent=parent, data=self).identifier
-        for child in self.childs:
+        for child in self._children:
             child._tree(tree, idx)
 
 
@@ -137,7 +143,7 @@ class EhnNormalEntity(EhnEntity):
     ################################################################
 
     @property
-    def childs(self):
+    def _children(self):
         yield from self.features
 
     @property
@@ -162,7 +168,7 @@ class EhnFunctionEntity(EhnFunctionHead, EhnNormalEntity):
     ################################################################
 
     @property
-    def childs(self):
+    def _children(self):
         yield self.function
         yield from self.features
 
@@ -279,7 +285,7 @@ class EhnNormalFeature(EhnFeature):
     ################################################################
 
     @property
-    def childs(self):
+    def _children(self):
         yield self.value
 
     @property
@@ -301,7 +307,7 @@ class EhnFunctionFeature(EhnFunctionHead, EhnNormalFeature):
     ################################################################
 
     @property
-    def childs(self):
+    def _children(self):
         yield self.function
         yield self.value
 
@@ -343,7 +349,7 @@ class EhnFunction(EhnNode):
     ################################################################
 
     @property
-    def childs(self):
+    def _children(self):
         yield from self.arguments
 
     @property
@@ -391,7 +397,7 @@ class EhnRestriction(EhnNode):
     ################################################################
 
     @property
-    def childs(self):
+    def _children(self):
         yield self.value
 
     @property
