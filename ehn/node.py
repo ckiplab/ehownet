@@ -6,7 +6,8 @@
 __author__ = 'Mu Yang <emfomy@gmail.com>'
 __copyright__ = 'Copyright 2019'
 
-import treelib
+import warnings as _warnings
+import treelib as _treelib
 
 ################################################################################################################################
 # Node
@@ -61,7 +62,7 @@ class EhnNodeBase:
     def tree(self):
         """Get tree representation of this node."""
         if not hasattr(self, '__tree'):
-            self.__tree = treelib.Tree()
+            self.__tree = _treelib.Tree()
             self._create_tree(self.__tree, None)
         return self.__tree
 
@@ -208,7 +209,7 @@ class EhnAnyEntity(EhnEntityBase):
 class EhnTildeEntity(EhnEntityBase):
 
     def __init__(self):
-        pass
+        _warnings.warn('‘~’ is deprecated', FutureWarning)
 
     @property
     def head(self):
