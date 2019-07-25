@@ -6,7 +6,8 @@
 __author__ = 'Mu Yang <emfomy@gmail.com>'
 __copyright__ = 'Copyright 2019'
 
-import treelib
+import warnings as _warnings
+import treelib as _treelib
 
 ################################################################################################################################
 # Node
@@ -61,7 +62,7 @@ class EhnNodeBase:
     def tree(self):
         """Get tree representation of this node."""
         if not hasattr(self, '__tree'):
-            self.__tree = treelib.Tree()
+            self.__tree = _treelib.Tree()
             self._create_tree(self.__tree, None)
         return self.__tree
 
@@ -104,6 +105,43 @@ class EhnAnchor:
     def _decode(self):
         return '_{}'.format(self.head) if self.head else ''
 
+################################################################################################################################
+# Entity
+#
+
+class EhnRootNode(EhnNodeBase):
+
+    def __init__(self, *features):
+        self.features = features
+
+    @property
+    def features(self):
+        return self._features
+
+    @features.setter
+    def features(self, features):
+        self._features = []
+        for feature in features:
+            self.add_feature(feature)
+
+    def add_feature(self, feature):
+        assert isinstance(feature, EhnFeatureBase), '"{}" is not EhnFeatureBase!'.format(feature)
+        self._features.append(feature)
+
+    ################################################################
+
+    @property
+    def _children(self):
+        yield from self.features
+
+    @property
+    def _tree_label(self):
+        return '[Root]'
+
+    ################################################################
+
+    def _decode(self):
+        return ','.join(feature._decode() for feature in self.features) if self.features else ''
 
 ################################################################################################################################
 # Entity
@@ -208,7 +246,7 @@ class EhnAnyEntity(EhnEntityBase):
 class EhnTildeEntity(EhnEntityBase):
 
     def __init__(self):
-        pass
+        _warnings.warn('‘~’ is deprecated', FutureWarning)
 
     @property
     def head(self):

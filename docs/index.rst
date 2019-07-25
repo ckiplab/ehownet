@@ -14,6 +14,12 @@ CKIP CoreNLP Wrappers
 
 .. toctree::
    :maxdepth: 2
+   :caption: Notes
+
+   src/grammar
+
+.. toctree::
+   :maxdepth: 2
    :caption: Contents
 
    _api/ehn

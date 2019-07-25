@@ -88,6 +88,8 @@ Usage
 E-HowNet Parser
 ---------------
 
+See http://ehownet.readthedocs.io/src/grammar.html for E-HowNet grammar.
+
 CLI
 ^^^
 
@@ -99,7 +101,8 @@ CLI
    # Example
    ehn-parser \
       "{MusicTool|樂器_x:predication={own|有:possession={按鈕|PushingButton:whole={x}}}}" \
-      "{InstitutePlace|場所:telic={or({experiment|實驗:location={~}},{research|研究:location={~}})}}"
+      "{InstitutePlace|場所:telic={or({experiment|實驗:location={~}},{research|研究:location={~}})}}" \
+      "TimePoint={},manner={urgent|急}"
 
 Output:
 
@@ -125,6 +128,13 @@ Output:
                └── [Entity] research|研究
                    └── [Feature] location
                        └── [TildeEntity]
+
+   #3
+  [Root]
+  ├── [Feature] TimePoint
+  │   └── [AnyEntity]
+  └── [Feature] manner
+      └── [Entity] urgent|急
 
 
 Python API

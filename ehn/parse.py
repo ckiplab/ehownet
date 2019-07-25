@@ -6,13 +6,10 @@
 __author__ = 'Mu Yang <emfomy@gmail.com>'
 __copyright__ = 'Copyright 2019'
 
-import re
-import warnings
-import wcwidth
-
-import ply
-import ply.lex
-import ply.yacc
+import re as _re
+from wcwidth import wcswidth as _wcswidth
+from ply.lex import lex as _lex
+from ply.yacc import yacc as _yacc
 
 import ehn.node
 
@@ -55,7 +52,7 @@ class EhnSyntaxError(SyntaxError):
         text : str
             original input text
         """
-        return ' '*wcwidth.wcswidth(text[:self.pos]) + '^'
+        return ' '*_wcswidth(text[:self.pos]) + '^'
 
 ################################################################################################################################
 # Lexer
@@ -64,7 +61,7 @@ class EhnSyntaxError(SyntaxError):
 class _EhnLexer:
 
     def __init__(self, **kwargs):
-        self._lexer = ply.lex.lex(module=self, **kwargs)
+        self._lexer = _lex(module=self, **kwargs)
 
     tokens = EHN_TOKENS
 
@@ -87,6 +84,7 @@ class _EhnLexer:
     t_RPAREN = r'\)'
     t_LBRACE = r'{'
     t_RBRACE = r'}'
+    t_TILDE = r'~'
 
     def t_TEXT(self, t):
         r'[A-Za-z0-9\x80-\U0010FFFF|+\-.]+'
@@ -94,11 +92,6 @@ class _EhnLexer:
             t.type = 'NUMBER'
         if _is_coindex(t.value):
             t.type = 'COINDEX'
-        return t
-
-    def t_TILDE(self, t):
-        r'~'
-        warnings.warn('‘~’ is deprecated', FutureWarning)
         return t
 
     # Invoke the lexer
@@ -121,7 +114,7 @@ class _EhnParser:
             self.lexer = lexer
         else:
             self.lexer = EhnLexer()
-        self._parser = ply.yacc.yacc(module=self, **kwargs)
+        self._parser = _yacc(module=self, **kwargs)
 
     @property
     def _lexer(self):
@@ -154,18 +147,19 @@ class _EhnParser:
 
     # Object
     def p_expr(self, p):
-        '''expr : obj
-                | expr COMMA obj'''
-        if len(p) == 2:
-            p[0] = [p[1]]
-        else:
-            p[1].append(p[3])
-            p[0] = p[1]
-
-    def p_obj(self, p):
-        '''obj : entity
-               | feature'''
+        '''expr : entity
+                | root'''
         p[0] = p[1]
+
+    # Root
+    def p_root(self, p):
+        '''root : feature
+                | root COMMA feature'''
+        if len(p) == 2:
+            p[0] = ehn.node.EhnRootNode(p[1])
+        else:
+            p[1].add_feature(p[3])
+            p[0] = p[1]
 
     # Entity
     def p_entity_any(self, p):
@@ -204,12 +198,12 @@ class _EhnParser:
     def p_entity_feature0(self, p):
         '''entityFeature : entityOpen   COLON feature
                          | entityAnchor COLON feature'''
-        p[1].addFeature(p[3])
+        p[1].add_feature(p[3])
         p[0] = p[1]
 
     def p_entity_feature(self, p):
         '''entityFeature : entityFeature COMMA feature'''
-        p[1].addFeature(p[3])
+        p[1].add_feature(p[3])
         p[0] = p[1]
 
     def p_entity_close(self, p):
@@ -247,7 +241,7 @@ class _EhnParser:
     def p_function_argument(self, p):
         '''functionArgument : functionOpen     COMMA entity
                             | functionArgument COMMA entity'''
-        p[1].addArgument(p[3])
+        p[1].add_argument(p[3])
         p[0] = p[1]
 
     def p_function_close(self, p):
@@ -294,4 +288,4 @@ def _isnumber(name):
 
 def _is_coindex(name):
     return _is_coindex.pattern.match(name)
-_is_coindex.pattern = re.compile(r'x[0-9]*')
+_is_coindex.pattern = _re.compile(r'x[0-9]*')
