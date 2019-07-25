@@ -1,22 +1,26 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-__author__    = 'Mu Yang <emfomy@gmail.com>'
+ # pylint: disable=super-init-not-called, no-self-use, protected-access, attribute-defined-outside-init
+
+__author__ = 'Mu Yang <emfomy@gmail.com>'
 __copyright__ = 'Copyright 2019'
 
-import treelib
+import warnings as _warnings
+import treelib as _treelib
 
 ################################################################################################################################
 # Node
 #
 
-class EhnNode:
+class EhnNodeBase:
 
     def __init__(self):
         raise NotImplementedError
 
     @property
     def head(self):
+        """Head name of this node."""
         return self._head
 
     @head.setter
@@ -27,9 +31,8 @@ class EhnNode:
     ################################################################
 
     @property
-    def childs(self):
-        return
-        yield
+    def _children(self):
+        yield from []
 
     @property
     def _tree_label(self):
@@ -50,18 +53,26 @@ class EhnNode:
 
     ################################################################
 
+    def nodes(self):
+        """Yield all descendant nodes (including self) of this node."""
+        yield self
+        for child in self._children:
+            yield from child.nodes()
+
     def tree(self):
-        ret = treelib.Tree()
-        self._tree(ret, None)
-        return ret
+        """Get tree representation of this node."""
+        if not hasattr(self, '__tree'):
+            self.__tree = _treelib.Tree()
+            self._create_tree(self.__tree, None)
+        return self.__tree
 
-    def _tree(self, tree, parent):
+    def _create_tree(self, tree, parent):
         idx = tree.create_node(parent=parent, data=self).identifier
-        for child in self.childs:
-            child._tree(tree, idx)
+        for child in self._children:
+            child._create_tree(tree, idx)
 
 
-class EhnFunctionHead:
+class EhnFunctionHeadBase:
 
     def __init__(self):
         raise NotImplementedError
@@ -89,26 +100,63 @@ class EhnAnchor:
         return self.head if self.head else ''
 
     def __repr__(self):
-        return self.__str__()
+        return str(self)
 
     def _decode(self):
         return '_{}'.format(self.head) if self.head else ''
-
 
 ################################################################################################################################
 # Entity
 #
 
-class EhnEntity(EhnNode):
+class EhnRootNode(EhnNodeBase):
+
+    def __init__(self, *features):
+        self.features = features
+
+    @property
+    def features(self):
+        return self._features
+
+    @features.setter
+    def features(self, features):
+        self._features = []
+        for feature in features:
+            self.add_feature(feature)
+
+    def add_feature(self, feature):
+        assert isinstance(feature, EhnFeatureBase), '"{}" is not EhnFeatureBase!'.format(feature)
+        self._features.append(feature)
+
+    ################################################################
+
+    @property
+    def _children(self):
+        yield from self.features
+
+    @property
+    def _tree_label(self):
+        return '[Root]'
+
+    ################################################################
+
+    def _decode(self):
+        return ','.join(feature._decode() for feature in self.features) if self.features else ''
+
+################################################################################################################################
+# Entity
+#
+
+class EhnEntityBase(EhnNodeBase):
 
     def __init__(self):
         raise NotImplementedError
 
-class EhnNormalEntity(EhnEntity):
+class EhnNormalEntity(EhnEntityBase):
 
     def __init__(self, head, *features, anchor=EhnAnchor()):
-        self.head     = head
-        self.anchor   = anchor
+        self.head = head
+        self.anchor = anchor
         self.features = features
 
     @property
@@ -128,16 +176,16 @@ class EhnNormalEntity(EhnEntity):
     def features(self, features):
         self._features = []
         for feature in features:
-            self.addFeature(feature)
+            self.add_feature(feature)
 
-    def addFeature(self, feature):
-        assert isinstance(feature, EhnFeature), '"{}" is not EhnFeature!'.format(feature)
+    def add_feature(self, feature):
+        assert isinstance(feature, EhnFeatureBase), '"{}" is not EhnFeatureBase!'.format(feature)
         self._features.append(feature)
 
     ################################################################
 
     @property
-    def childs(self):
+    def _children(self):
         yield from self.features
 
     @property
@@ -148,21 +196,21 @@ class EhnNormalEntity(EhnEntity):
     ################################################################
 
     def _decode(self):
-        _features = ':' + ','.join(feature._decode() for feature in self.features) if len(self.features) else ''
+        _features = ':' + ','.join(feature._decode() for feature in self.features) if self.features else ''
         return '{{{}{}{}}}'.format(self.head, self.anchor._decode(), _features)
 
 
-class EhnFunctionEntity(EhnFunctionHead, EhnNormalEntity):
+class EhnFunctionEntity(EhnFunctionHeadBase, EhnNormalEntity):
 
     def __init__(self, function, *features, anchor=EhnAnchor()):
         self.function = function
-        self.anchor   = anchor
+        self.anchor = anchor
         self.features = features
 
     ################################################################
 
     @property
-    def childs(self):
+    def _children(self):
         yield self.function
         yield from self.features
 
@@ -174,11 +222,11 @@ class EhnFunctionEntity(EhnFunctionHead, EhnNormalEntity):
     ################################################################
 
     def _decode(self):
-        _features = ':' + ','.join(feature._decode() for feature in self.features) if len(self.features) else ''
+        _features = ':' + ','.join(feature._decode() for feature in self.features) if self.features else ''
         return '{{{}{}{}}}'.format(self.function._decode(), self.anchor._decode(), _features)
 
 
-class EhnAnyEntity(EhnEntity):
+class EhnAnyEntity(EhnEntityBase):
 
     def __init__(self):
         pass
@@ -195,10 +243,10 @@ class EhnAnyEntity(EhnEntity):
         return '{}'
 
 
-class EhnTildeEntity(EhnEntity):
+class EhnTildeEntity(EhnEntityBase):
 
     def __init__(self):
-        pass
+        _warnings.warn('‘~’ is deprecated', FutureWarning)
 
     @property
     def head(self):
@@ -212,7 +260,7 @@ class EhnTildeEntity(EhnEntity):
         return '{~}'
 
 
-class EhnNameEntity(EhnEntity):
+class EhnNameEntity(EhnEntityBase):
 
     def __init__(self, head):
         self.head = head
@@ -225,7 +273,7 @@ class EhnNameEntity(EhnEntity):
         return '{{"{}"}}'.format(self.head)
 
 
-class EhnNumberEntity(EhnEntity):
+class EhnNumberEntity(EhnEntityBase):
 
     def __init__(self, head):
         self.head = head
@@ -238,7 +286,7 @@ class EhnNumberEntity(EhnEntity):
         return '{{{}}}'.format(self.head)
 
 
-class EhnCoindexEntity(EhnEntity):
+class EhnCoindexEntity(EhnEntityBase):
 
     def __init__(self, head):
         self.head = head
@@ -255,15 +303,15 @@ class EhnCoindexEntity(EhnEntity):
 # Feature
 #
 
-class EhnFeature(EhnNode):
+class EhnFeatureBase(EhnNodeBase):
 
     def __init__(self):
         raise NotImplementedError
 
-class EhnNormalFeature(EhnFeature):
+class EhnNormalFeature(EhnFeatureBase):
 
     def __init__(self, head, value):
-        self.head  = head
+        self.head = head
         self.value = value
 
     @property
@@ -272,14 +320,14 @@ class EhnNormalFeature(EhnFeature):
 
     @value.setter
     def value(self, value):
-        assert isinstance(value, EhnEntity) or isinstance(value, EhnRestriction), \
-            '"{}" is not EhnEntity or EhnRestriction!'.format(value)
+        assert isinstance(value, (EhnEntityBase, EhnRestriction,)), \
+            '"{}" is not EhnEntityBase or EhnRestriction!'.format(value)
         self._value = value
 
     ################################################################
 
     @property
-    def childs(self):
+    def _children(self):
         yield self.value
 
     @property
@@ -292,16 +340,16 @@ class EhnNormalFeature(EhnFeature):
         return '{}={}'.format(self.head, self.value._decode())
 
 
-class EhnFunctionFeature(EhnFunctionHead, EhnNormalFeature):
+class EhnFunctionFeature(EhnFunctionHeadBase, EhnNormalFeature):
 
     def __init__(self, function, value):
         self.function = function
-        self.value    = value
+        self.value = value
 
     ################################################################
 
     @property
-    def childs(self):
+    def _children(self):
         yield self.function
         yield self.value
 
@@ -319,10 +367,10 @@ class EhnFunctionFeature(EhnFunctionHead, EhnNormalFeature):
 # Function
 #
 
-class EhnFunction(EhnNode):
+class EhnFunction(EhnNodeBase):
 
     def __init__(self, head, *arguments):
-        self.head      = head
+        self.head = head
         self.arguments = arguments
 
     @property
@@ -333,17 +381,17 @@ class EhnFunction(EhnNode):
     def arguments(self, arguments):
         self._arguments = []
         for argument in arguments:
-            self.addArgument(argument)
+            self.add_argument(argument)
 
-    def addArgument(self, argument):
-        assert isinstance(argument, EhnEntity) or isinstance(argument, EhnRestriction), \
-            '"{}" is not EhnEntity or EhnRestriction!'.format(argument)
+    def add_argument(self, argument):
+        assert isinstance(argument, (EhnEntityBase, EhnRestriction,)), \
+            '"{}" is not EhnEntityBase or EhnRestriction!'.format(argument)
         self._arguments.append(argument)
 
     ################################################################
 
     @property
-    def childs(self):
+    def _children(self):
         yield from self.arguments
 
     @property
@@ -360,10 +408,10 @@ class EhnFunction(EhnNode):
 # Function
 #
 
-class EhnRestriction(EhnNode):
+class EhnRestriction(EhnNodeBase):
 
     def __init__(self, value, anchor=EhnAnchor()):
-        self.value  = value
+        self.value = value
         self.anchor = anchor
 
     @property
@@ -376,7 +424,7 @@ class EhnRestriction(EhnNode):
 
     @value.setter
     def value(self, value):
-        assert isinstance(value, EhnEntity), '"{}" is not EhnEntity!'.format(value)
+        assert isinstance(value, EhnEntityBase), '"{}" is not EhnEntityBase!'.format(value)
         self._value = value
 
     @property
@@ -391,7 +439,7 @@ class EhnRestriction(EhnNode):
     ################################################################
 
     @property
-    def childs(self):
+    def _children(self):
         yield self.value
 
     @property

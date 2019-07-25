@@ -1,16 +1,15 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-__author__    = 'Mu Yang <emfomy@gmail.com>'
+# pylint: disable=invalid-name, no-self-use
+
+__author__ = 'Mu Yang <emfomy@gmail.com>'
 __copyright__ = 'Copyright 2019'
 
-import re
-import warnings
-import wcwidth
-
-import ply
-import ply.lex
-import ply.yacc
+import re as _re
+from wcwidth import wcswidth as _wcswidth
+from ply.lex import lex as _lex
+from ply.yacc import yacc as _yacc
 
 import ehn.node
 
@@ -46,38 +45,46 @@ class EhnSyntaxError(SyntaxError):
         self.pos = pos
 
     def show_pos(self, text):
-        return ' '*wcwidth.wcswidth(text[:self.pos]) + '^'
+        """Show error position.
+
+        Parameters
+        ----------
+        text : str
+            original input text
+        """
+        return ' '*_wcswidth(text[:self.pos]) + '^'
 
 ################################################################################################################################
 # Lexer
 #
 
-class EhnLexer:
+class _EhnLexer:
 
     def __init__(self, **kwargs):
-        self._lexer = ply.lex.lex(module=self, **kwargs)
+        self._lexer = _lex(module=self, **kwargs)
 
     tokens = EHN_TOKENS
 
     # Define the lexer
     def t_ANY_error(self, t):
         raise EhnSyntaxError('Illegal character ‘{}’ at position {}.'.format(t.value[0], t.lexpos), pos=t.lexpos)
-        t.lexer.skip(1)
+        # t.lexer.skip(1)
 
     # Skip all spaces
-    # t_ignore  = ' \t\n\r\f\v'
+    # t_ignore = ' \t\n\r\f\v'
 
     # Default state tokens
-    t_QUOTE   = r'"'
-    t_EQUAL   = r'='
-    t_COLON   = r':'
-    t_COMMA   = r','
-    t_SLASH   = r'/'
-    t_ULINE   = r'_'
-    t_LPAREN  = r'\('
-    t_RPAREN  = r'\)'
-    t_LBRACE  = r'{'
-    t_RBRACE  = r'}'
+    t_QUOTE = r'"'
+    t_EQUAL = r'='
+    t_COLON = r':'
+    t_COMMA = r','
+    t_SLASH = r'/'
+    t_ULINE = r'_'
+    t_LPAREN = r'\('
+    t_RPAREN = r'\)'
+    t_LBRACE = r'{'
+    t_RBRACE = r'}'
+    t_TILDE = r'~'
 
     def t_TEXT(self, t):
         r'[A-Za-z0-9\x80-\U0010FFFF|+\-.]+'
@@ -87,21 +94,19 @@ class EhnLexer:
             t.type = 'COINDEX'
         return t
 
-    def t_TILDE(self, t):
-        r'~'
-        warnings.warn('‘~’ is deprecated', FutureWarning)
-        return t
-
     # Invoke the lexer
     def __call__(self, data, *args, **kwargs):
         self._lexer.input(data)
         return iter(self._lexer)
 
+class EhnLexer(_EhnLexer):
+    """E-HowNet Lexer."""
+
 ################################################################################################################################
 # Parser
 #
 
-class EhnParser:
+class _EhnParser:
 
     def __init__(self, lexer=None, **kwargs):
         if lexer is not None:
@@ -109,11 +114,11 @@ class EhnParser:
             self.lexer = lexer
         else:
             self.lexer = EhnLexer()
-        self._parser = ply.yacc.yacc(module=self, **kwargs)
+        self._parser = _yacc(module=self, **kwargs)
 
     @property
     def _lexer(self):
-        return self.lexer._lexer
+        return self.lexer._lexer # pylint: disable=protected-access
 
     tokens = EHN_TOKENS
 
@@ -142,13 +147,19 @@ class EhnParser:
 
     # Object
     def p_expr(self, p):
-        '''expr : obj'''
+        '''expr : entity
+                | root'''
         p[0] = p[1]
 
-    def p_obj(self, p):
-        '''obj : entity
-               | feature'''
-        p[0] = p[1]
+    # Root
+    def p_root(self, p):
+        '''root : feature
+                | root COMMA feature'''
+        if len(p) == 2:
+            p[0] = ehn.node.EhnRootNode(p[1])
+        else:
+            p[1].add_feature(p[3])
+            p[0] = p[1]
 
     # Entity
     def p_entity_any(self, p):
@@ -187,12 +198,12 @@ class EhnParser:
     def p_entity_feature0(self, p):
         '''entityFeature : entityOpen   COLON feature
                          | entityAnchor COLON feature'''
-        p[1].addFeature(p[3])
+        p[1].add_feature(p[3])
         p[0] = p[1]
 
     def p_entity_feature(self, p):
         '''entityFeature : entityFeature COMMA feature'''
-        p[1].addFeature(p[3])
+        p[1].add_feature(p[3])
         p[0] = p[1]
 
     def p_entity_close(self, p):
@@ -230,7 +241,7 @@ class EhnParser:
     def p_function_argument(self, p):
         '''functionArgument : functionOpen     COMMA entity
                             | functionArgument COMMA entity'''
-        p[1].addArgument(p[3])
+        p[1].add_argument(p[3])
         p[0] = p[1]
 
     def p_function_close(self, p):
@@ -255,11 +266,14 @@ class EhnParser:
     # Invoke the parser
     def __call__(self, data, *args, debug=False, **kwargs):
         if debug:
-            print_title(data)
+            print(data)
             for tok in self.lexer(data):
-                print_info(tok)
+                print(tok)
         ret = self._parser.parse(data, lexer=self._lexer, *args, debug=debug, **kwargs)
         return ret
+
+class EhnParser(_EhnParser):
+    """E-HowNet Parser."""
 
 ################################################################################################################################
 # Utility
@@ -269,9 +283,9 @@ def _isnumber(name):
     try:
         float(name)
         return True
-    except:
+    except ValueError:
         return False
 
 def _is_coindex(name):
     return _is_coindex.pattern.match(name)
-_is_coindex.pattern = re.compile(r'x[0-9]*')
+_is_coindex.pattern = _re.compile(r'x[0-9]*')

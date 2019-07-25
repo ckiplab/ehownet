@@ -1,59 +1,74 @@
-E-HowNet
-========
-
-Official E-HowNet Utilities
-
 Introduction
-------------
+============
 
 Git
-^^^
+---
 
 https://github.com/emfomy/ehownet
 
-|Github Release| |Github Forks| |Github Stars| |Github Watchers|
+|GitHub Version| |GitHub Release| |GitHub Issues|
 
-.. |Github Release| image:: https://img.shields.io/github/release/emfomy/ehownet/all.svg?maxAge=3600
+.. |GitHub Version| image:: https://img.shields.io/github/release/emfomy/ehownet/all.svg?maxAge=3600
    :target: https://github.com/emfomy/ehownet/releases
 
-.. |Github License| image:: https://img.shields.io/github/license/emfomy/ehownet.svg?maxAge=3600
+.. |GitHub License| image:: https://img.shields.io/github/license/emfomy/ehownet.svg?maxAge=3600
+   :target: https://github.com/emfomy/ehownet/blob/master/LICENSE
 
-.. |Github Downloads| image:: https://img.shields.io/github/downloads/emfomy/ehownet/total.svg?maxAge=3600
+.. |GitHub Release| image:: https://img.shields.io/github/release-date/emfomy/ehownet.svg?maxAge=3600
+
+.. |GitHub Downloads| image:: https://img.shields.io/github/downloads/emfomy/ehownet/total.svg?maxAge=3600
    :target: https://github.com/emfomy/ehownet/releases/latest
 
-.. |Github Forks| image:: https://img.shields.io/github/forks/emfomy/ehownet.svg?style=social&label=Fork&maxAge=3600
+.. |GitHub Issues| image:: https://img.shields.io/github/issues/emfomy/ckipnlp.svg?maxAge=3600
+   :target: https://github.com/emfomy/ckipnlp/issues
 
-.. |Github Stars| image:: https://img.shields.io/github/stars/emfomy/ehownet.svg?style=social&label=Star&maxAge=3600
+.. |GitHub Forks| image:: https://img.shields.io/github/forks/emfomy/ehownet.svg?style=social&label=Fork&maxAge=3600
 
-.. |Github Watchers| image:: https://img.shields.io/github/watchers/emfomy/ehownet.svg?style=social&label=Watch&maxAge=3600
+.. |GitHub Stars| image:: https://img.shields.io/github/stars/emfomy/ehownet.svg?style=social&label=Star&maxAge=3600
+
+.. |GitHub Watchers| image:: https://img.shields.io/github/watchers/emfomy/ehownet.svg?style=social&label=Watch&maxAge=3600
 
 PyPI
-^^^^
+----
 
 https://pypi.org/project/ehownet
 
-|Pypi Version| |Pypi License| |Pypi Format| |Pypi Python| |Pypi Implementation| |Pypi Status|
+|PyPI Version| |PyPI License| |PyPI Downloads| |PyPI Python| |PyPI Implementation| |PyPI Status|
 
-.. |Pypi Version| image:: https://img.shields.io/pypi/v/ehownet.svg?maxAge=3600
+.. |PyPI Version| image:: https://img.shields.io/pypi/v/ehownet.svg?maxAge=3600
    :target: https://pypi.org/project/ehownet
 
-.. |Pypi License| image:: https://img.shields.io/pypi/l/ehownet.svg?maxAge=3600
+.. |PyPI License| image:: https://img.shields.io/pypi/l/ehownet.svg?maxAge=3600
+   :target: https://github.com/emfomy/ehownet/blob/master/LICENSE
 
-.. |Pypi Format| image:: https://img.shields.io/pypi/format/ehownet.svg?maxAge=3600
+.. |PyPI Downloads| image:: https://img.shields.io/pypi/dm/ehownet.svg?maxAge=3600
+   :target: https://pypi.org/project/ehownet#files
 
-.. |Pypi Python| image:: https://img.shields.io/pypi/pyversions/ehownet.svg?maxAge=3600
+.. |PyPI Python| image:: https://img.shields.io/pypi/pyversions/ehownet.svg?maxAge=3600
 
-.. |Pypi Implementation| image:: https://img.shields.io/pypi/implementation/ehownet.svg?maxAge=3600
+.. |PyPI Implementation| image:: https://img.shields.io/pypi/implementation/ehownet.svg?maxAge=3600
 
-.. |Pypi Status| image:: https://img.shields.io/pypi/status/ehownet.svg?maxAge=3600
+.. |PyPI Format| image:: https://img.shields.io/pypi/format/ehownet.svg?maxAge=3600
+
+.. |PyPI Status| image:: https://img.shields.io/pypi/status/ehownet.svg?maxAge=3600
+
+Documentation
+-------------
+
+http://ehownet.readthedocs.io/
+
+|ReadTheDocs Home|
+
+.. |ReadTheDocs Home| image:: https://img.shields.io/website/https/ehownet.readthedocs.io.svg?maxAge=3600&up_message=online&down_message=offline
+   :target: http://ehownet.readthedocs.io
 
 Author
-^^^^^^
+------
 
 * Mu Yang <emfomy@gmail.com>
 
 Requirements
-^^^^^^^^^^^^
+------------
 
 * `Python <http://www.python.org>`_ 3.5+
 * `PLY (Python Lex-Yacc) <https://www.dabeaz.com/ply>`_ 3.11+
@@ -61,20 +76,22 @@ Requirements
 * `wcwidth <https://pypi.org/project/wcwidth>`_ 0.1.7+
 
 Installation
-^^^^^^^^^^^^
+------------
 
 .. code-block:: bash
 
    pip install ehownet -U
 
 Usage
------
+=====
 
 E-HowNet Parser
-^^^^^^^^^^^^^^^
+---------------
+
+See http://ehownet.readthedocs.io/src/grammar.html for E-HowNet grammar.
 
 CLI
-"""
+^^^
 
 .. code-block:: bash
 
@@ -84,7 +101,8 @@ CLI
    # Example
    ehn-parser \
       "{MusicTool|樂器_x:predication={own|有:possession={按鈕|PushingButton:whole={x}}}}" \
-      "{InstitutePlace|場所:telic={or({experiment|實驗:location={~}},{research|研究:location={~}})}}"
+      "{InstitutePlace|場所:telic={or({experiment|實驗:location={~}},{research|研究:location={~}})}}" \
+      "TimePoint={},manner={urgent|急}"
 
 Output:
 
@@ -111,9 +129,16 @@ Output:
                    └── [Feature] location
                        └── [TildeEntity]
 
+   #3
+  [Root]
+  ├── [Feature] TimePoint
+  │   └── [AnyEntity]
+  └── [Feature] manner
+      └── [Entity] urgent|急
+
 
 Python API
-""""""""""
+^^^^^^^^^^
 
 .. code-block:: python
 
@@ -139,11 +164,11 @@ Output:
                        └── $x
 
 License
--------
+=======
 
 |CC BY-NC-SA 4.0|
 
-Copyright (c) 2019 Mu Yang under the `CC-BY-NC-SA 4.0 License <LICENSE>`_. All rights reserved.
+Copyright (c) 2019 Mu Yang under the `CC-BY-NC-SA 4.0 License <http://creativecommons.org/licenses/by-nc-sa/4.0/>`_. All rights reserved.
 
 .. |CC BY-NC-SA 4.0| image:: https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png
-   :target: LICENSE
+   :target: http://creativecommons.org/licenses/by-nc-sa/4.0/

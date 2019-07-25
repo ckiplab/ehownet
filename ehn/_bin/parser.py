@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-__author__    = 'Mu Yang <emfomy@gmail.com>'
+__author__ = 'Mu Yang <emfomy@gmail.com>'
 __copyright__ = 'Copyright 2019'
 
 import argparse
 
-from ehn.parse import *
+from ehn.parse import EhnParser, EhnSyntaxError
 
 ################################################################################################################################
 # Main
@@ -25,6 +25,11 @@ def main():
     parser = EhnParser()
 
     for (i, text,) in enumerate(args.text):
-        res = parser(text, debug=args.debug)
-        print('#{}'.format(i+1))
-        print(res)
+        try:
+            res = parser(text, debug=args.debug)
+            print('#{}'.format(i+1))
+            print(res)
+        except EhnSyntaxError as err:
+            print(err)
+            print(text)
+            print(err.show_pos(text))

@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-__author__    = 'Mu Yang <emfomy@gmail.com>'
+__author__ = 'Mu Yang <emfomy@gmail.com>'
 __copyright__ = 'Copyright 2019'
 
 import setuptools
-from ehn import about
+import ehn as about
 
 with open('README.rst') as fin:
     readme = fin.read()
@@ -41,7 +41,7 @@ setuptools.setup(
     ],
     entry_points={
         'console_scripts': [
-            'ehn-parser = ehn.bin.parser:main',
+            'ehn-parser = ehn._bin.parser:main',
         ],
     },
 )
