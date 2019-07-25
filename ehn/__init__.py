@@ -10,5 +10,5 @@ __version__ = '0.4.0'
 __description__ = 'EHowNet Utilities'
 __license__ = "CC-BY-NC-SA 4.0"
 
-__url__ = 'https://github.com/emfomy/ehownet'
+__url__ = 'https://ehownet.readthedocs.io'
 __download_url__ = __url__+'/tarball/'+__version__
