@@ -1,0 +1,8 @@
+[MASTER]
+
+max-line-length = 128
+
+disable =
+	duplicate-code,
+	missing-docstring,
+	too-many-public-methods,

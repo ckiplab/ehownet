@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-__author__    = 'Mu Yang <emfomy@gmail.com>'
+# pylint: disable=invalid-name, no-self-use
+
+__author__ = 'Mu Yang <emfomy@gmail.com>'
 __copyright__ = 'Copyright 2019'
 
 import re
@@ -46,13 +48,20 @@ class EhnSyntaxError(SyntaxError):
         self.pos = pos
 
     def show_pos(self, text):
+        """Show error position.
+
+        Parameters
+        ----------
+        text : str
+            original input text
+        """
         return ' '*wcwidth.wcswidth(text[:self.pos]) + '^'
 
 ################################################################################################################################
 # Lexer
 #
 
-class EhnLexer:
+class _EhnLexer:
 
     def __init__(self, **kwargs):
         self._lexer = ply.lex.lex(module=self, **kwargs)
@@ -62,22 +71,22 @@ class EhnLexer:
     # Define the lexer
     def t_ANY_error(self, t):
         raise EhnSyntaxError('Illegal character ‘{}’ at position {}.'.format(t.value[0], t.lexpos), pos=t.lexpos)
-        t.lexer.skip(1)
+        # t.lexer.skip(1)
 
     # Skip all spaces
-    # t_ignore  = ' \t\n\r\f\v'
+    # t_ignore = ' \t\n\r\f\v'
 
     # Default state tokens
-    t_QUOTE   = r'"'
-    t_EQUAL   = r'='
-    t_COLON   = r':'
-    t_COMMA   = r','
-    t_SLASH   = r'/'
-    t_ULINE   = r'_'
-    t_LPAREN  = r'\('
-    t_RPAREN  = r'\)'
-    t_LBRACE  = r'{'
-    t_RBRACE  = r'}'
+    t_QUOTE = r'"'
+    t_EQUAL = r'='
+    t_COLON = r':'
+    t_COMMA = r','
+    t_SLASH = r'/'
+    t_ULINE = r'_'
+    t_LPAREN = r'\('
+    t_RPAREN = r'\)'
+    t_LBRACE = r'{'
+    t_RBRACE = r'}'
 
     def t_TEXT(self, t):
         r'[A-Za-z0-9\x80-\U0010FFFF|+\-.]+'
@@ -97,11 +106,14 @@ class EhnLexer:
         self._lexer.input(data)
         return iter(self._lexer)
 
+class EhnLexer(_EhnLexer):
+    """E-HowNet Lexer."""
+
 ################################################################################################################################
 # Parser
 #
 
-class EhnParser:
+class _EhnParser:
 
     def __init__(self, lexer=None, **kwargs):
         if lexer is not None:
@@ -113,7 +125,7 @@ class EhnParser:
 
     @property
     def _lexer(self):
-        return self.lexer._lexer
+        return self.lexer._lexer # pylint: disable=protected-access
 
     tokens = EHN_TOKENS
 
@@ -260,11 +272,14 @@ class EhnParser:
     # Invoke the parser
     def __call__(self, data, *args, debug=False, **kwargs):
         if debug:
-            print_title(data)
+            print(data)
             for tok in self.lexer(data):
-                print_info(tok)
+                print(tok)
         ret = self._parser.parse(data, lexer=self._lexer, *args, debug=debug, **kwargs)
         return ret
+
+class EhnParser(_EhnParser):
+    """E-HowNet Parser."""
 
 ################################################################################################################################
 # Utility
@@ -274,7 +289,7 @@ def _isnumber(name):
     try:
         float(name)
         return True
-    except:
+    except ValueError:
         return False
 
 def _is_coindex(name):

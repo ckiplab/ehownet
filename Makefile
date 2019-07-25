@@ -1,18 +1,21 @@
 PY = python
 RM = rm -rf
+LINT = pylint --rcfile=./.pylintrc
 
-.PHONY: all build build_ext dist bdist bdist_wheel sdist test upload clean run
+.PHONY: all dist sdist test lint doc upload clean
 
 all: dist
 
 dist: sdist
 
-build: build_ext
-
-bdist: bdist_wheel
-
-build_ext bdist_wheel sdist test:
+sdist test:
 	$(PY) setup.py $@
+
+lint:
+	$(LINT) ehn
+
+doc:
+	( cd docs ; make clean ; make html )
 
 upload: dist
 	twine upload --repository-url https://test.pypi.org/legacy/ dist/*.tar.gz --verbose

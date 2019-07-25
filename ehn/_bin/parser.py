@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-__author__    = 'Mu Yang <emfomy@gmail.com>'
+__author__ = 'Mu Yang <emfomy@gmail.com>'
 __copyright__ = 'Copyright 2019'
 
 import argparse
 
-from ehn.parse import *
+from ehn.parse import EhnParser
 
 ################################################################################################################################
 # Main
