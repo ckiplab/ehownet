@@ -147,18 +147,19 @@ class _EhnParser:
 
     # Object
     def p_expr(self, p):
-        '''expr : obj
-                | expr COMMA obj'''
-        if len(p) == 2:
-            p[0] = [p[1]]
-        else:
-            p[1].append(p[3])
-            p[0] = p[1]
-
-    def p_obj(self, p):
-        '''obj : entity
-               | feature'''
+        '''expr : entity
+                | root'''
         p[0] = p[1]
+
+    # Root
+    def p_root(self, p):
+        '''root : feature
+                | root COMMA feature'''
+        if len(p) == 2:
+            p[0] = ehn.node.EhnRootNode(p[1])
+        else:
+            p[1].add_feature(p[3])
+            p[0] = p[1]
 
     # Entity
     def p_entity_any(self, p):
@@ -197,12 +198,12 @@ class _EhnParser:
     def p_entity_feature0(self, p):
         '''entityFeature : entityOpen   COLON feature
                          | entityAnchor COLON feature'''
-        p[1].addFeature(p[3])
+        p[1].add_feature(p[3])
         p[0] = p[1]
 
     def p_entity_feature(self, p):
         '''entityFeature : entityFeature COMMA feature'''
-        p[1].addFeature(p[3])
+        p[1].add_feature(p[3])
         p[0] = p[1]
 
     def p_entity_close(self, p):
@@ -240,7 +241,7 @@ class _EhnParser:
     def p_function_argument(self, p):
         '''functionArgument : functionOpen     COMMA entity
                             | functionArgument COMMA entity'''
-        p[1].addArgument(p[3])
+        p[1].add_argument(p[3])
         p[0] = p[1]
 
     def p_function_close(self, p):

@@ -78,12 +78,11 @@ Restriction
 
 Valid Expression
 ----------------
-``ENTITY`` or ``FEATURE`` joined by ``,``\ s.
+``ENTITY`` or any number of ``FEATURE``\ s joined by ``,``\ s.
 
 Examples
 ^^^^^^^^
 - ``ENTITY``
 - ``FEATURE``
-- ``ENTITY,ENTITY``
-- ``ENTITY,FEATURE``
-- ``FEATURE,ENTITY,FEATURE``
+- ``FEATURE,FEATURE``
+- ``FEATURE,FEATURE,FEATURE``

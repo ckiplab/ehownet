@@ -105,6 +105,43 @@ class EhnAnchor:
     def _decode(self):
         return '_{}'.format(self.head) if self.head else ''
 
+################################################################################################################################
+# Entity
+#
+
+class EhnRootNode(EhnNodeBase):
+
+    def __init__(self, *features):
+        self.features = features
+
+    @property
+    def features(self):
+        return self._features
+
+    @features.setter
+    def features(self, features):
+        self._features = []
+        for feature in features:
+            self.add_feature(feature)
+
+    def add_feature(self, feature):
+        assert isinstance(feature, EhnFeatureBase), '"{}" is not EhnFeatureBase!'.format(feature)
+        self._features.append(feature)
+
+    ################################################################
+
+    @property
+    def _children(self):
+        yield from self.features
+
+    @property
+    def _tree_label(self):
+        return '[Root]'
+
+    ################################################################
+
+    def _decode(self):
+        return ','.join(feature._decode() for feature in self.features) if self.features else ''
 
 ################################################################################################################################
 # Entity
