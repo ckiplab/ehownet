@@ -115,6 +115,10 @@ class EhnRootNode(EhnNodeBase):
         self.features = features
 
     @property
+    def head(self):
+        return self.features[0].head
+
+    @property
     def features(self):
         return self._features
 
