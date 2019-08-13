@@ -3,7 +3,7 @@
 
  # pylint: disable=super-init-not-called, no-self-use, protected-access, attribute-defined-outside-init
 
-__author__ = 'Mu Yang <emfomy@gmail.com>'
+__author__ = 'Mu Yang <http://muyang.pro>'
 __copyright__ = 'Copyright 2019'
 
 import warnings as _warnings

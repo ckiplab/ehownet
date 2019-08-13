@@ -65,7 +65,7 @@ http://ehownet.readthedocs.io/
 Author
 ------
 
-* Mu Yang <emfomy@gmail.com>
+* Mu Yang <http://muyang.pro>
 
 Requirements
 ------------
