@@ -156,7 +156,7 @@ class _EhnParser:
         '''root : feature
                 | root COMMA feature'''
         if len(p) == 2:
-            p[0] = _node.EhnRootNode(p[1])
+            p[0] = _node.EhnRoot(p[1])
         else:
             p[1].add_feature(p[3])
             p[0] = p[1]

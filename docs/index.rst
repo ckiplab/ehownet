@@ -5,13 +5,13 @@ CKIP E-HowNet
    :caption: Overview
    :maxdepth: 2
 
-   src/readme
+   main/readme
 
 .. toctree::
    :maxdepth: 2
-   :caption: Notes
+   :caption: Tutorials
 
-   src/grammar
+   main/grammar
 
 .. toctree::
    :maxdepth: 2
@@ -23,6 +23,5 @@ CKIP E-HowNet
    :caption: Appendix
    :maxdepth: 2
 
-   src/todo
    genindex
    py-modindex

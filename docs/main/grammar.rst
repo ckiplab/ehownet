@@ -3,13 +3,18 @@ E-HowNet Grammar
 
 Text
 ----
-``TEXT``
-   ``[A-Za-z0-9\x80-\U0010FFFF|+\-.]+``
-``NUMBER``
-   e.g. ``1``, ``0.1``, ``1e-4``
 
-``COINDEX``
-   ``x[0-9]*``
+- ``TEXT``
+
+   - ``[A-Za-z0-9\x80-\U0010FFFF|+\-.]+``
+
+- ``NUMBER``
+
+   - e.g. ``1``, ``0.1``, ``1e-4``
+
+- ``COINDEX``
+
+   - ``x[0-9]*``
 
 Node
 ----
@@ -17,7 +22,8 @@ Node
 Entity
 ^^^^^^
 
-:class:`ehn.node.EhnNormalEntity`
+- :class:`ehn.parse.node.EhnNormalEntity`
+
    - ``{TEXT}``
    - ``{TEXT:FEATURE}``
    - ``{TEXT:FEATURE,FEATURE}``
@@ -26,7 +32,8 @@ Entity
    - ``{TEXT_COINDEX:FEATURE,FEATURE}``
    - ``{TEXT_COINDEX:FEATURE,FEATURE,...}``
 
-:class:`ehn.node.EhnFunctionEntity`
+- :class:`ehn.parse.node.EhnFunctionEntity`
+
    - ``{FUNCTION}``
    - ``{FUNCTION:FEATURE}``
    - ``{FUNCTION:FEATURE,FEATURE}``
@@ -35,35 +42,43 @@ Entity
    - ``{FUNCTION_COINDEX:FEATURE,FEATURE}``
    - ``{FUNCTION_COINDEX:FEATURE,FEATURE,...}``
 
-:class:`ehn.node.EhnAnyEntity`
+- :class:`ehn.parse.node.EhnAnyEntity`
+
    ``{}``
 
-:class:`ehn.node.EhnTildeEntity`
-   ``{~}`` (deprecated)
+- :class:`ehn.parse.node.EhnTildeEntity`
 
-:class:`ehn.node.EhnNameEntity`
+   ``{~}``
+
+- :class:`ehn.parse.node.EhnNameEntity`
+
    ``{"TEXT"}``
 
-:class:`ehn.node.EhnNumberEntity`
+- :class:`ehn.parse.node.EhnNumberEntity`
+
    ``{NUMBER}``
 
-:class:`ehn.node.EhnCoindexEntity`
+- :class:`ehn.parse.node.EhnCoindexEntity`
+
    ``{COINDEX}``
 
 Feature
 ^^^^^^^
 
-:class:`ehn.node.EhnNormalFeature`
+- :class:`ehn.parse.node.EhnNormalFeature`
+
    - ``TEXT=ENTITY``
    - ``TEXT=RESTRICTION``
 
-:class:`ehn.node.EhnFunctionFeature`
+- :class:`ehn.parse.node.EhnFunctionFeature`
+
    - ``FUNCTION=ENTITY``
    - ``FUNCTION=RESTRICTION``
 
 Function
 ^^^^^^^^
-:class:`ehn.node.EhnFunction`
+- :class:`ehn.parse.node.EhnFunction`
+
    - ``TEXT()``
    - ``TEXT(RESTRICTION)``
    - ``TEXT(ENTITY)``
@@ -72,12 +87,13 @@ Function
 
 Restriction
 ^^^^^^^^^^^
-:class:`ehn.node.EhnRestriction`
+- :class:`ehn.parse.node.EhnRestriction`
+
    - ``/ENTITY``
    - ``/ENTITY_COINDEX``
 
-Valid Expression
-----------------
+Valid Expressions
+-----------------
 ``ENTITY`` or any number of ``FEATURE``\ s joined by ``,``\ s.
 
 Examples
