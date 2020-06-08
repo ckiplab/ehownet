@@ -4,7 +4,12 @@
  # pylint: disable=super-init-not-called, no-self-use, protected-access, attribute-defined-outside-init
 
 __author__ = 'Mu Yang <http://muyang.pro>'
-__copyright__ = 'Copyright 2019'
+__copyright__ = '2018-2020 CKIP Lab'
+
+from abc import (
+    ABCMeta as _ABCMeta,
+    abstractmethod as _abstractmethod,
+)
 
 import warnings as _warnings
 import treelib as _treelib
@@ -13,10 +18,7 @@ import treelib as _treelib
 # Node
 #
 
-class EhnNodeBase:
-
-    def __init__(self):
-        raise NotImplementedError
+class EhnNodeBase(metaclass=_ABCMeta):
 
     @property
     def head(self):
@@ -35,8 +37,9 @@ class EhnNodeBase:
         yield from []
 
     @property
+    @_abstractmethod
     def _tree_label(self):
-        raise NotImplementedError
+        return NotImplemented
 
     ################################################################
 
@@ -74,9 +77,6 @@ class EhnNodeBase:
 
 class EhnFunctionHeadBase:
 
-    def __init__(self):
-        raise NotImplementedError
-
     @property
     def head(self):
         return self.function.head
@@ -106,7 +106,7 @@ class EhnAnchor:
         return '_{}'.format(self.head) if self.head else ''
 
 ################################################################################################################################
-# Entity
+# Root
 #
 
 class EhnRootNode(EhnNodeBase):
@@ -152,9 +152,7 @@ class EhnRootNode(EhnNodeBase):
 #
 
 class EhnEntityBase(EhnNodeBase):
-
-    def __init__(self):
-        raise NotImplementedError
+    pass
 
 class EhnNormalEntity(EhnEntityBase):
 
@@ -249,8 +247,8 @@ class EhnAnyEntity(EhnEntityBase):
 
 class EhnTildeEntity(EhnEntityBase):
 
-    def __init__(self):
-        _warnings.warn('‘~’ is deprecated', FutureWarning)
+    # def __init__(self):
+    #     _warnings.warn('‘~’ is deprecated', FutureWarning)
 
     @property
     def head(self):
@@ -308,9 +306,7 @@ class EhnCoindexEntity(EhnEntityBase):
 #
 
 class EhnFeatureBase(EhnNodeBase):
-
-    def __init__(self):
-        raise NotImplementedError
+    pass
 
 class EhnNormalFeature(EhnFeatureBase):
 

@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 __author__ = 'Mu Yang <http://muyang.pro>'
-__copyright__ = 'Copyright 2019'
+__copyright__ = '2018-2020 CKIP Lab'
 
 import setuptools
 import ehn as about

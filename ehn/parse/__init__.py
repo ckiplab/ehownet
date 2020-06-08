@@ -4,7 +4,7 @@
 # pylint: disable=invalid-name, no-self-use
 
 __author__ = 'Mu Yang <http://muyang.pro>'
-__copyright__ = 'Copyright 2019'
+__copyright__ = '2018-2020 CKIP Lab'
 
 import re as _re
 from wcwidth import wcswidth as _wcswidth
