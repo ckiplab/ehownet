@@ -6,7 +6,7 @@ __author_email__ = 'emfomy@gmail.com'
 __copyright__ = '2018-2020 CKIP Lab'
 
 __title__ = 'E-HowNet'
-__version__ = '0.5.0'
+__version__ = '0.5.1'
 __description__ = 'EHowNet Utilities'
 __license__ = "CC-BY-NC-SA 4.0"
 
