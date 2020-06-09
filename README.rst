@@ -70,7 +70,7 @@ Author
 Requirements
 ------------
 
-* `Python <https://www.python.org>`__ 3.5+
+* `Python <https://www.python.org>`__ 3.6+
 * `PLY (Python Lex-Yacc) <https://www.dabeaz.com/ply>`__ 3.11+
 * `TreeLib <https://pypi.org/project/treelib>`__ 1.5.5+
 * `wcwidth <https://pypi.org/project/wcwidth>`__ 0.1.7+
@@ -85,11 +85,11 @@ Installation
 Usage
 =====
 
+- See https://ehownet.readthedocs.io/en/latest/main/grammar.html for E-HowNet grammar.
+- See https://ehownet.readthedocs.io/en/latest/main/parse_node.html for E-HowNet parsing nodes usage.
+
 E-HowNet Parser
 ---------------
-
-See https://ehownet.readthedocs.io/en/latest/main/grammar.html for E-HowNet grammar.
-See https://ehownet.readthedocs.io/en/latest/main/parse_node.html for E-HowNet parsing nodes usage.
 
 CLI
 ^^^
