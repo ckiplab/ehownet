@@ -1,5 +1,5 @@
-Introduction
-============
+CKIP E-HowNet Tools
+===================
 
 Git
 ---
@@ -70,17 +70,17 @@ Author
 Requirements
 ------------
 
-* `Python <https://www.python.org>`_ 3.5+
-* `PLY (Python Lex-Yacc) <https://www.dabeaz.com/ply>`_ 3.11+
-* `TreeLib <https://pypi.org/project/treelib>`_ 1.5.5+
-* `wcwidth <https://pypi.org/project/wcwidth>`_ 0.1.7+
+* `Python <https://www.python.org>`__ 3.5+
+* `PLY (Python Lex-Yacc) <https://www.dabeaz.com/ply>`__ 3.11+
+* `TreeLib <https://pypi.org/project/treelib>`__ 1.5.5+
+* `wcwidth <https://pypi.org/project/wcwidth>`__ 0.1.7+
 
 Installation
 ------------
 
 .. code-block:: bash
 
-   pip install ehownet -U
+   pip install -U ehownet
 
 Usage
 =====
@@ -168,7 +168,7 @@ License
 
 |CC BY-NC-SA 4.0|
 
-Copyright (c) 2019 CKIP Lab under the `CC BY-NC-SA 4.0 License <https://creativecommons.org/licenses/by-nc-sa/4.0/>`_.
+Copyright (c) 2018-2020 CKIP Lab under the `CC BY-NC-SA 4.0 License <https://creativecommons.org/licenses/by-nc-sa/4.0/>`__.
 
 .. |CC BY-NC-SA 4.0| image:: https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png
    :target: https://creativecommons.org/licenses/by-nc-sa/4.0/

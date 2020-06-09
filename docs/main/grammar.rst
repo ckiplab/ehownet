@@ -1,6 +1,8 @@
 E-HowNet Grammar
 ================
 
+This section describes the grammar of the E-HowNet expression.
+
 Text
 ----
 
@@ -22,7 +24,7 @@ Node
 Entity
 ^^^^^^
 
-- :class:`ehn.parse.node.EhnNormalEntity`
+- :class:`~ehn.parse.node.entity.EhnParseNormalEntity`
 
    - ``{TEXT}``
    - ``{TEXT:FEATURE}``
@@ -32,7 +34,7 @@ Entity
    - ``{TEXT_COINDEX:FEATURE,FEATURE}``
    - ``{TEXT_COINDEX:FEATURE,FEATURE,...}``
 
-- :class:`ehn.parse.node.EhnFunctionEntity`
+- :class:`~ehn.parse.node.entity.EhnParseFunctionEntity`
 
    - ``{FUNCTION}``
    - ``{FUNCTION:FEATURE}``
@@ -42,42 +44,42 @@ Entity
    - ``{FUNCTION_COINDEX:FEATURE,FEATURE}``
    - ``{FUNCTION_COINDEX:FEATURE,FEATURE,...}``
 
-- :class:`ehn.parse.node.EhnAnyEntity`
+- :class:`~ehn.parse.node.entity.EhnParseAnyEntity`
 
    ``{}``
 
-- :class:`ehn.parse.node.EhnTildeEntity`
-
-   ``{~}``
-
-- :class:`ehn.parse.node.EhnNameEntity`
+- :class:`~ehn.parse.node.entity.EhnParseNameEntity`
 
    ``{"TEXT"}``
 
-- :class:`ehn.parse.node.EhnNumberEntity`
+- :class:`~ehn.parse.node.entity.EhnParseNumberEntity`
 
    ``{NUMBER}``
 
-- :class:`ehn.parse.node.EhnCoindexEntity`
+- :class:`~ehn.parse.node.entity.EhnParseTildeEntity`
+
+   ``{~}``
+
+- :class:`~ehn.parse.node.entity.EhnParseCoindexEntity`
 
    ``{COINDEX}``
 
 Feature
 ^^^^^^^
 
-- :class:`ehn.parse.node.EhnNormalFeature`
+- :class:`~ehn.parse.node.feature.EhnParseNormalFeature`
 
    - ``TEXT=ENTITY``
    - ``TEXT=RESTRICTION``
 
-- :class:`ehn.parse.node.EhnFunctionFeature`
+- :class:`~ehn.parse.node.feature.EhnParseFunctionFeature`
 
    - ``FUNCTION=ENTITY``
    - ``FUNCTION=RESTRICTION``
 
 Function
 ^^^^^^^^
-- :class:`ehn.parse.node.EhnFunction`
+- :class:`~ehn.parse.node.other.EhnParseFunction`
 
    - ``TEXT()``
    - ``TEXT(RESTRICTION)``
@@ -87,7 +89,7 @@ Function
 
 Restriction
 ^^^^^^^^^^^
-- :class:`ehn.parse.node.EhnRestriction`
+- :class:`~ehn.parse.node.other.EhnParseRestriction`
 
    - ``/ENTITY``
    - ``/ENTITY_COINDEX``
@@ -96,9 +98,7 @@ Valid Expressions
 -----------------
 ``ENTITY`` or any number of ``FEATURE``\ s joined by ``,``\ s.
 
-Examples
-^^^^^^^^
-- ``ENTITY``
-- ``FEATURE``
-- ``FEATURE,FEATURE``
-- ``FEATURE,FEATURE,FEATURE``
+   - ``ENTITY``
+   - ``FEATURE``
+   - ``FEATURE,FEATURE``
+   - ``FEATURE,FEATURE,...``
