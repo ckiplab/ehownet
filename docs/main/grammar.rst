@@ -1,15 +1,22 @@
 E-HowNet Grammar
 ================
 
+This section describes the grammar of the E-HowNet expression.
+
 Text
 ----
-``TEXT``
-   ``[A-Za-z0-9\x80-\U0010FFFF|+\-.]+``
-``NUMBER``
-   e.g. ``1``, ``0.1``, ``1e-4``
 
-``COINDEX``
-   ``x[0-9]*``
+- ``TEXT``
+
+   - ``[A-Za-z0-9\x80-\U0010FFFF|+\-.]+``
+
+- ``NUMBER``
+
+   - e.g. ``1``, ``0.1``, ``1e-4``
+
+- ``COINDEX``
+
+   - ``x[0-9]*``
 
 Node
 ----
@@ -17,7 +24,8 @@ Node
 Entity
 ^^^^^^
 
-:class:`ehn.node.EhnNormalEntity`
+- :class:`~ehn.parse.node.entity.EhnParseNormalEntity`
+
    - ``{TEXT}``
    - ``{TEXT:FEATURE}``
    - ``{TEXT:FEATURE,FEATURE}``
@@ -26,7 +34,8 @@ Entity
    - ``{TEXT_COINDEX:FEATURE,FEATURE}``
    - ``{TEXT_COINDEX:FEATURE,FEATURE,...}``
 
-:class:`ehn.node.EhnFunctionEntity`
+- :class:`~ehn.parse.node.entity.EhnParseFunctionEntity`
+
    - ``{FUNCTION}``
    - ``{FUNCTION:FEATURE}``
    - ``{FUNCTION:FEATURE,FEATURE}``
@@ -35,35 +44,43 @@ Entity
    - ``{FUNCTION_COINDEX:FEATURE,FEATURE}``
    - ``{FUNCTION_COINDEX:FEATURE,FEATURE,...}``
 
-:class:`ehn.node.EhnAnyEntity`
+- :class:`~ehn.parse.node.entity.EhnParseAnyEntity`
+
    ``{}``
 
-:class:`ehn.node.EhnTildeEntity`
-   ``{~}`` (deprecated)
+- :class:`~ehn.parse.node.entity.EhnParseNameEntity`
 
-:class:`ehn.node.EhnNameEntity`
    ``{"TEXT"}``
 
-:class:`ehn.node.EhnNumberEntity`
+- :class:`~ehn.parse.node.entity.EhnParseNumberEntity`
+
    ``{NUMBER}``
 
-:class:`ehn.node.EhnCoindexEntity`
+- :class:`~ehn.parse.node.entity.EhnParseTildeEntity`
+
+   ``{~}``
+
+- :class:`~ehn.parse.node.entity.EhnParseCoindexEntity`
+
    ``{COINDEX}``
 
 Feature
 ^^^^^^^
 
-:class:`ehn.node.EhnNormalFeature`
+- :class:`~ehn.parse.node.feature.EhnParseNormalFeature`
+
    - ``TEXT=ENTITY``
    - ``TEXT=RESTRICTION``
 
-:class:`ehn.node.EhnFunctionFeature`
+- :class:`~ehn.parse.node.feature.EhnParseFunctionFeature`
+
    - ``FUNCTION=ENTITY``
    - ``FUNCTION=RESTRICTION``
 
 Function
 ^^^^^^^^
-:class:`ehn.node.EhnFunction`
+- :class:`~ehn.parse.node.other.EhnParseFunction`
+
    - ``TEXT()``
    - ``TEXT(RESTRICTION)``
    - ``TEXT(ENTITY)``
@@ -72,17 +89,16 @@ Function
 
 Restriction
 ^^^^^^^^^^^
-:class:`ehn.node.EhnRestriction`
+- :class:`~ehn.parse.node.other.EhnParseRestriction`
+
    - ``/ENTITY``
    - ``/ENTITY_COINDEX``
 
-Valid Expression
-----------------
+Valid Expressions
+-----------------
 ``ENTITY`` or any number of ``FEATURE``\ s joined by ``,``\ s.
 
-Examples
-^^^^^^^^
-- ``ENTITY``
-- ``FEATURE``
-- ``FEATURE,FEATURE``
-- ``FEATURE,FEATURE,FEATURE``
+   - ``ENTITY``
+   - ``FEATURE``
+   - ``FEATURE,FEATURE``
+   - ``FEATURE,FEATURE,...``

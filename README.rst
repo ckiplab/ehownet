@@ -1,5 +1,5 @@
-Introduction
-============
+CKIP E-HowNet Tools
+===================
 
 Git
 ---
@@ -19,8 +19,8 @@ https://github.com/emfomy/ehownet
 .. |GitHub Downloads| image:: https://img.shields.io/github/downloads/emfomy/ehownet/total.svg?maxAge=3600
    :target: https://github.com/emfomy/ehownet/releases/latest
 
-.. |GitHub Issues| image:: https://img.shields.io/github/issues/emfomy/ckipnlp.svg?maxAge=3600
-   :target: https://github.com/emfomy/ckipnlp/issues
+.. |GitHub Issues| image:: https://img.shields.io/github/issues/emfomy/ehownet.svg?maxAge=3600
+   :target: https://github.com/emfomy/ehownet/issues
 
 .. |GitHub Forks| image:: https://img.shields.io/github/forks/emfomy/ehownet.svg?style=social&label=Fork&maxAge=3600
 
@@ -55,32 +55,32 @@ https://pypi.org/project/ehownet
 Documentation
 -------------
 
-http://ehownet.readthedocs.io/
+https://ehownet.readthedocs.io/
 
 |ReadTheDocs Home|
 
 .. |ReadTheDocs Home| image:: https://img.shields.io/website/https/ehownet.readthedocs.io.svg?maxAge=3600&up_message=online&down_message=offline
-   :target: http://ehownet.readthedocs.io
+   :target: https://ehownet.readthedocs.io
 
 Author
 ------
 
-* Mu Yang <emfomy@gmail.com>
+* Mu Yang <https://muyang.pro>
 
 Requirements
 ------------
 
-* `Python <http://www.python.org>`_ 3.5+
-* `PLY (Python Lex-Yacc) <https://www.dabeaz.com/ply>`_ 3.11+
-* `TreeLib <https://pypi.org/project/treelib>`_ 1.5.5+
-* `wcwidth <https://pypi.org/project/wcwidth>`_ 0.1.7+
+* `Python <https://www.python.org>`__ 3.5+
+* `PLY (Python Lex-Yacc) <https://www.dabeaz.com/ply>`__ 3.11+
+* `TreeLib <https://pypi.org/project/treelib>`__ 1.5.5+
+* `wcwidth <https://pypi.org/project/wcwidth>`__ 0.1.7+
 
 Installation
 ------------
 
 .. code-block:: bash
 
-   pip install ehownet -U
+   pip install -U ehownet
 
 Usage
 =====
@@ -88,7 +88,8 @@ Usage
 E-HowNet Parser
 ---------------
 
-See http://ehownet.readthedocs.io/src/grammar.html for E-HowNet grammar.
+See https://ehownet.readthedocs.io/en/latest/main/grammar.html for E-HowNet grammar.
+See https://ehownet.readthedocs.io/en/latest/main/parse_node.html for E-HowNet parsing nodes usage.
 
 CLI
 ^^^
@@ -168,7 +169,7 @@ License
 
 |CC BY-NC-SA 4.0|
 
-Copyright (c) 2019 Mu Yang under the `CC-BY-NC-SA 4.0 License <http://creativecommons.org/licenses/by-nc-sa/4.0/>`_. All rights reserved.
+Copyright (c) 2018-2020 CKIP Lab under the `CC BY-NC-SA 4.0 License <https://creativecommons.org/licenses/by-nc-sa/4.0/>`__.
 
 .. |CC BY-NC-SA 4.0| image:: https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png
-   :target: http://creativecommons.org/licenses/by-nc-sa/4.0/
+   :target: https://creativecommons.org/licenses/by-nc-sa/4.0/

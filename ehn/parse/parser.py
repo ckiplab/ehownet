@@ -3,15 +3,15 @@
 
 # pylint: disable=invalid-name, no-self-use
 
-__author__ = 'Mu Yang <emfomy@gmail.com>'
-__copyright__ = 'Copyright 2019'
+__author__ = 'Mu Yang <http://muyang.pro>'
+__copyright__ = '2018-2020 CKIP Lab'
 
 import re as _re
 from wcwidth import wcswidth as _wcswidth
 from ply.lex import lex as _lex
 from ply.yacc import yacc as _yacc
 
-import ehn.node
+from . import node as _node
 
 ################################################################################################################################
 # Core
@@ -156,7 +156,7 @@ class _EhnParser:
         '''root : feature
                 | root COMMA feature'''
         if len(p) == 2:
-            p[0] = ehn.node.EhnRootNode(p[1])
+            p[0] = _node.EhnParseRoot(p[1])
         else:
             p[1].add_feature(p[3])
             p[0] = p[1]
@@ -164,31 +164,31 @@ class _EhnParser:
     # Entity
     def p_entity_any(self, p):
         '''entityAny : LBRACE RBRACE'''
-        p[0] = ehn.node.EhnAnyEntity()
+        p[0] = _node.EhnParseAnyEntity()
 
     def p_entity_number(self, p):
         '''entity : LBRACE NUMBER RBRACE'''
-        p[0] = ehn.node.EhnNumberEntity(p[2])
+        p[0] = _node.EhnParseNumberEntity(p[2])
 
     def p_entity_coindex(self, p):
         '''entity : LBRACE COINDEX RBRACE'''
-        p[0] = ehn.node.EhnCoindexEntity(p[2])
+        p[0] = _node.EhnParseCoindexEntity(p[2])
 
     def p_entity_name(self, p):
         '''entity : LBRACE QUOTE TEXT QUOTE RBRACE'''
-        p[0] = ehn.node.EhnNameEntity(p[3])
+        p[0] = _node.EhnParseNameEntity(p[3])
 
     def p_entity_tilde(self, p):
         '''entity : LBRACE TILDE RBRACE'''
-        p[0] = ehn.node.EhnTildeEntity()
+        p[0] = _node.EhnParseTildeEntity()
 
     def p_entity_normal_open(self, p):
         '''entityOpen : LBRACE TEXT'''
-        p[0] = ehn.node.EhnNormalEntity(p[2])
+        p[0] = _node.EhnParseNormalEntity(p[2])
 
     def p_entity_function_open(self, p):
         '''entityOpen : LBRACE function'''
-        p[0] = ehn.node.EhnFunctionEntity(p[2])
+        p[0] = _node.EhnParseFunctionEntity(p[2])
 
     def p_entity_anchor(self, p):
         '''entityAnchor : entityOpen anchor'''
@@ -217,26 +217,26 @@ class _EhnParser:
         '''feature : TEXT EQUAL entity
                    | TEXT EQUAL entityAny
                    | TEXT EQUAL restriction'''
-        p[0] = ehn.node.EhnNormalFeature(p[1], p[3])
+        p[0] = _node.EhnParseNormalFeature(p[1], p[3])
 
     def p_function_feature(self, p):
         '''feature : function EQUAL entity
                    | function EQUAL entityAny
                    | function EQUAL restriction'''
-        p[0] = ehn.node.EhnFunctionFeature(p[1], p[3])
+        p[0] = _node.EhnParseFunctionFeature(p[1], p[3])
 
     # Function
     def p_function_any(self, p):
         '''function : TEXT LPAREN RPAREN'''
-        p[0] = ehn.node.EhnFunction(p[1])
+        p[0] = _node.EhnParseFunction(p[1])
 
     def p_function_restriction(self, p):
         '''function : TEXT LPAREN restriction RPAREN'''
-        p[0] = ehn.node.EhnFunction(p[1], p[3])
+        p[0] = _node.EhnParseFunction(p[1], p[3])
 
     def p_function_open(self, p):
         '''functionOpen : TEXT LPAREN entity'''
-        p[0] = ehn.node.EhnFunction(p[1], p[3])
+        p[0] = _node.EhnParseFunction(p[1], p[3])
 
     def p_function_argument(self, p):
         '''functionArgument : functionOpen     COMMA entity
@@ -252,16 +252,16 @@ class _EhnParser:
     # Restriction
     def p_restriction(self, p):
         '''restriction : SLASH entity'''
-        p[0] = ehn.node.EhnRestriction(p[2])
+        p[0] = _node.EhnParseRestriction(p[2])
 
     def p_restriction_anchor(self, p):
         '''restriction : SLASH entity anchor'''
-        p[0] = ehn.node.EhnRestriction(p[2], anchor=p[3])
+        p[0] = _node.EhnParseRestriction(p[2], anchor=p[3])
 
     # Anchor
     def p_anchor(self, p):
         '''anchor : ULINE COINDEX'''
-        p[0] = ehn.node.EhnAnchor(p[2])
+        p[0] = _node.EhnParseAnchor(p[2])
 
     # Invoke the parser
     def __call__(self, data, *args, debug=False, **kwargs):

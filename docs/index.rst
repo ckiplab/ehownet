@@ -1,22 +1,18 @@
-.. CKIP CoreNLP Wrappers documentation master file, created by
-   sphinx-quickstart on Thu Jul 18 17:24:10 2019.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-CKIP CoreNLP Wrappers
+CKIP E-HowNet
 =====================
 
 .. toctree::
    :caption: Overview
    :maxdepth: 2
 
-   src/readme
+   main/readme
 
 .. toctree::
+   :caption: Tutorial
    :maxdepth: 2
-   :caption: Notes
 
-   src/grammar
+   main/grammar
+   main/parse_node
 
 .. toctree::
    :maxdepth: 2
@@ -28,6 +24,5 @@ CKIP CoreNLP Wrappers
    :caption: Appendix
    :maxdepth: 2
 
-   src/todo
    genindex
    py-modindex

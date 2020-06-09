@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-__author__ = 'Mu Yang <emfomy@gmail.com>'
-__copyright__ = 'Copyright 2019'
+__author__ = 'Mu Yang <http://muyang.pro>'
+__copyright__ = '2018-2020 CKIP Lab'
 
 import argparse
 
