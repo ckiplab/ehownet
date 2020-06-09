@@ -88,7 +88,8 @@ Usage
 E-HowNet Parser
 ---------------
 
-See https://ehownet.readthedocs.io/en/latest/src/grammar.html for E-HowNet grammar.
+See https://ehownet.readthedocs.io/en/latest/main/grammar.html for E-HowNet grammar.
+See https://ehownet.readthedocs.io/en/latest/main/parse_node.html for E-HowNet parsing nodes usage.
 
 CLI
 ^^^

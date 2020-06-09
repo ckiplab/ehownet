@@ -1,7 +1,9 @@
+.. _main-parse_node:
+
 Parse Nodes
 ===========
 
-There are five types of nodes in E-HowNet expression — Entity, Feature, Function Restriction, and Root.
+There are five types of nodes in E-HowNet expression — `Entity <#entity>`__, `Feature <#feature>`__, `Function <#function>`__, `Restriction <#restriction>`__, and `Root <#root>`__.
 
 .. inheritance-diagram::
    ehn.parse.node.entity
@@ -13,6 +15,7 @@ Major Nodes
 -----------
 
 .. class:: EhnParseNode
+   :noindex:
 
    The prototype of E-HowNet parsing nodes.
 
@@ -37,6 +40,7 @@ Entity
 ^^^^^^
 
 .. class:: EhnParseEntityBase
+   :noindex:
 
    The base class of E-HowNet parsing entity nodes.
 
@@ -59,6 +63,7 @@ Feature
 ^^^^^^^
 
 .. class:: EhnParseFeatureBase
+   :noindex:
 
    The base class of E-HowNet parsing feature nodes.
 
@@ -76,6 +81,7 @@ Function
 ^^^^^^^^
 
 .. class:: EhnParseFunctionBase
+   :noindex:
 
    The base class of E-HowNet parsing function nodes.
 
@@ -92,6 +98,7 @@ Restriction
 ^^^^^^^^^^^
 
 .. class:: EhnParseRestrictionBase
+   :noindex:
 
    The base class of E-HowNet parsing function nodes.
 
@@ -108,6 +115,7 @@ Root
 ^^^^
 
 .. class:: EhnParseRootBase
+   :noindex:
 
    The base class of E-HowNet parsing root nodes. Works similar to entities but is not an entity. Used only in feature-based expressions.
 
@@ -127,6 +135,7 @@ Function Head
 ^^^^^^^^^^^^^
 
 .. class:: EhnParseFunctionHead
+   :noindex:
 
    The base class of nodes with a function as its head.
 
@@ -146,6 +155,7 @@ Anchor Body
 ^^^^^^^^^^^
 
 .. class:: EhnParseAnchorBody
+   :noindex:
 
    The base class of anchor nodes.
 
@@ -163,6 +173,7 @@ Anchor Body
 Anchor
 ^^^^^^
 .. class:: EhnParseAnchor
+   :noindex:
 
    The coindex target.
 
