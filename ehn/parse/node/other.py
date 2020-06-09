@@ -111,7 +111,8 @@ class EhnParseRestriction(EhnParseRestrictionBase, EhnParseAnchorBody):
 
     @property
     def _tree_label(self):
-        return '[Restriction]'
+        _anchor = ' ${}'.format(self.anchor) if self.anchor.head else ''
+        return '[Restriction{}]'.format(_anchor)
 
     def _decode(self):
         return '/{}{}'.format(self.value._decode(), self.anchor._decode())
