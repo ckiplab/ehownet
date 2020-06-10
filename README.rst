@@ -121,7 +121,7 @@ Output:
    #2
    [Entity] InstitutePlace|場所
    └── [Feature] telic
-       └── [Entity]
+       └── [FunctionEntity]
            └── [Function] or
                ├── [Entity] experiment|實驗
                │   └── [Feature] location

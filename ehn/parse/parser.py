@@ -67,7 +67,7 @@ class _EhnLexer:
 
     # Define the lexer
     def t_ANY_error(self, t):
-        raise EhnSyntaxError('Illegal character ‘{}’ at position {}.'.format(t.value[0], t.lexpos), pos=t.lexpos)
+        raise EhnSyntaxError(f'Illegal character ‘{t.value[0]}’ at position {t.lexpos}.', pos=t.lexpos)
         # t.lexer.skip(1)
 
     # Skip all spaces
@@ -110,7 +110,7 @@ class _EhnParser:
 
     def __init__(self, lexer=None, **kwargs):
         if lexer is not None:
-            assert isinstance(lexer, EhnLexer), '{} is not EhnLexer!'.format(lexer)
+            assert isinstance(lexer, EhnLexer), f'{lexer} is not an EhnLexer!'
             self.lexer = lexer
         else:
             self.lexer = EhnLexer()
@@ -129,7 +129,7 @@ class _EhnParser:
             msg = 'Unexpected ending.'
             pos = None
         else:
-            msg = 'Unexpected symbol ‘{}’ at position {}.'.format(t.value, t.lexpos)
+            msg = f'Unexpected symbol ‘{t.value}’ at position {t.lexpos}.'
             pos = t.lexpos
 
         syms = []
@@ -138,11 +138,11 @@ class _EhnParser:
             if sym == '$end':
                 syms.append('‘ENDING’')
             else:
-                syms.append('‘{}’'.format(sym))
+                syms.append(f'‘{sym}’')
         if len(syms) > 1:
             syms[-1] = 'or '+syms[-1]
 
-        msg += ' Expecting a {}.'.format(', '.join(syms))
+        msg += f' Expecting a {", ".join(syms)}.'
         raise EhnSyntaxError(msg, pos=pos)
 
     # Object

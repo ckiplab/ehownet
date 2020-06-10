@@ -8,12 +8,7 @@ Please refer the tutorial ":ref:`main-parse_node`".
 __author__ = 'Mu Yang <http://muyang.pro>'
 __copyright__ = '2018-2020 CKIP Lab'
 
-# pylint: disable=protected-access
 # pylint: disable=too-few-public-methods
-
-from abc import (
-    ABCMeta as _ABCMeta,
-)
 
 from .base import (
     EhnParseEntityBase,
@@ -22,60 +17,42 @@ from .base import (
 
     EhnParseFunctionHead,
     EhnParseStrHead,
+    EhnParseValueBody
 )
 
 ################################################################################################################################
 
-class EhnParseFeatureCore(metaclass=_ABCMeta):
+class EhnParseNormalFeature(EhnParseFeatureBase, EhnParseStrHead, EhnParseValueBody):
 
-    def __init__(self, value):
-        self.value = value
-
-    @property
-    def value(self):
-        return self._value
-
-    @value.setter
-    def value(self, value):
-        assert isinstance(value, (EhnParseEntityBase, EhnParseRestrictionBase,)), \
-            '"{}" is not an Entity or a Restriction!'.format(value)
-        self._value = value  # pylint: disable=attribute-defined-outside-init
-
-################################################################################################################################
-
-class EhnParseNormalFeature(EhnParseFeatureBase, EhnParseStrHead, EhnParseFeatureCore):
+    node_type = 'Feature'
+    value_type = (EhnParseEntityBase, EhnParseRestrictionBase,)
 
     def __init__(self, head, value):
         EhnParseFeatureBase.__init__(self)
         EhnParseStrHead.__init__(self, head)
-        EhnParseFeatureCore.__init__(self, value)
+        EhnParseValueBody.__init__(self, value)
 
     def children(self):
         yield self.value
 
-    @property
-    def _tree_label(self):
-        return '[Feature] {}'.format(self.head)
-
-    def _decode(self):
-        return '{}={}'.format(self.head, self.value._decode())
+    def decode(self):
+        return f'{self.head}={self.value.decode()}'
 
 ################################################################################################################################
 
-class EhnParseFunctionFeature(EhnParseFeatureBase, EhnParseFunctionHead, EhnParseFeatureCore):
+class EhnParseFunctionFeature(EhnParseFeatureBase, EhnParseFunctionHead, EhnParseValueBody):
+
+    node_type = 'FunctionFeature'
+    value_type = (EhnParseEntityBase, EhnParseRestrictionBase,)
 
     def __init__(self, function, value):
         EhnParseFeatureBase.__init__(self)
         EhnParseFunctionHead.__init__(self, function)
-        EhnParseFeatureCore.__init__(self, value)
+        EhnParseValueBody.__init__(self, value)
 
     def children(self):
         yield self.function
         yield self.value
 
-    @property
-    def _tree_label(self):
-        return '[Feature]'
-
-    def _decode(self):
-        return '{}={}'.format(self.function._decode(), self.value._decode())
+    def decode(self):
+        return f'{self.function.decode()}={self.value.decode()}'

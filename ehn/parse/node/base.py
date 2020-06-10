@@ -31,12 +31,18 @@ class EhnParseNode(metaclass=_ABCMeta):
 
     @property
     @_abstractmethod
-    def _tree_label(self):
+    def node_type(self):
         return NotImplemented
 
     @_abstractmethod
-    def _decode(self):
+    def decode(self):
         return NotImplemented
+
+    @property
+    def _tree_label(self):
+        _anchor = f' ${self.anchor.head}' if hasattr(self, 'anchor') and self.anchor.head else ''  # pylint: disable=no-member
+        _text = f' {self._tree_label_text}' if hasattr(self, '_tree_label_text') else ''  # pylint: disable=no-member
+        return f'[{self.node_type}{_anchor}]{_text}'
 
     def __str__(self):
         def write(line):
@@ -47,7 +53,7 @@ class EhnParseNode(metaclass=_ABCMeta):
         return ret
 
     def __repr__(self):
-        return '<{} {}>'.format(self.__class__.__name__, self.head)  # pylint: disable=no-member
+        return f'<{self.__class__.__name__} {self.head}>'  # pylint: disable=no-member
 
     @_abstractmethod
     def children(self):
@@ -103,8 +109,8 @@ class EhnParseAnchor:
     def __repr__(self):
         return str(self)
 
-    def _decode(self):
-        return '_{}'.format(self.head) if self.head else ''
+    def decode(self):
+        return f'_{self.head}' if self.head else ''
 
 ################################################################################################################################
 # Heads
@@ -121,8 +127,12 @@ class EhnParseStrHead(metaclass=_ABCMeta):
 
     @head.setter
     def head(self, head):
-        assert isinstance(head, str), '"{}" is not str!'.format(head)
+        assert isinstance(head, str), f'‘{head}’ is not a str!'
         self._head = head  # pylint: disable=attribute-defined-outside-init
+
+    @property
+    def _tree_label_text(self):
+        return self.head
 
 ################################################################
 
@@ -141,16 +151,41 @@ class EhnParseFunctionHead(metaclass=_ABCMeta):
 
     @function.setter
     def function(self, function):
-        assert isinstance(function, EhnParseFunctionBase), '"{}" is a Function!'.format(function)
+        assert isinstance(function, EhnParseFunctionBase), f'‘{function}’ is not a Function!'
         self._function = function  # pylint: disable=attribute-defined-outside-init
 
 ################################################################################################################################
 # Bodies
 #
 
+class EhnParseValueBody(metaclass=_ABCMeta):
+
+    @property
+    @_abstractmethod
+    def value_type(self):
+        return NotImplemented
+
+    def __init__(self, value):
+        self.value = value
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, value):
+        assert isinstance(value, self.value_type), f'‘{value}’ is not a {self.value_type}!'
+        self._value = value  # pylint: disable=attribute-defined-outside-init
+
 class EhnParseFeatureBody(metaclass=_ABCMeta):
 
+    @property
+    @_abstractmethod
+    def feature_type(self):
+        return NotImplemented
+
     def __init__(self, *features):
+        self._featuremap = {}
         self.features = features
 
     @property
@@ -164,8 +199,40 @@ class EhnParseFeatureBody(metaclass=_ABCMeta):
             self.add_feature(feature)
 
     def add_feature(self, feature):
-        assert isinstance(feature, EhnParseFeatureBase), '"{}" is a Feature!'.format(feature)
+        assert isinstance(feature, self.feature_type), f'‘{feature}’ is not a {self.feature_type}!'
+        assert feature.head not in self._featuremap, f'"Duplicated feature ‘{feature.head}’!'
         self._features.append(feature)
+        self._featuremap[feature.head] = feature
+
+    def __getitem__(self, key):
+        return self._featuremap.get(key, [])
+
+class EhnParseArgumentBody(metaclass=_ABCMeta):
+
+    @property
+    @_abstractmethod
+    def argument_type(self):
+        return NotImplemented
+
+    def __init__(self, *arguments):
+        self.arguments = arguments
+
+    @property
+    def arguments(self):
+        return self._arguments
+
+    @arguments.setter
+    def arguments(self, arguments):
+        self._arguments = []  # pylint: disable=attribute-defined-outside-init
+        for argument in arguments:
+            self.add_argument(argument)
+
+    def add_argument(self, argument):
+        assert isinstance(argument, self.argument_type), f'‘{argument}’ is not a {self.argument_type}!'
+        self._arguments.append(argument)
+
+    def __getitem__(self, key):
+        return self._arguments[key]
 
 ################################################################
 
@@ -180,5 +247,5 @@ class EhnParseAnchorBody(metaclass=_ABCMeta):
 
     @anchor.setter
     def anchor(self, anchor):
-        assert isinstance(anchor, EhnParseAnchor), '"{}" is an Anchor!'.format(anchor)
+        assert isinstance(anchor, EhnParseAnchor), f'‘{anchor}’ is not an Anchor!'
         self._anchor = anchor  # pylint: disable=attribute-defined-outside-init
