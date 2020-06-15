@@ -16,6 +16,10 @@ from abc import (
     abstractmethod as _abstractmethod,
 )
 
+from collections import (
+    defaultdict as _defaultdict,
+)
+
 from treelib import (
     Tree as _Tree,
 )
@@ -64,8 +68,8 @@ class EhnParseNode(metaclass=_ABCMeta):
         for child in self.children():
             yield from child.descendant()
 
-    def tree(self):
-        if not self.__tree:
+    def tree(self, *, renew=False):
+        if not self.__tree or renew:
             self.__tree = _Tree()
             self._create_tree(self.__tree, None)
         return self.__tree
@@ -185,7 +189,7 @@ class EhnParseFeatureBody(metaclass=_ABCMeta):
         return NotImplemented
 
     def __init__(self, *features):
-        self._featuremap = {}
+        self._featuremap = _defaultdict(list)
         self.features = features
 
     @property
@@ -200,9 +204,8 @@ class EhnParseFeatureBody(metaclass=_ABCMeta):
 
     def add_feature(self, feature):
         assert isinstance(feature, self.feature_type), f'‘{feature}’ is not a {self.feature_type}!'
-        assert feature.head not in self._featuremap, f'"Duplicated feature ‘{feature.head}’!'
         self._features.append(feature)
-        self._featuremap[feature.head] = feature
+        self._featuremap[feature.head].append(feature)
 
     def __getitem__(self, key):
         return self._featuremap.get(key, [])

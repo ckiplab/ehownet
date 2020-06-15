@@ -32,6 +32,10 @@ Major Nodes
 
       Yields all descendant nodes (including self) of this node.
 
+   .. method:: decode()
+
+      Converts to text representation.
+
    .. method:: tree() -> treelib.Tree
 
       Generates a tree representation of this node and all its descendant nodes.

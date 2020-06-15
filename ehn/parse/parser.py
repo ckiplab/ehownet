@@ -87,7 +87,7 @@ class _EhnLexer:
     t_TILDE = r'~'
 
     def t_TEXT(self, t):
-        r'[A-Za-z0-9\x80-\U0010FFFF|+\-.]+'
+        r'[A-Za-z0-9\x80-\U0010FFFF|+\-.#]+'
         if _isnumber(t.value):
             t.type = 'NUMBER'
         if _is_coindex(t.value):
