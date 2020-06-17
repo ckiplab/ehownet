@@ -28,7 +28,7 @@ def main(argv=None):
         try:
             res = parser(text, debug=args.debug)
             print(f'#{i+1}')
-            print(res)
+            res.tree().show()
         except AssertionError as exc:
             print(exc)
             print(text)

@@ -23,6 +23,7 @@ from .base import (
 ################################################################################################################################
 
 class EhnParseNormalEntity(EhnParseEntityBase, EhnParseStrHead, EhnParseFeatureBody, EhnParseAnchorBody):
+    """E-HowNet Parsing: Normal Entity Node"""
 
     node_type = 'Entity'
     feature_type = EhnParseFeatureBase
@@ -43,6 +44,7 @@ class EhnParseNormalEntity(EhnParseEntityBase, EhnParseStrHead, EhnParseFeatureB
 ################################################################################################################################
 
 class EhnParseFunctionEntity(EhnParseEntityBase, EhnParseFunctionHead, EhnParseFeatureBody, EhnParseAnchorBody):
+    """E-HowNet Parsing: Function Entity Node"""
 
     node_type = 'FunctionEntity'
     feature_type = EhnParseFeatureBase
@@ -64,6 +66,7 @@ class EhnParseFunctionEntity(EhnParseEntityBase, EhnParseFunctionHead, EhnParseF
 ################################################################################################################################
 
 class EhnParseAnyEntity(EhnParseEntityBase):
+    """E-HowNet Parsing: Any Entity Node"""
 
     node_type = 'AnyEntity'
     def __init__(self):
@@ -83,6 +86,7 @@ class EhnParseAnyEntity(EhnParseEntityBase):
 ################################################################################################################################
 
 class EhnParseNameEntity(EhnParseEntityBase, EhnParseStrHead):
+    """E-HowNet Parsing: Name Entity Node"""
 
     node_type = 'NameEntity'
     def __init__(self, head):
@@ -98,6 +102,7 @@ class EhnParseNameEntity(EhnParseEntityBase, EhnParseStrHead):
 ################################################################################################################################
 
 class EhnParseNumberEntity(EhnParseEntityBase, EhnParseStrHead):
+    """E-HowNet Parsing: Number Entity Node"""
 
     node_type = 'NumberEntity'
     def __init__(self, head):
@@ -113,6 +118,7 @@ class EhnParseNumberEntity(EhnParseEntityBase, EhnParseStrHead):
 ################################################################################################################################
 
 class EhnParseTildeEntity(EhnParseEntityBase):
+    """E-HowNet Parsing: Tilde Entity Node"""
 
     node_type = 'TildeEntity'
     def __init__(self):
@@ -132,6 +138,7 @@ class EhnParseTildeEntity(EhnParseEntityBase):
 ################################################################################################################################
 
 class EhnParseCoindexEntity(EhnParseEntityBase, EhnParseStrHead):
+    """E-HowNet Parsing: Coindex Entity Node"""
 
     node_type = 'CoindexEntity'
 

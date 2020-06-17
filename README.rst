@@ -150,7 +150,7 @@ Python API
    parser = EhnParser()
    ress = parser(text, debug=False)
    for res in ress:
-      print(res)
+      res.tree().show()
 
 Output:
 

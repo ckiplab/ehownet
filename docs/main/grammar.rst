@@ -8,7 +8,11 @@ Text
 
 - ``TEXT``
 
-   - ``[A-Za-z0-9\x80-\U0010FFFF|+\-.]+``
+   - Any non empty string containing the following characters:
+
+      - Alphabets and Numbers (``A-Za-z0-9``)
+      - Unicode Characters (``\x80-\U0010FFFF``)
+      - ``|``, ``+``, ``-``, ``.``, ``?``, ``#``.
 
 - ``NUMBER``
 
@@ -16,7 +20,8 @@ Text
 
 - ``COINDEX``
 
-   - ``x[0-9]*``
+   - ``x``, ``x1``, ``x2``, ...
+   - ``x?`` (refer to the not mentioned subject)
 
 Node
 ----
@@ -59,6 +64,8 @@ Entity
 - :class:`~ehn.parse.node.entity.EhnParseTildeEntity`
 
    ``{~}``
+
+   .. deprecated:: 0.6
 
 - :class:`~ehn.parse.node.entity.EhnParseCoindexEntity`
 

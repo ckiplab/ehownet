@@ -39,6 +39,7 @@ EHN_TOKENS = [
 ]
 
 class EhnSyntaxError(SyntaxError):
+    """E-HowNet Syntax Error."""
 
     def __init__(self, *args, pos=None):
         super().__init__(*args)
@@ -87,7 +88,7 @@ class _EhnLexer:
     t_TILDE = r'~'
 
     def t_TEXT(self, t):
-        r'[A-Za-z0-9\x80-\U0010FFFF|+\-.#]+'
+        r'[A-Za-z0-9\x80-\U0010FFFF|+\-.?#]+'
         if _isnumber(t.value):
             t.type = 'NUMBER'
         if _is_coindex(t.value):
@@ -100,7 +101,12 @@ class _EhnLexer:
         return iter(self._lexer)
 
 class EhnLexer(_EhnLexer):
-    """E-HowNet Lexer."""
+    """E-HowNet Lexer.
+
+        .. method:: __call__(data)
+
+            Run tokenization.
+    """
 
 ################################################################################################################################
 # Parser
@@ -273,7 +279,12 @@ class _EhnParser:
         return ret
 
 class EhnParser(_EhnParser):
-    """E-HowNet Parser."""
+    """E-HowNet Parser.
+
+        .. method:: __call__(data)
+
+            Run parsing.
+    """
 
 ################################################################################################################################
 # Utility
@@ -288,4 +299,4 @@ def _isnumber(name):
 
 def _is_coindex(name):
     return _is_coindex.pattern.match(name)
-_is_coindex.pattern = _re.compile(r'x[0-9]*')
+_is_coindex.pattern = _re.compile(r'x(\?|[0-9]*)')

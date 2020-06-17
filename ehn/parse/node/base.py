@@ -29,6 +29,7 @@ from treelib import (
 #
 
 class EhnParseNode(metaclass=_ABCMeta):
+    """E-HowNet Parsing: Base Node"""
 
     def __init__(self):
         self.__tree = None
@@ -49,15 +50,17 @@ class EhnParseNode(metaclass=_ABCMeta):
         return f'[{self.node_type}{_anchor}]{_text}'
 
     def __str__(self):
-        def write(line):
-            nonlocal ret
-            ret += line.decode() + '\n'
-        ret = ''
-        self.tree()._Tree__print_backend(data_property='_tree_label', func=write)
-        return ret
-
-    def __repr__(self):
         return f'<{self.__class__.__name__} {self.head}>'  # pylint: disable=no-member
+
+    # def __str__(self):
+    #     def write(line):
+    #         nonlocal ret
+    #         ret += line.decode() + '\n'
+    #     ret = ''
+    #     self.tree()._Tree__print_backend(data_property='_tree_label', func=write)
+    #     return ret
+
+    #################################################################################
 
     @_abstractmethod
     def children(self):
@@ -68,34 +71,64 @@ class EhnParseNode(metaclass=_ABCMeta):
         for child in self.children():
             yield from child.descendant()
 
-    def tree(self, *, renew=False):
-        if not self.__tree or renew:
-            self.__tree = _Tree()
-            self._create_tree(self.__tree, None)
-        return self.__tree
+    def tree(self):
+        tree = EhnParseTree()
+        self._create_tree(tree, None)
+        return tree
 
     def _create_tree(self, tree, parent):
         idx = tree.create_node(parent=parent, data=self).identifier
         for child in self.children():
             child._create_tree(tree, idx)
 
+    #################################################################################
+
+    def get_features(self):
+        return getattr(self, 'features', [])
+
+    def get_arguments(self):
+        return getattr(self, 'arguments', [])
+
+    def get_value(self):
+        return getattr(self, 'value', None)
+
+    def get_function(self):
+        return getattr(self, 'function', None)
+
+    def get_anchor(self):
+        return getattr(self, 'anchor', None)
+
+################################################################################################################################
+# Tree
+#
+class EhnParseTree(_Tree):
+
+    def show(self, *args, data_property='_tree_label', **kwargs):
+        super().show(*args, data_property=data_property, **kwargs)
+
+
 ################################################################################################################################
 # Base Types
 #
 
 class EhnParseEntityBase(EhnParseNode):  # pylint: disable=abstract-method
+    """E-HowNet Parsing: Base Entity Node"""
     pass
 
 class EhnParseFeatureBase(EhnParseNode):  # pylint: disable=abstract-method
+    """E-HowNet Parsing: Base Feature Node"""
     pass
 
 class EhnParseFunctionBase(EhnParseNode):  # pylint: disable=abstract-method
+    """E-HowNet Parsing: Base Function Node"""
     pass
 
 class EhnParseRestrictionBase(EhnParseNode):  # pylint: disable=abstract-method
+    """E-HowNet Parsing: Base Function Node"""
     pass
 
 class EhnParseRootBase(EhnParseNode):  # pylint: disable=abstract-method
+    """E-HowNet Parsing: Base Root Node"""
     pass
 
 ################################################################################################################################
@@ -103,6 +136,7 @@ class EhnParseRootBase(EhnParseNode):  # pylint: disable=abstract-method
 #
 
 class EhnParseAnchor:
+    """E-HowNet Parsing: Node Anchor"""
 
     def __init__(self, head=None):
         self.head = head
@@ -121,6 +155,7 @@ class EhnParseAnchor:
 #
 
 class EhnParseStrHead(metaclass=_ABCMeta):
+    """E-HowNet Parsing: Base Node with String Head"""
 
     def __init__(self, head):
         self.head = head
@@ -141,6 +176,7 @@ class EhnParseStrHead(metaclass=_ABCMeta):
 ################################################################
 
 class EhnParseFunctionHead(metaclass=_ABCMeta):
+    """E-HowNet Parsing: Base Node with Function Head"""
 
     def __init__(self, function):
         self.function = function
@@ -163,6 +199,7 @@ class EhnParseFunctionHead(metaclass=_ABCMeta):
 #
 
 class EhnParseValueBody(metaclass=_ABCMeta):
+    """E-HowNet Parsing: Base Node with Value"""
 
     @property
     @_abstractmethod
@@ -182,6 +219,7 @@ class EhnParseValueBody(metaclass=_ABCMeta):
         self._value = value  # pylint: disable=attribute-defined-outside-init
 
 class EhnParseFeatureBody(metaclass=_ABCMeta):
+    """E-HowNet Parsing: Base Node with Feature"""
 
     @property
     @_abstractmethod
@@ -211,6 +249,7 @@ class EhnParseFeatureBody(metaclass=_ABCMeta):
         return self._featuremap.get(key, [])
 
 class EhnParseArgumentBody(metaclass=_ABCMeta):
+    """E-HowNet Parsing: Base Node with Argument"""
 
     @property
     @_abstractmethod
@@ -240,6 +279,7 @@ class EhnParseArgumentBody(metaclass=_ABCMeta):
 ################################################################
 
 class EhnParseAnchorBody(metaclass=_ABCMeta):
+    """E-HowNet Parsing: Base Node with Anchor"""
 
     def __init__(self, anchor=None):
         self.anchor = anchor or EhnParseAnchor()

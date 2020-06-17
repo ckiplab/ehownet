@@ -29,6 +29,7 @@ from .base import (
 #
 
 class EhnParseRoot(EhnParseRootBase, EhnParseFeatureBody):
+    """E-HowNet Parsing: Root Node"""
 
     node_type = 'Root'
     feature_type = EhnParseFeatureBase
@@ -52,6 +53,7 @@ class EhnParseRoot(EhnParseRootBase, EhnParseFeatureBody):
 #
 
 class EhnParseFunction(EhnParseFunctionBase, EhnParseArgumentBody, EhnParseStrHead):
+    """E-HowNet Parsing: Function Node"""
 
     node_type = 'Function'
     argument_type = (EhnParseEntityBase, EhnParseRestrictionBase,)
@@ -73,6 +75,7 @@ class EhnParseFunction(EhnParseFunctionBase, EhnParseArgumentBody, EhnParseStrHe
 #
 
 class EhnParseRestriction(EhnParseRestrictionBase, EhnParseValueBody, EhnParseAnchorBody):
+    """E-HowNet Parsing: Restriction Node"""
 
     node_type = 'Restriction'
     value_type = EhnParseEntityBase

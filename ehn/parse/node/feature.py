@@ -23,6 +23,7 @@ from .base import (
 ################################################################################################################################
 
 class EhnParseNormalFeature(EhnParseFeatureBase, EhnParseStrHead, EhnParseValueBody):
+    """E-HowNet Parsing: Normal Feature Node"""
 
     node_type = 'Feature'
     value_type = (EhnParseEntityBase, EhnParseRestrictionBase,)
@@ -41,6 +42,7 @@ class EhnParseNormalFeature(EhnParseFeatureBase, EhnParseStrHead, EhnParseValueB
 ################################################################################################################################
 
 class EhnParseFunctionFeature(EhnParseFeatureBase, EhnParseFunctionHead, EhnParseValueBody):
+    """E-HowNet Parsing: Function Feature Node"""
 
     node_type = 'FunctionFeature'
     value_type = (EhnParseEntityBase, EhnParseRestrictionBase,)
