@@ -8,11 +8,11 @@ Please refer the tutorial ":ref:`main-parse_node`".
 __author__ = 'Mu Yang <http://muyang.pro>'
 __copyright__ = '2018-2020 CKIP Lab'
 
-# pylint: disable=protected-access
 # pylint: disable=too-few-public-methods
 
 from .base import (
     EhnParseEntityBase,
+    EhnParseFeatureBase,
 
     EhnParseAnchorBody,
     EhnParseFeatureBody,
@@ -23,6 +23,10 @@ from .base import (
 ################################################################################################################################
 
 class EhnParseNormalEntity(EhnParseEntityBase, EhnParseStrHead, EhnParseFeatureBody, EhnParseAnchorBody):
+    """E-HowNet Parsing: Normal Entity Node"""
+
+    node_type = 'Entity'
+    feature_type = EhnParseFeatureBase
 
     def __init__(self, head, *features, anchor=None):
         EhnParseEntityBase.__init__(self)
@@ -33,18 +37,17 @@ class EhnParseNormalEntity(EhnParseEntityBase, EhnParseStrHead, EhnParseFeatureB
     def children(self):
         yield from self.features
 
-    @property
-    def _tree_label(self):
-        _anchor = ' ${}'.format(self.anchor) if self.anchor.head else ''
-        return '[Entity{}] {}'.format(_anchor, self.head)
-
-    def _decode(self):
-        _features = ':' + ','.join(feature._decode() for feature in self.features) if self.features else ''
-        return '{{{}{}{}}}'.format(self.head, self.anchor._decode(), _features)
+    def decode(self):
+        _features = ':' + ','.join(feature.decode() for feature in self.features) if self.features else ''
+        return f'{{{self.head}{self.anchor.decode()}{_features}}}'
 
 ################################################################################################################################
 
 class EhnParseFunctionEntity(EhnParseEntityBase, EhnParseFunctionHead, EhnParseFeatureBody, EhnParseAnchorBody):
+    """E-HowNet Parsing: Function Entity Node"""
+
+    node_type = 'FunctionEntity'
+    feature_type = EhnParseFeatureBase
 
     def __init__(self, function, *features, anchor=None):
         EhnParseEntityBase.__init__(self)
@@ -56,19 +59,16 @@ class EhnParseFunctionEntity(EhnParseEntityBase, EhnParseFunctionHead, EhnParseF
         yield self.function
         yield from self.features
 
-    @property
-    def _tree_label(self):
-        _anchor = ' ${}'.format(self.anchor) if self.anchor.head else ''
-        return '[Entity{}]'.format(_anchor)
-
-    def _decode(self):
-        _features = ':' + ','.join(feature._decode() for feature in self.features) if self.features else ''
-        return '{{{}{}{}}}'.format(self.function._decode(), self.anchor._decode(), _features)
+    def decode(self):
+        _features = ':' + ','.join(feature.decode() for feature in self.features) if self.features else ''
+        return f'{{{self.function.decode()}{self.anchor.decode()}{_features}}}'
 
 ################################################################################################################################
 
 class EhnParseAnyEntity(EhnParseEntityBase):
+    """E-HowNet Parsing: Any Entity Node"""
 
+    node_type = 'AnyEntity'
     def __init__(self):
         EhnParseEntityBase.__init__(self)
 
@@ -79,18 +79,16 @@ class EhnParseAnyEntity(EhnParseEntityBase):
     def children(self):
         return []
 
-    @property
-    def _tree_label(self):
-        return '[AnyEntity]'
-
     @staticmethod
-    def _decode():
+    def decode():
         return '{}'
 
 ################################################################################################################################
 
 class EhnParseNameEntity(EhnParseEntityBase, EhnParseStrHead):
+    """E-HowNet Parsing: Name Entity Node"""
 
+    node_type = 'NameEntity'
     def __init__(self, head):
         EhnParseEntityBase.__init__(self)
         EhnParseStrHead.__init__(self, head)
@@ -98,17 +96,15 @@ class EhnParseNameEntity(EhnParseEntityBase, EhnParseStrHead):
     def children(self):
         return []
 
-    @property
-    def _tree_label(self):
-        return '[NameEntity] {}'.format(self.head)
-
-    def _decode(self):
-        return '{{"{}"}}'.format(self.head)
+    def decode(self):
+        return f'{{"{self.head}"}}'
 
 ################################################################################################################################
 
 class EhnParseNumberEntity(EhnParseEntityBase, EhnParseStrHead):
+    """E-HowNet Parsing: Number Entity Node"""
 
+    node_type = 'NumberEntity'
     def __init__(self, head):
         EhnParseEntityBase.__init__(self)
         EhnParseStrHead.__init__(self, head)
@@ -116,17 +112,15 @@ class EhnParseNumberEntity(EhnParseEntityBase, EhnParseStrHead):
     def children(self):
         return []
 
-    @property
-    def _tree_label(self):
-        return '[NumberEntity] {}'.format(self.head)
-
-    def _decode(self):
-        return '{{{}}}'.format(self.head)
+    def decode(self):
+        return f'{{{self.head}}}'
 
 ################################################################################################################################
 
 class EhnParseTildeEntity(EhnParseEntityBase):
+    """E-HowNet Parsing: Tilde Entity Node"""
 
+    node_type = 'TildeEntity'
     def __init__(self):
         EhnParseEntityBase.__init__(self)
 
@@ -137,17 +131,16 @@ class EhnParseTildeEntity(EhnParseEntityBase):
     def children(self):
         return []
 
-    @property
-    def _tree_label(self):
-        return '[TildeEntity]'
-
     @staticmethod
-    def _decode():
+    def decode():
         return '{~}'
 
 ################################################################################################################################
 
 class EhnParseCoindexEntity(EhnParseEntityBase, EhnParseStrHead):
+    """E-HowNet Parsing: Coindex Entity Node"""
+
+    node_type = 'CoindexEntity'
 
     def __init__(self, head):
         EhnParseEntityBase.__init__(self)
@@ -158,7 +151,7 @@ class EhnParseCoindexEntity(EhnParseEntityBase, EhnParseStrHead):
 
     @property
     def _tree_label(self):
-        return '${}'.format(self.head)
+        return f'${self.head}'
 
-    def _decode(self):
-        return '{{{}}}'.format(self.head)
+    def decode(self):
+        return f'{{{self.head}}}'

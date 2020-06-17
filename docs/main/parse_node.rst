@@ -24,6 +24,26 @@ Major Nodes
 
       The head of this node.
 
+   .. method:: get_features()
+
+      Get the features (or ``[]`` if not exists)
+
+   .. method:: get_arguments()
+
+      Get the arguments (or ``[]`` if not exists)
+
+   .. method:: get_value()
+
+      Get the value (or ``None`` if not exists)
+
+   .. method:: get_function()
+
+      Get the function (or ``None`` if not exists)
+
+   .. method:: get_anchor()
+
+      Get the anchor (or ``None`` if not exists)
+
    .. method:: children()
 
       Yields all direct child nodes of this node.
@@ -31,6 +51,10 @@ Major Nodes
    .. method:: descendant()
 
       Yields all descendant nodes (including self) of this node.
+
+   .. method:: decode()
+
+      Converts to text representation.
 
    .. method:: tree() -> treelib.Tree
 
@@ -180,4 +204,4 @@ Anchor
    .. attribute:: head
       :type: str
 
-      The coindex of this anchor. Must be ``x[0-9]*``.
+      The coindex of this anchor.

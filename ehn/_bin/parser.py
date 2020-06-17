@@ -12,14 +12,14 @@ from ehn.parse import EhnParser, EhnSyntaxError
 # Main
 #
 
-def main():
+def main(argv=None):
 
     argparser = argparse.ArgumentParser(description='E-HowNet Parser')
 
     argparser.add_argument('text', type=str, nargs='+', help='input texts.')
     argparser.add_argument('--debug', action='store_true', help='debug mode.')
 
-    args = argparser.parse_args()
+    args = argparser.parse_args(argv)
 
     # lexer = EhnLexer()
     parser = EhnParser()
@@ -27,9 +27,12 @@ def main():
     for (i, text,) in enumerate(args.text):
         try:
             res = parser(text, debug=args.debug)
-            print('#{}'.format(i+1))
-            print(res)
-        except EhnSyntaxError as err:
-            print(err)
+            print(f'#{i+1}')
+            res.tree().show()
+        except AssertionError as exc:
+            print(exc)
             print(text)
-            print(err.show_pos(text))
+        except EhnSyntaxError as exc:
+            print(exc)
+            print(text)
+            print(exc.show_pos(text))
