@@ -39,6 +39,7 @@ EHN_TOKENS = [
 ]
 
 class EhnSyntaxError(SyntaxError):
+    """E-HowNet Syntax Error."""
 
     def __init__(self, *args, pos=None):
         super().__init__(*args)
@@ -67,7 +68,7 @@ class _EhnLexer:
 
     # Define the lexer
     def t_ANY_error(self, t):
-        raise EhnSyntaxError('Illegal character ‘{}’ at position {}.'.format(t.value[0], t.lexpos), pos=t.lexpos)
+        raise EhnSyntaxError(f'Illegal character ‘{t.value[0]}’ at position {t.lexpos}.', pos=t.lexpos)
         # t.lexer.skip(1)
 
     # Skip all spaces
@@ -87,7 +88,7 @@ class _EhnLexer:
     t_TILDE = r'~'
 
     def t_TEXT(self, t):
-        r'[A-Za-z0-9\x80-\U0010FFFF|+\-.]+'
+        r'[A-Za-z0-9\x80-\U0010FFFF|+\-.?#]+'
         if _isnumber(t.value):
             t.type = 'NUMBER'
         if _is_coindex(t.value):
@@ -100,7 +101,12 @@ class _EhnLexer:
         return iter(self._lexer)
 
 class EhnLexer(_EhnLexer):
-    """E-HowNet Lexer."""
+    """E-HowNet Lexer.
+
+        .. method:: __call__(data)
+
+            Run tokenization.
+    """
 
 ################################################################################################################################
 # Parser
@@ -110,7 +116,7 @@ class _EhnParser:
 
     def __init__(self, lexer=None, **kwargs):
         if lexer is not None:
-            assert isinstance(lexer, EhnLexer), '{} is not EhnLexer!'.format(lexer)
+            assert isinstance(lexer, EhnLexer), f'{lexer} is not an EhnLexer!'
             self.lexer = lexer
         else:
             self.lexer = EhnLexer()
@@ -129,7 +135,7 @@ class _EhnParser:
             msg = 'Unexpected ending.'
             pos = None
         else:
-            msg = 'Unexpected symbol ‘{}’ at position {}.'.format(t.value, t.lexpos)
+            msg = f'Unexpected symbol ‘{t.value}’ at position {t.lexpos}.'
             pos = t.lexpos
 
         syms = []
@@ -138,11 +144,11 @@ class _EhnParser:
             if sym == '$end':
                 syms.append('‘ENDING’')
             else:
-                syms.append('‘{}’'.format(sym))
+                syms.append(f'‘{sym}’')
         if len(syms) > 1:
             syms[-1] = 'or '+syms[-1]
 
-        msg += ' Expecting a {}.'.format(', '.join(syms))
+        msg += f' Expecting a {", ".join(syms)}.'
         raise EhnSyntaxError(msg, pos=pos)
 
     # Object
@@ -273,7 +279,12 @@ class _EhnParser:
         return ret
 
 class EhnParser(_EhnParser):
-    """E-HowNet Parser."""
+    """E-HowNet Parser.
+
+        .. method:: __call__(data)
+
+            Run parsing.
+    """
 
 ################################################################################################################################
 # Utility
@@ -288,4 +299,4 @@ def _isnumber(name):
 
 def _is_coindex(name):
     return _is_coindex.pattern.match(name)
-_is_coindex.pattern = _re.compile(r'x[0-9]*')
+_is_coindex.pattern = _re.compile(r'x(\?|[0-9]*)')
