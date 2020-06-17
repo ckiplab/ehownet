@@ -103,7 +103,7 @@ class EhnParseNode(metaclass=_ABCMeta):
 #
 class EhnParseTree(_Tree):
 
-    def show(self, *args, data_property='_tree_label', **kwargs):
+    def show(self, *args, data_property='_tree_label', **kwargs):  # pylint: disable=arguments-differ
         super().show(*args, data_property=data_property, **kwargs)
 
 
@@ -113,23 +113,18 @@ class EhnParseTree(_Tree):
 
 class EhnParseEntityBase(EhnParseNode):  # pylint: disable=abstract-method
     """E-HowNet Parsing: Base Entity Node"""
-    pass
 
 class EhnParseFeatureBase(EhnParseNode):  # pylint: disable=abstract-method
     """E-HowNet Parsing: Base Feature Node"""
-    pass
 
 class EhnParseFunctionBase(EhnParseNode):  # pylint: disable=abstract-method
     """E-HowNet Parsing: Base Function Node"""
-    pass
 
 class EhnParseRestrictionBase(EhnParseNode):  # pylint: disable=abstract-method
     """E-HowNet Parsing: Base Function Node"""
-    pass
 
 class EhnParseRootBase(EhnParseNode):  # pylint: disable=abstract-method
     """E-HowNet Parsing: Base Root Node"""
-    pass
 
 ################################################################################################################################
 # Anchor
