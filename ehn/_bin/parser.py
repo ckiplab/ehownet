@@ -36,3 +36,6 @@ def main(argv=None):
             print(exc)
             print(text)
             print(exc.show_pos(text))
+
+if __name__ == '__main__':
+    main()

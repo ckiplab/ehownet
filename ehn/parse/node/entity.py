@@ -28,11 +28,11 @@ class EhnParseNormalEntity(EhnParseEntityBase, EhnParseStrHead, EhnParseFeatureB
     node_type = 'Entity'
     feature_type = EhnParseFeatureBase
 
-    def __init__(self, head, *features, anchor=None):
+    def __init__(self, head, *features, coindex=None, anchor=None):
         EhnParseEntityBase.__init__(self)
         EhnParseStrHead.__init__(self, head)
         EhnParseFeatureBody.__init__(self, *features)
-        EhnParseAnchorBody.__init__(self, anchor)
+        EhnParseAnchorBody.__init__(self, coindex=coindex, anchor=anchor)
 
     def children(self):
         yield from self.features
@@ -49,11 +49,11 @@ class EhnParseFunctionEntity(EhnParseEntityBase, EhnParseFunctionHead, EhnParseF
     node_type = 'FunctionEntity'
     feature_type = EhnParseFeatureBase
 
-    def __init__(self, function, *features, anchor=None):
+    def __init__(self, function, *features, coindex=None, anchor=None):
         EhnParseEntityBase.__init__(self)
         EhnParseFunctionHead.__init__(self, function)
         EhnParseFeatureBody.__init__(self, *features)
-        EhnParseAnchorBody.__init__(self, anchor)
+        EhnParseAnchorBody.__init__(self, coindex=coindex, anchor=anchor)
 
     def children(self):
         yield self.function
@@ -65,26 +65,6 @@ class EhnParseFunctionEntity(EhnParseEntityBase, EhnParseFunctionHead, EhnParseF
 
 ################################################################################################################################
 
-class EhnParseAnyEntity(EhnParseEntityBase):
-    """E-HowNet Parsing: Any Entity Node"""
-
-    node_type = 'AnyEntity'
-    def __init__(self):
-        EhnParseEntityBase.__init__(self)
-
-    @property
-    def head(self):
-        return 'ANY'
-
-    def children(self):
-        return []
-
-    @staticmethod
-    def decode():
-        return '{}'
-
-################################################################################################################################
-
 class EhnParseNameEntity(EhnParseEntityBase, EhnParseStrHead):
     """E-HowNet Parsing: Name Entity Node"""
 
@@ -92,6 +72,10 @@ class EhnParseNameEntity(EhnParseEntityBase, EhnParseStrHead):
     def __init__(self, head):
         EhnParseEntityBase.__init__(self)
         EhnParseStrHead.__init__(self, head)
+
+    @property
+    def feature(self):
+        return []
 
     def children(self):
         return []
@@ -109,49 +93,12 @@ class EhnParseNumberEntity(EhnParseEntityBase, EhnParseStrHead):
         EhnParseEntityBase.__init__(self)
         EhnParseStrHead.__init__(self, head)
 
-    def children(self):
-        return []
-
-    def decode(self):
-        return f'{{{self.head}}}'
-
-################################################################################################################################
-
-class EhnParseTildeEntity(EhnParseEntityBase):
-    """E-HowNet Parsing: Tilde Entity Node"""
-
-    node_type = 'TildeEntity'
-    def __init__(self):
-        EhnParseEntityBase.__init__(self)
-
     @property
-    def head(self):
-        return '~'
+    def feature(self):
+        return []
 
     def children(self):
         return []
-
-    @staticmethod
-    def decode():
-        return '{~}'
-
-################################################################################################################################
-
-class EhnParseCoindexEntity(EhnParseEntityBase, EhnParseStrHead):
-    """E-HowNet Parsing: Coindex Entity Node"""
-
-    node_type = 'CoindexEntity'
-
-    def __init__(self, head):
-        EhnParseEntityBase.__init__(self)
-        EhnParseStrHead.__init__(self, head)
-
-    def children(self):
-        return []
-
-    @property
-    def _tree_label(self):
-        return f'${self.head}'
 
     def decode(self):
         return f'{{{self.head}}}'

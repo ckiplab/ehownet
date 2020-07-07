@@ -11,9 +11,8 @@ __copyright__ = '2018-2020 CKIP Lab'
 # pylint: disable=too-few-public-methods
 
 from .base import (
-    EhnParseEntityBase,
+    EhnParseEntityLike,
     EhnParseFeatureBase,
-    EhnParseRestrictionBase,
 
     EhnParseFunctionHead,
     EhnParseStrHead,
@@ -26,7 +25,7 @@ class EhnParseNormalFeature(EhnParseFeatureBase, EhnParseStrHead, EhnParseValueB
     """E-HowNet Parsing: Normal Feature Node"""
 
     node_type = 'Feature'
-    value_type = (EhnParseEntityBase, EhnParseRestrictionBase,)
+    value_type = EhnParseEntityLike
 
     def __init__(self, head, value):
         EhnParseFeatureBase.__init__(self)
@@ -45,7 +44,7 @@ class EhnParseFunctionFeature(EhnParseFeatureBase, EhnParseFunctionHead, EhnPars
     """E-HowNet Parsing: Function Feature Node"""
 
     node_type = 'FunctionFeature'
-    value_type = (EhnParseEntityBase, EhnParseRestrictionBase,)
+    value_type = EhnParseEntityLike
 
     def __init__(self, function, value):
         EhnParseFeatureBase.__init__(self)

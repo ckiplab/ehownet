@@ -3,16 +3,27 @@
 Parse Nodes
 ===========
 
-There are five types of nodes in E-HowNet expression — `Entity <#entity>`__, `Feature <#feature>`__, `Function <#function>`__, `Restriction <#restriction>`__, and `Root <#root>`__.
+There are five types of nodes in E-HowNet expression — `Entity <#entity>`__, `Reference <#reference>`__, `Placeholder <#placeholder>`__, `Feature <#feature>`__, `Function <#function>`__, and `Subject <#subject>`__.
+
+.. inheritance-diagram::
+   ehn.parse.node.base.EhnParseEntityBase
+   ehn.parse.node.base.EhnParseReferenceBase
+   ehn.parse.node.base.EhnParsePlaceholderBase
+   ehn.parse.node.base.EhnParseFeatureBase
+   ehn.parse.node.base.EhnParseFunctionBase
+   ehn.parse.node.base.EhnParseSubjectBase
+   :parts: 1
 
 .. inheritance-diagram::
    ehn.parse.node.entity
+   ehn.parse.node.reference
+   ehn.parse.node.placeholder
    ehn.parse.node.feature
    ehn.parse.node.other
    :parts: 1
 
-Major Nodes
------------
+Node Prototype
+--------------
 
 .. class:: EhnParseNode
    :noindex:
@@ -26,23 +37,27 @@ Major Nodes
 
    .. method:: get_features()
 
-      Get the features (or ``[]`` if not exists)
+      Get the features (or ``[]`` if not exists).
 
    .. method:: get_arguments()
 
-      Get the arguments (or ``[]`` if not exists)
+      Get the arguments (or ``[]`` if not exists).
 
    .. method:: get_value()
 
-      Get the value (or ``None`` if not exists)
+      Get the value (or ``None`` if not exists).
 
    .. method:: get_function()
 
-      Get the function (or ``None`` if not exists)
+      Get the function (or ``None`` if not exists).
 
    .. method:: get_anchor()
 
-      Get the anchor (or ``None`` if not exists)
+      Get the anchor (or ``None`` if not exists).
+
+   .. method:: get_coindex()
+
+      Get the coindex key (the head of the anchor, the head of `reference <#reference>`__ nodes, or ``None`` otherwise).
 
    .. method:: children()
 
@@ -56,9 +71,12 @@ Major Nodes
 
       Converts to text representation.
 
-   .. method:: tree() -> treelib.Tree
+   .. method:: tree() -> ehn.parse.node.base.EhnParseTree
 
       Generates a tree representation of this node and all its descendant nodes.
+
+Entity-Like Nodes
+-----------------
 
 Entity
 ^^^^^^
@@ -72,16 +90,48 @@ Entity
 
       - :class:`~ehn.parse.node.entity.EhnParseNormalEntity` A normal entity. Can be an `anchor <#anchor-body>`__.
       - :class:`~ehn.parse.node.entity.EhnParseFunctionEntity` An entity with `function head <#function-head>`__. Can be an `anchor <#anchor-body>`__.
-      - :class:`~ehn.parse.node.entity.EhnParseAnyEntity` A placeholder entity.
       - :class:`~ehn.parse.node.entity.EhnParseNameEntity` A name entity.
       - :class:`~ehn.parse.node.entity.EhnParseNumberEntity` A number entity.
-      - :class:`~ehn.parse.node.entity.EhnParseTildeEntity` An entity refers to the parent entity.
-      - :class:`~ehn.parse.node.entity.EhnParseCoindexEntity` An entity refers to an anchor entity.
 
    .. method:: features
       :property:
 
       A list of `Features <#feature>`__.
+
+Reference
+^^^^^^^^^
+
+.. class:: EhnParseEntityBase
+   :noindex:
+
+   The base class of E-HowNet parsing reference nodes.
+
+   Subclasses:
+
+      - :class:`~ehn.parse.node.reference.EhnParseCoindexReference` An entity refers to an anchor entity.
+      - :class:`~ehn.parse.node.reference.EhnParseSubjectReference` An entity refers to the unmentioned subject entity (:class:`~ehn.parse.node.other.EhnParseSubject` in feature-based expressions.)
+      - :class:`~ehn.parse.node.reference.EhnParseTildeReference` An entity refers to the root entity.
+
+Placeholder
+^^^^^^^^^^^
+
+.. class:: EhnParsePlaceholderBase
+   :noindex:
+
+   The base class of E-HowNet parsing restriction nodes.
+
+   Subclasses:
+
+      - :class:`~ehn.parse.node.placeholder.EhnParseRestrictionPlaceholder`. Can be an `anchor <#anchor-body>`__.
+      - :class:`~ehn.parse.node.placeholder.EhnParseAnyPlaceholder` A placeholder without restriction.
+
+   .. method:: value
+      :property:
+
+      Must be an `Entity <#entity>`__ (for :class:`~ehn.parse.node.placeholder.EhnParseRestrictionPlaceholder`) or ``None`` (for :class:`~ehn.parse.node.placeholder.EhnParseAnyPlaceholder`).
+
+Non-Entity-Like Nodes
+---------------------
 
 Feature
 ^^^^^^^
@@ -99,7 +149,7 @@ Feature
    .. method:: value
       :property:
 
-      Can be either `Entity <#entity>`__ or `Restriction <#restriction>`__.
+      Can be a `Entity-Like Node <#entity-like-nodes>`__.
 
 Function
 ^^^^^^^^
@@ -111,41 +161,24 @@ Function
 
    Subclasses:
 
-      - :class:`~ehn.parse.node.other.EhnParseFunction`.
+      - :class:`~ehn.parse.node.function.EhnParseFunction`.
 
    .. method:: arguments
       :property:
 
-      A list of `Entities <#entity>`__ or `Restriction <#restriction>`__
+      A list of `Entity-Like Nodes <#entity-like-nodes>`_.
 
-Restriction
-^^^^^^^^^^^
+Subject
+^^^^^^^
 
-.. class:: EhnParseRestrictionBase
+.. class:: EhnParseSubjectBase
    :noindex:
 
-   The base class of E-HowNet parsing function nodes.
+   The base class of E-HowNet parsing unmentioned subject nodes. Works similar to entities but is not an entity. Used only in feature-based expressions.
 
    Subclasses:
 
-      - :class:`~ehn.parse.node.other.EhnParseRestriction`. Can be an `anchor <#anchor-body>`__.
-
-   .. method:: value
-      :property:
-
-      Must be an `Entity <#entity>`__.
-
-Root
-^^^^
-
-.. class:: EhnParseRootBase
-   :noindex:
-
-   The base class of E-HowNet parsing root nodes. Works similar to entities but is not an entity. Used only in feature-based expressions.
-
-   Subclasses:
-
-      - :class:`~ehn.parse.node.other.EhnParseRoot`.
+      - :class:`~ehn.parse.node.other.EhnParseSubject`. Always an `anchor <#anchor-body>`__ of ``x?``.
 
    .. method:: features
       :property:
@@ -187,7 +220,7 @@ Anchor Body
 
       - :class:`~ehn.parse.node.entity.EhnParseNormalEntity`
       - :class:`~ehn.parse.node.entity.EhnParseFunctionEntity`
-      - :class:`~ehn.parse.node.other.EhnParseRestriction`
+      - :class:`~ehn.parse.node.placeholder.EhnParseRestrictionPlaceholder`
 
    .. method:: anchor
       :property:

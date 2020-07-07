@@ -40,9 +40,9 @@ class TestBinParser(unittest.TestCase):
                     └── [TildeEntity]\n\n''')
 
         self._testEach('TimePoint={},manner={urgent|急}', '''#1
-[Root]
+[Subject $x?]
 ├── [Feature] TimePoint
-│   └── [AnyEntity]
+│   └── [Any]
 └── [Feature] manner
     └── [Entity] urgent|急\n\n''')
 

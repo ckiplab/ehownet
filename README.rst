@@ -103,7 +103,8 @@ CLI
    ehn-parser \
       "{MusicTool|樂器_x:predication={own|有:possession={按鈕|PushingButton:whole={x}}}}" \
       "{InstitutePlace|場所:telic={or({experiment|實驗:location={~}},{research|研究:location={~}})}}" \
-      "TimePoint={},manner={urgent|急}"
+      "TimePoint={},manner={urgent|急}" \
+      "direction={toward()}"
 
 Output:
 
@@ -125,17 +126,24 @@ Output:
            └── [Function] or
                ├── [Entity] experiment|實驗
                │   └── [Feature] location
-               │       └── [TildeEntity]
+               │       └── [Tilde]
                └── [Entity] research|研究
                    └── [Feature] location
-                       └── [TildeEntity]
+                       └── [Tilde]
 
    #3
-  [Root]
-  ├── [Feature] TimePoint
-  │   └── [AnyEntity]
-  └── [Feature] manner
-      └── [Entity] urgent|急
+   [Subject $x?]
+   ├── [Feature] TimePoint
+   │   └── [Any]
+   └── [Feature] manner
+       └── [Entity] urgent|急
+
+   #4
+   [Subject $x?]
+   └── [Feature] direction
+       └── [FunctionEntity]
+           └── [Function] toward
+               └── [Any]
 
 
 Python API

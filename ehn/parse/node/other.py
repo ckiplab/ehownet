@@ -11,36 +11,35 @@ __copyright__ = '2018-2020 CKIP Lab'
 # pylint: disable=too-few-public-methods
 
 from .base import (
-    EhnParseEntityBase,
+    EhnParseEntityLike,
     EhnParseFeatureBase,
     EhnParseFunctionBase,
-    EhnParseRestrictionBase,
-    EhnParseRootBase,
+    EhnParseSubjectBase,
 
     EhnParseAnchorBody,
     EhnParseArgumentBody,
     EhnParseFeatureBody,
     EhnParseStrHead,
-    EhnParseValueBody,
 )
 
 ################################################################################################################################
-# Root
+# Subject
 #
 
-class EhnParseRoot(EhnParseRootBase, EhnParseFeatureBody):
-    """E-HowNet Parsing: Root Node"""
+class EhnParseSubject(EhnParseSubjectBase, EhnParseFeatureBody, EhnParseAnchorBody):
+    """E-HowNet Parsing: Subject Node"""
 
-    node_type = 'Root'
+    node_type = 'Subject'
     feature_type = EhnParseFeatureBase
 
     def __init__(self, *features):
-        EhnParseRootBase.__init__(self)
+        EhnParseSubjectBase.__init__(self)
         EhnParseFeatureBody.__init__(self, *features)
+        EhnParseAnchorBody.__init__(self, coindex='x?')
 
     @property
     def head(self):
-        return self.features[0].head
+        return 'SUBJECT'
 
     def children(self):
         yield from self.features
@@ -56,7 +55,7 @@ class EhnParseFunction(EhnParseFunctionBase, EhnParseArgumentBody, EhnParseStrHe
     """E-HowNet Parsing: Function Node"""
 
     node_type = 'Function'
-    argument_type = (EhnParseEntityBase, EhnParseRestrictionBase,)
+    argument_type = EhnParseEntityLike
 
     def __init__(self, head, *arguments):
         EhnParseFunctionBase.__init__(self)
@@ -69,28 +68,3 @@ class EhnParseFunction(EhnParseFunctionBase, EhnParseArgumentBody, EhnParseStrHe
     def decode(self):
         _arguments = ','.join(argument.decode() for argument in self.arguments)
         return f'{self.head}({_arguments})'
-
-################################################################################################################################
-# Restriction
-#
-
-class EhnParseRestriction(EhnParseRestrictionBase, EhnParseValueBody, EhnParseAnchorBody):
-    """E-HowNet Parsing: Restriction Node"""
-
-    node_type = 'Restriction'
-    value_type = EhnParseEntityBase
-
-    def __init__(self, value, anchor=None):
-        EhnParseRestrictionBase.__init__(self)
-        EhnParseValueBody.__init__(self, value)
-        EhnParseAnchorBody.__init__(self, anchor)
-
-    @property
-    def head(self):
-        return self.value.head
-
-    def children(self):
-        yield self.value
-
-    def decode(self):
-        return f'/{self.value.decode()}{self.anchor.decode()}'

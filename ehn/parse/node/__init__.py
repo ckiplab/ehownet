@@ -10,22 +10,31 @@ __copyright__ = '2018-2020 CKIP Lab'
 
 from .base import (
     EhnParseNode,
+    EhnParseEntityLike,
     EhnParseEntityBase,
+    EhnParseReferenceBase,
+    EhnParsePlaceholderBase,
     EhnParseFeatureBase,
     EhnParseFunctionBase,
-    EhnParseRestrictionBase,
-    EhnParseRootBase,
     EhnParseAnchor,
 )
 
 from .entity import (
     EhnParseNormalEntity,
     EhnParseFunctionEntity,
-    EhnParseAnyEntity,
-    EhnParseTildeEntity,
     EhnParseNameEntity,
     EhnParseNumberEntity,
-    EhnParseCoindexEntity,
+)
+
+from .reference import (
+    EhnParseCoindexReference,
+    EhnParseSubjectReference,
+    EhnParseTildeReference,
+)
+
+from .placeholder import (
+    EhnParseRestrictionPlaceholder,
+    EhnParseAnyPlaceholder,
 )
 
 from .feature import (
@@ -34,7 +43,6 @@ from .feature import (
 )
 
 from .other import (
-    EhnParseRoot,
+    EhnParseSubject,
     EhnParseFunction,
-    EhnParseRestriction,
 )

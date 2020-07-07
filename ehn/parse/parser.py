@@ -35,6 +35,7 @@ EHN_TOKENS = [
     'TEXT',
     'NUMBER',
     'COINDEX',
+    'COINDEX0',
     *EHN_TOKENS_CHAR.keys()
 ]
 
@@ -91,7 +92,9 @@ class _EhnLexer:
         r'[A-Za-z0-9\x80-\U0010FFFF|+\-.?#]+'
         if _isnumber(t.value):
             t.type = 'NUMBER'
-        if _is_coindex(t.value):
+        elif t.value == 'x?':
+            t.type = 'COINDEX0'
+        elif _is_coindex(t.value):
             t.type = 'COINDEX'
         return t
 
@@ -154,39 +157,27 @@ class _EhnParser:
     # Object
     def p_expr(self, p):
         '''expr : entity
-                | root'''
+                | subject'''
         p[0] = p[1]
 
-    # Root
-    def p_root(self, p):
-        '''root : feature
-                | root COMMA feature'''
+    # Subject
+    def p_subject(self, p):
+        '''subject : feature
+                   | subject COMMA feature'''
         if len(p) == 2:
-            p[0] = _node.EhnParseRoot(p[1])
+            p[0] = _node.EhnParseSubject(p[1])
         else:
             p[1].add_feature(p[3])
             p[0] = p[1]
 
     # Entity
-    def p_entity_any(self, p):
-        '''entityAny : LBRACE RBRACE'''
-        p[0] = _node.EhnParseAnyEntity()
-
     def p_entity_number(self, p):
         '''entity : LBRACE NUMBER RBRACE'''
         p[0] = _node.EhnParseNumberEntity(p[2])
 
-    def p_entity_coindex(self, p):
-        '''entity : LBRACE COINDEX RBRACE'''
-        p[0] = _node.EhnParseCoindexEntity(p[2])
-
     def p_entity_name(self, p):
         '''entity : LBRACE QUOTE TEXT QUOTE RBRACE'''
         p[0] = _node.EhnParseNameEntity(p[3])
-
-    def p_entity_tilde(self, p):
-        '''entity : LBRACE TILDE RBRACE'''
-        p[0] = _node.EhnParseTildeEntity()
 
     def p_entity_normal_open(self, p):
         '''entityOpen : LBRACE TEXT'''
@@ -218,35 +209,65 @@ class _EhnParser:
                   | entityFeature RBRACE'''
         p[0] = p[1]
 
+    # Reference
+    def p_reference_coindex(self, p):
+        '''reference : LBRACE COINDEX RBRACE
+                     | LBRACE COINDEX0 RBRACE'''
+        p[0] = _node.EhnParseCoindexReference(p[2])
+
+    def p_reference_tilde(self, p):
+        '''reference : LBRACE TILDE RBRACE'''
+        p[0] = _node.EhnParseTildeReference()
+
+    # Placeholder
+    def p_restriction(self, p):
+        '''restriction : SLASH entity
+                       | SLASH reference'''
+        p[0] = _node.EhnParseRestrictionPlaceholder(p[2])
+
+    def p_restriction_anchor(self, p):
+        '''restriction : SLASH entity anchor
+                       | SLASH reference anchor'''
+        p[0] = _node.EhnParseRestrictionPlaceholder(p[2], anchor=p[3])
+
+    def p_any(self, p):
+        '''any : LBRACE RBRACE'''
+        p[0] = _node.EhnParseAnyPlaceholder()
+
     # Feature
     def p_feature(self, p):
         '''feature : TEXT EQUAL entity
-                   | TEXT EQUAL entityAny
-                   | TEXT EQUAL restriction'''
+                   | TEXT EQUAL reference
+                   | TEXT EQUAL restriction
+                   | TEXT EQUAL any'''
         p[0] = _node.EhnParseNormalFeature(p[1], p[3])
 
     def p_function_feature(self, p):
         '''feature : function EQUAL entity
-                   | function EQUAL entityAny
-                   | function EQUAL restriction'''
+                   | function EQUAL reference
+                   | function EQUAL restriction
+                   | function EQUAL any'''
         p[0] = _node.EhnParseFunctionFeature(p[1], p[3])
 
     # Function
     def p_function_any(self, p):
         '''function : TEXT LPAREN RPAREN'''
-        p[0] = _node.EhnParseFunction(p[1])
+        p[0] = _node.EhnParseFunction(p[1], _node.EhnParseAnyPlaceholder())
 
     def p_function_restriction(self, p):
         '''function : TEXT LPAREN restriction RPAREN'''
         p[0] = _node.EhnParseFunction(p[1], p[3])
 
     def p_function_open(self, p):
-        '''functionOpen : TEXT LPAREN entity'''
+        '''functionOpen : TEXT LPAREN entity
+                        | TEXT LPAREN reference'''
         p[0] = _node.EhnParseFunction(p[1], p[3])
 
     def p_function_argument(self, p):
         '''functionArgument : functionOpen     COMMA entity
-                            | functionArgument COMMA entity'''
+                            | functionOpen     COMMA reference
+                            | functionArgument COMMA entity
+                            | functionArgument COMMA reference'''
         p[1].add_argument(p[3])
         p[0] = p[1]
 
@@ -254,15 +275,6 @@ class _EhnParser:
         '''function : functionOpen     RPAREN
                     | functionArgument RPAREN'''
         p[0] = p[1]
-
-    # Restriction
-    def p_restriction(self, p):
-        '''restriction : SLASH entity'''
-        p[0] = _node.EhnParseRestriction(p[2])
-
-    def p_restriction_anchor(self, p):
-        '''restriction : SLASH entity anchor'''
-        p[0] = _node.EhnParseRestriction(p[2], anchor=p[3])
 
     # Anchor
     def p_anchor(self, p):
@@ -299,4 +311,4 @@ def _isnumber(name):
 
 def _is_coindex(name):
     return _is_coindex.pattern.match(name)
-_is_coindex.pattern = _re.compile(r'x(\?|[0-9]*)')
+_is_coindex.pattern = _re.compile(r'x[0-9]*')
