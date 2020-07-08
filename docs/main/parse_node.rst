@@ -101,7 +101,7 @@ Entity
 Reference
 ^^^^^^^^^
 
-.. class:: EhnParseEntityBase
+.. class:: EhnParseReferenceBase
    :noindex:
 
    The base class of E-HowNet parsing reference nodes.
@@ -221,6 +221,7 @@ Anchor Body
       - :class:`~ehn.parse.node.entity.EhnParseNormalEntity`
       - :class:`~ehn.parse.node.entity.EhnParseFunctionEntity`
       - :class:`~ehn.parse.node.placeholder.EhnParseRestrictionPlaceholder`
+      - :class:`~ehn.parse.node.other.EhnParseSubject`
 
    .. method:: anchor
       :property:

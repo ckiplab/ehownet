@@ -23,7 +23,7 @@ from .base import (
 #
 
 class EhnParseRestrictionPlaceholder(EhnParsePlaceholderBase, EhnParseValueBody, EhnParseAnchorBody):
-    """E-HowNet Parsing: Restriction Node"""
+    """E-HowNet Parsing: Restriction Placeholder Node"""
 
     node_type = 'Restriction'
     value_type = EhnParseEntityBase
@@ -51,6 +51,7 @@ class EhnParseAnyPlaceholder(EhnParsePlaceholderBase):
     """E-HowNet Parsing: Any Placeholder Node"""
 
     node_type = 'Any'
+
     def __init__(self):
         EhnParsePlaceholderBase.__init__(self)
 

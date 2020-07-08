@@ -22,7 +22,7 @@ from .base import (
 class EhnParseCoindexReference(EhnParseReferenceBase, EhnParseStrHead):
     """E-HowNet Parsing: Coindex Reference Node"""
 
-    node_type = 'Coindex'
+    node_type = 'CoindexReference'
 
     def __init__(self, head):
         EhnParseReferenceBase.__init__(self)
@@ -46,7 +46,7 @@ class EhnParseCoindexReference(EhnParseReferenceBase, EhnParseStrHead):
 class EhnParseSubjectReference(EhnParseReferenceBase):
     """E-HowNet Parsing: Subject Reference Node"""
 
-    node_type = 'Subject'
+    node_type = 'SubjectReference'
     def __init__(self):
         EhnParseReferenceBase.__init__(self)
 
@@ -73,7 +73,7 @@ class EhnParseTildeReference(EhnParseReferenceBase):
 
     """
 
-    node_type = 'Tilde'
+    node_type = 'TildeReference'
     def __init__(self):
         EhnParseReferenceBase.__init__(self)
         _warnings.warn('‘~’ is deprecated.', FutureWarning)

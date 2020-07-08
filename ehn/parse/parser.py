@@ -67,11 +67,6 @@ class _EhnLexer:
 
     tokens = EHN_TOKENS
 
-    # Define the lexer
-    def t_ANY_error(self, t):
-        raise EhnSyntaxError(f'Illegal character ‘{t.value[0]}’ at position {t.lexpos}.', pos=t.lexpos)
-        # t.lexer.skip(1)
-
     # Skip all spaces
     # t_ignore = ' \t\n\r\f\v'
 
@@ -88,14 +83,24 @@ class _EhnLexer:
     t_RBRACE = r'}'
     t_TILDE = r'~'
 
+    def t_ANY_error(self, t):
+        raise EhnSyntaxError(f'Illegal character ‘{t.value[0]}’ at position {t.lexpos}.', pos=t.lexpos)
+        # t.lexer.skip(1)
+
     def t_TEXT(self, t):
-        r'[A-Za-z0-9\x80-\U0010FFFF|+\-.?#]+'
+        r'[A-Za-z0-9\x80-\U0010FFFF|#+\-.?]+'
         if _isnumber(t.value):
             t.type = 'NUMBER'
         elif t.value == 'x?':
             t.type = 'COINDEX0'
         elif _is_coindex(t.value):
             t.type = 'COINDEX'
+        else:
+            match = _re.search(r'[+\-.?]', t.value)
+            if match:
+                pos = t.lexpos + match.start()
+                raise EhnSyntaxError(f'Illegal character ‘{match.group(0)}’ at position {pos}.', pos=pos)
+
         return t
 
     # Invoke the lexer

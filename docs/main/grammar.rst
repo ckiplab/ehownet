@@ -12,7 +12,7 @@ Tokens
 
       - Alphabets and Numbers (``A-Za-z0-9``)
       - Unicode Characters (``\x80-\U0010FFFF``)
-      - ``|``, ``+``, ``-``, ``.``, ``?``, ``#``.
+      - ``|``, ``#``.
 
 - ``NUMBER``
 
