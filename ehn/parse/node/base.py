@@ -16,8 +16,9 @@ from abc import (
     abstractmethod as _abstractmethod,
 )
 
-from collections import (
-    defaultdict as _defaultdict,
+from collections.abc import (
+    Mapping as _Mapping,
+    Sequence as _Sequence,
 )
 
 from treelib import (
@@ -225,7 +226,7 @@ class EhnParseValueBody(metaclass=_ABCMeta):
         assert isinstance(value, self.value_type), f'‘{value}’ is not a {self.value_type}!'
         self._value = value  # pylint: disable=attribute-defined-outside-init
 
-class EhnParseFeatureBody(metaclass=_ABCMeta):
+class EhnParseFeatureBody(_Mapping, metaclass=_ABCMeta):
     """E-HowNet Parsing: Base Node with Feature"""
 
     @property
@@ -243,19 +244,28 @@ class EhnParseFeatureBody(metaclass=_ABCMeta):
     @features.setter
     def features(self, features):
         self._features = []  # pylint: disable=attribute-defined-outside-init
-        self._featuremap = _defaultdict(list)  # pylint: disable=attribute-defined-outside-init
+        self._featuremap = {}  # pylint: disable=attribute-defined-outside-init
         for feature in features:
             self.add_feature(feature)
 
     def add_feature(self, feature):
         assert isinstance(feature, self.feature_type), f'‘{feature}’ is not a {self.feature_type}!'
         self._features.append(feature)
-        self._featuremap[feature.head].append(feature)
+        self._featuremap.setdefault(feature.head, []).append(feature)
 
-    def __getitem__(self, key):
+    def get(self, key):
         return self._featuremap.get(key, [])
 
-class EhnParseArgumentBody(metaclass=_ABCMeta):
+    def __getitem__(self, key):
+        return self._featuremap[key]
+
+    def __iter__(self):
+        return iter(self._featuremap)
+
+    def __len__(self):
+        return len(self._featuremap)
+
+class EhnParseArgumentBody(_Sequence, metaclass=_ABCMeta):
     """E-HowNet Parsing: Base Node with Argument"""
 
     @property
@@ -282,6 +292,9 @@ class EhnParseArgumentBody(metaclass=_ABCMeta):
 
     def __getitem__(self, key):
         return self._arguments[key]
+
+    def __len__(self):
+        return len(self._arguments)
 
 ################################################################
 
