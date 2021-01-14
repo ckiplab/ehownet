@@ -37,7 +37,7 @@ class EhnParseTree(_Tree):
     def to_str(self, *args, data_property='_tree_label', **kwargs):
         def write(line):
             nonlocal ret
-            ret += line.dumps() + '\n'
+            ret += line.decode() + '\n'
         ret = ''
         self._Tree__print_backend(*args, data_property=data_property, **kwargs, func=write)  # pylint: disable=no-member
         return ret
