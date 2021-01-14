@@ -37,9 +37,9 @@ class EhnParseNormalEntity(EhnParseEntityBase, EhnParseStrHead, EhnParseFeatureB
     def children(self):
         yield from self.features
 
-    def decode(self):
-        _features = ':' + ','.join(feature.decode() for feature in self.features) if self.features else ''
-        return f'{{{self.head}{self.anchor.decode()}{_features}}}'
+    def dumps(self):
+        _features = ':' + ','.join(feature.dumps() for feature in self.features) if self.features else ''
+        return f'{{{self.head}{self.anchor.dumps()}{_features}}}'
 
 ################################################################################################################################
 
@@ -59,9 +59,9 @@ class EhnParseFunctionEntity(EhnParseEntityBase, EhnParseFunctionHead, EhnParseF
         yield self.function
         yield from self.features
 
-    def decode(self):
-        _features = ':' + ','.join(feature.decode() for feature in self.features) if self.features else ''
-        return f'{{{self.function.decode()}{self.anchor.decode()}{_features}}}'
+    def dumps(self):
+        _features = ':' + ','.join(feature.dumps() for feature in self.features) if self.features else ''
+        return f'{{{self.function.dumps()}{self.anchor.dumps()}{_features}}}'
 
 ################################################################################################################################
 
@@ -80,7 +80,7 @@ class EhnParseNameEntity(EhnParseEntityBase, EhnParseStrHead):
     def children(self):
         return []
 
-    def decode(self):
+    def dumps(self):
         return f'{{"{self.head}"}}'
 
 ################################################################################################################################
@@ -100,5 +100,5 @@ class EhnParseNumberEntity(EhnParseEntityBase, EhnParseStrHead):
     def children(self):
         return []
 
-    def decode(self):
+    def dumps(self):
         return f'{{{self.head}}}'

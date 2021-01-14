@@ -67,7 +67,7 @@ Node Prototype
 
       Yields all descendant nodes (including self) of this node.
 
-   .. method:: decode()
+   .. method:: dumps()
 
       Converts to text representation.
 

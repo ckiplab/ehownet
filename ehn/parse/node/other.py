@@ -44,8 +44,8 @@ class EhnParseSubject(EhnParseSubjectBase, EhnParseFeatureBody, EhnParseAnchorBo
     def children(self):
         yield from self.features
 
-    def decode(self):
-        return ','.join(feature.decode() for feature in self.features) if self.features else ''
+    def dumps(self):
+        return ','.join(feature.dumps() for feature in self.features) if self.features else ''
 
 ################################################################################################################################
 # Function
@@ -65,6 +65,6 @@ class EhnParseFunction(EhnParseFunctionBase, EhnParseArgumentBody, EhnParseStrHe
     def children(self):
         yield from self.arguments
 
-    def decode(self):
-        _arguments = ','.join(argument.decode() for argument in self.arguments)
+    def dumps(self):
+        _arguments = ','.join(argument.dumps() for argument in self.arguments)
         return f'{self.head}({_arguments})'

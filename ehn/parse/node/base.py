@@ -37,7 +37,7 @@ class EhnParseTree(_Tree):
     def to_str(self, *args, data_property='_tree_label', **kwargs):
         def write(line):
             nonlocal ret
-            ret += line.decode() + '\n'
+            ret += line.dumps() + '\n'
         ret = ''
         self._Tree__print_backend(*args, data_property=data_property, **kwargs, func=write)  # pylint: disable=no-member
         return ret
@@ -58,7 +58,7 @@ class EhnParseNode(metaclass=_ABCMeta):
         return NotImplemented
 
     @_abstractmethod
-    def decode(self):
+    def dumps(self):
         return NotImplemented
 
     @property
@@ -158,7 +158,7 @@ class EhnParseAnchor:
     def __repr__(self):
         return str(self)
 
-    def decode(self):
+    def dumps(self):
         return f'_{self.head}' if self.head else ''
 
 ################################################################################################################################

@@ -40,8 +40,8 @@ class EhnParseRestrictionPlaceholder(EhnParsePlaceholderBase, EhnParseValueBody,
     def children(self):
         yield self.value
 
-    def decode(self):
-        return f'/{self.value.decode()}{self.anchor.decode()}'
+    def dumps(self):
+        return f'/{self.value.dumps()}{self.anchor.dumps()}'
 
 ################################################################################################################################
 # Any
@@ -67,5 +67,5 @@ class EhnParseAnyPlaceholder(EhnParsePlaceholderBase):
         return []
 
     @staticmethod
-    def decode():
+    def dumps():
         return '{}'

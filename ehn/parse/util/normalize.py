@@ -25,10 +25,10 @@ def normalize(root):
     root = replace_tilde(root)
 
     old_defn = None
-    new_defn = root.decode()
+    new_defn = root.dumps()
     while old_defn != new_defn:
         old_defn = new_defn
         root = sort_coindex(root)
         root = sort_node(root)
-        new_defn = root.decode()
+        new_defn = root.dumps()
     return root

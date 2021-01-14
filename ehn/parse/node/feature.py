@@ -35,8 +35,8 @@ class EhnParseNormalFeature(EhnParseFeatureBase, EhnParseStrHead, EhnParseValueB
     def children(self):
         yield self.value
 
-    def decode(self):
-        return f'{self.head}={self.value.decode()}'
+    def dumps(self):
+        return f'{self.head}={self.value.dumps()}'
 
 ################################################################################################################################
 
@@ -55,5 +55,5 @@ class EhnParseFunctionFeature(EhnParseFeatureBase, EhnParseFunctionHead, EhnPars
         yield self.function
         yield self.value
 
-    def decode(self):
-        return f'{self.function.decode()}={self.value.decode()}'
+    def dumps(self):
+        return f'{self.function.dumps()}={self.value.dumps()}'
