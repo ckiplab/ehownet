@@ -96,8 +96,11 @@ class EhnParseNode(metaclass=_ABCMeta):
 
     #################################################################################
 
-    def get_features(self):
-        return getattr(self, 'features', [])
+    def get_features(self, key = None):
+        if key and hasattr(self, '_featuremap'):
+            return self.get(key)
+        else:
+            return getattr(self, 'features', [])
 
     def get_arguments(self):
         return getattr(self, 'arguments', [])
