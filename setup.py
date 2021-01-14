@@ -41,8 +41,8 @@ def main():
         packages=find_namespace_packages(include=['ehn', 'ehn.*',]),
         install_requires=[
             'ply>=3.11',
-            'treelib>=1.5.5',
-            'wcwidth>=0.1.7',
+            'treelib>=1.6.0',
+            'wcwidth>=0.2.5',
         ],
         entry_points={
             'console_scripts': [

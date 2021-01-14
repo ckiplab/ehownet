@@ -72,8 +72,8 @@ Requirements
 
 * `Python <https://www.python.org>`__ 3.6+
 * `PLY (Python Lex-Yacc) <https://www.dabeaz.com/ply>`__ 3.11+
-* `TreeLib <https://pypi.org/project/treelib>`__ 1.5.5+
-* `wcwidth <https://pypi.org/project/wcwidth>`__ 0.1.7+
+* `TreeLib <https://pypi.org/project/treelib>`__ 1.6.0+
+* `wcwidth <https://pypi.org/project/wcwidth>`__ 0.2.5+
 
 Installation
 ------------
