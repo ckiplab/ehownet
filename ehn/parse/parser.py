@@ -216,9 +216,12 @@ class _EhnParser:
 
     # Reference
     def p_reference_coindex(self, p):
-        '''reference : LBRACE COINDEX RBRACE
-                     | LBRACE COINDEX0 RBRACE'''
+        '''reference : LBRACE COINDEX RBRACE'''
         p[0] = _node.EhnParseCoindexReference(p[2])
+
+    def p_reference_subject(self, p):
+        '''reference : LBRACE COINDEX0 RBRACE'''
+        p[0] = _node.EhnParseSubjectReference()
 
     def p_reference_tilde(self, p):
         '''reference : LBRACE TILDE RBRACE'''

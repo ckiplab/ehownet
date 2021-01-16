@@ -33,7 +33,7 @@ class EhnParseCoindexReference(EhnParseReferenceBase, EhnParseStrHead):
 
     @property
     def _tree_label(self):
-        return f'${self.head}'
+        return f'[Reference] ${self.head}'
 
     def dumps(self):
         return f'{{{self.head}}}'
@@ -56,6 +56,10 @@ class EhnParseSubjectReference(EhnParseReferenceBase):
 
     def children(self):
         return []
+
+    @property
+    def _tree_label(self):
+        return f'[SubjectReference] $x?'
 
     @staticmethod
     def dumps():
