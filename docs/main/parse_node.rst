@@ -35,9 +35,11 @@ Node Prototype
 
       The head of this node.
 
-   .. method:: get_features()
+   .. method:: get_features(key=None)
 
       Get the features (or ``[]`` if not exists).
+
+      If **key** is set, returns only the features with **feature.head==key**.
 
    .. method:: get_arguments()
 

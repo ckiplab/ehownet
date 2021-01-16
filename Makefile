@@ -16,7 +16,7 @@ sdist bdist_wheel:
 	$(PY) setup.py $@
 
 lint:
-	$(LINT) ckip_transformers
+	$(LINT) ehn
 
 check:
 	$(TWINE) check dist/*
