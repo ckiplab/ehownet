@@ -17,7 +17,6 @@ from abc import (
 )
 
 from collections.abc import (
-    Mapping as _Mapping,
     Sequence as _Sequence,
 )
 
