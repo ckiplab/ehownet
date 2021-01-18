@@ -40,6 +40,7 @@ def main():
         ],
         packages=find_namespace_packages(include=['ehn', 'ehn.*',]),
         install_requires=[
+            'dataclasses>=0.8',
             'ply>=3.11',
             'treelib>=1.6.0',
             'wcwidth>=0.2.5',

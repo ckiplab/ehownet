@@ -7,20 +7,18 @@ __copyright__ = '2018-2020 CKIP Lab'
 # pylint: disable=too-few-public-methods
 
 from ..parse.node import (
-    EhnParseNameEntity,
-    EhnParseNumberEntity,
     EhnParsePlaceholderBase,
 )
 
 ################################################################################################################################
 
-class BaseGraphBuilder:
+class StandardGraphBuilder:
 
     def __init__(self):
         pass
 
     def __call__(self, root):
-        worker = BaseGraphBuilderWorker(root)
+        worker = StandardGraphBuilderWorker(root)
         return dict(
             nodes=worker.nodes,
             edges=worker.edges,
@@ -29,7 +27,7 @@ class BaseGraphBuilder:
             root_id=worker.root_id,
         )
 
-class BaseGraphBuilderWorker:
+class StandardGraphBuilderWorker:
 
 
     def __init__(self, root):
@@ -53,7 +51,9 @@ class BaseGraphBuilderWorker:
         if isinstance(node, EhnParsePlaceholderBase):
             if node.value is not None:
                 tail_id = self.expand_entity(node.value)
-                self.restrictions.append((node_id, tail_id,))
+            else:
+                tail_id = None
+            self.restrictions.append((node_id, tail_id,))
 
         # Entity
         else:
