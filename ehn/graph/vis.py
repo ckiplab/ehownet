@@ -1,10 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
+"""
+Please refer the tutorial ":ref:`tutorial-graph`".
+"""
+
 __author__ = 'Mu Yang <http://muyang.pro>'
 __copyright__ = '2018-2020 CKIP Lab'
 
 # pylint: disable=too-few-public-methods
+
+from dataclasses import (
+    dataclass,
+)
 
 from ..parse.node import (
     EhnParseFunction,
@@ -14,19 +22,31 @@ from ..parse.node import (
 
 ################################################################################################################################
 
-class VisGraphBuilder:
+@dataclass
+class EhnVisGraph:
+    """The E-HowNet graph for vis.js."""
 
-    def __init__(self, definite_labels):
-        self.definite_labels = definite_labels
+    nodes: dict
+    edges: list
+
+class EhnVisGraphBuilder:
+    """The E-HowNet graph builder for vis.js."""
+
+    def __init__(self, definite_labels = None):
+        if definite_labels is not None:
+            self.definite_labels = definite_labels
+        else:
+            self.definite_labels = set()
 
     def __call__(self, root, label):
-        worker = VisGraphBuilderWorker(root, label, definite_labels=self.definite_labels)
-        return dict(
+        worker = EhnVisGraphBuilderWorker(root, label, definite_labels=self.definite_labels)
+        return EhnVisGraph(
             nodes=worker.nodes,
             edges=worker.edges,
         )
 
-class VisGraphBuilderWorker:
+class EhnVisGraphBuilderWorker:
+    """The E-HowNet graph builder worker for vis.js."""
 
     def __init__(self, root, label, *, definite_labels):
         self.definite_labels = definite_labels

@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
+"""
+Please refer the tutorial ":ref:`tutorial-parse_parser`".
+"""
+
 # pylint: disable=invalid-name, no-self-use
 
 __author__ = 'Mu Yang <http://muyang.pro>'

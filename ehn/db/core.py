@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
+"""
+Please refer the tutorial ":ref:`tutorial-db`".
+"""
 
 __author__ = 'Mu Yang <http://muyang.pro>'
 __copyright__ = '2018-2020 CKIP Lab'
@@ -9,81 +12,25 @@ import os
 import sqlite3
 import warnings
 
-from enum import (
-    Enum,
-)
-
 from collections import (
     defaultdict,
 )
 
-from dataclasses import (
-    dataclass,
-    field,
-)
-
-from typing import (
-    List,
-)
-
 from treelib import (
-    Node,
     Tree,
 )
 
-################################################################################################################################
-
-class EhnDbNodeType(Enum):
-    C = 'C'  #: concept.
-    W = 'W'  #: word.
-
-@dataclass
-class EhnDbWordData:
-
-    word: str  #: the word.
-    sense_no: int  #: the sense number.
-
-    def __repr__(self):
-        return f'<Word {self.word}#{self.sense_no}>'
-
-@dataclass
-class EhnDbNodeData:
-
-    type: EhnDbNodeType  #: the node type.
-    defn: str = None  #: the definition.
-    words: List[EhnDbWordData] = field(default_factory=list)  #: the attached words.
-    definite: bool = False  #: whether is an instance of not.
-
-class EhnDbNode(Node):
-
-    data_class = EhnDbNodeData
-
-    @property
-    def nid(self):
-        return self.identifier
-
-    @property
-    def label(self):
-        return self.tag
-
-    @property
-    def defn(self):
-        return self.data.defn
-
-    @property
-    def type(self):
-        return self.data.type
-
-    @property
-    def words(self):
-        return self.data.words
-
-    def __repr__(self):
-        return f'<Node#{self.nid} "{self.label}">'
+from .data import (
+    EhnDbNode,
+    EhnDbNodeData,
+    EhnDbNodeType,
+    EhnDbWordData,
+)
 
 ################################################################################################################################
 
 class EhnDb:
+    """E-HowNet Database."""
 
     def __init__(self, *, db_file='data/db/ehn.db'):
 

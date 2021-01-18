@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 """
-Please refer the tutorial ":ref:`main-parse_node`".
+Please refer the tutorial ":ref:`tutorial-parse_node`".
 """
 
 __author__ = 'Mu Yang <http://muyang.pro>'

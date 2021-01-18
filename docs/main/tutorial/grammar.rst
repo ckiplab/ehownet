@@ -1,5 +1,7 @@
-E-HowNet Grammar
-================
+.. _tutorial-grammer:
+
+Grammar
+=======
 
 This section describes the grammar of the E-HowNet expression.
 

@@ -1,4 +1,4 @@
-.. _main-parse_node:
+.. _tutorial-parse_node:
 
 Parse Nodes
 ===========
@@ -29,6 +29,8 @@ Node Prototype
    :noindex:
 
    The prototype of E-HowNet parsing nodes.
+
+   See also: :class:`ehn.parse.node.base.EhnParseNode`
 
    .. attribute:: head
       :type: str
@@ -88,6 +90,8 @@ Entity
 
    The base class of E-HowNet parsing entity nodes.
 
+   See also: :class:`ehn.parse.node.base.EhnParseEntityBase`
+
    Subclasses:
 
       - :class:`~ehn.parse.node.entity.EhnParseNormalEntity` A normal entity. Can be an `anchor <#anchor-body>`__.
@@ -108,6 +112,8 @@ Reference
 
    The base class of E-HowNet parsing reference nodes.
 
+   See also: :class:`ehn.parse.node.base.EhnParseReferenceBase`
+
    Subclasses:
 
       - :class:`~ehn.parse.node.reference.EhnParseCoindexReference` An entity refers to an anchor entity.
@@ -121,6 +127,8 @@ Placeholder
    :noindex:
 
    The base class of E-HowNet parsing restriction nodes.
+
+   See also: :class:`ehn.parse.node.base.EhnParsePlaceholderBase`
 
    Subclasses:
 
@@ -143,6 +151,8 @@ Feature
 
    The base class of E-HowNet parsing feature nodes.
 
+   See also: :class:`ehn.parse.node.base.EhnParseFeatureBase`
+
    Subclasses:
 
       - :class:`~ehn.parse.node.feature.EhnParseNormalFeature` A normal feature.
@@ -161,6 +171,8 @@ Function
 
    The base class of E-HowNet parsing function nodes.
 
+   See also: :class:`ehn.parse.node.base.EhnParseFunctionBase`
+
    Subclasses:
 
       - :class:`~ehn.parse.node.function.EhnParseFunction`.
@@ -177,6 +189,8 @@ Subject
    :noindex:
 
    The base class of E-HowNet parsing unmentioned subject nodes. Works similar to entities but is not an entity. Used only in feature-based expressions.
+
+   See also: :class:`ehn.parse.node.base.EhnParseSubjectBase`
 
    Subclasses:
 
@@ -200,6 +214,8 @@ Function Head
 
    Note that the attribute **obj.head** of this object **obj** returns **obj.function.head**.
 
+   See also: :class:`ehn.parse.node.base.EhnParseFunctionHead`
+
    Subclasses:
 
       - :class:`~ehn.parse.node.entity.EhnParseFunctionEntity`
@@ -217,6 +233,8 @@ Anchor Body
    :noindex:
 
    The base class of anchor nodes.
+
+   See also: :class:`ehn.parse.node.base.EhnParseAnchorBody`
 
    Subclasses:
 
@@ -236,6 +254,8 @@ Anchor
    :noindex:
 
    The coindex target.
+
+   See also: :class:`ehn.parse.node.base.EhnParseAnchor`
 
    .. attribute:: head
       :type: str

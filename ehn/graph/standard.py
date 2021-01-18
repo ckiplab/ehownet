@@ -1,10 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
+"""
+Please refer the tutorial ":ref:`tutorial-graph`".
+"""
+
 __author__ = 'Mu Yang <http://muyang.pro>'
 __copyright__ = '2018-2020 CKIP Lab'
 
 # pylint: disable=too-few-public-methods
+
+from dataclasses import (
+    dataclass,
+)
 
 from ..parse.node import (
     EhnParsePlaceholderBase,
@@ -12,14 +20,25 @@ from ..parse.node import (
 
 ################################################################################################################################
 
-class StandardGraphBuilder:
+@dataclass
+class EhnStandardGraph:
+    """The standard E-HowNet graph."""
+
+    nodes: dict
+    edges: list
+    functions: list
+    restrictions: list
+    root_id: int
+
+class EhnStandardGraphBuilder:
+    """The standard E-HowNet graph builder."""
 
     def __init__(self):
         pass
 
     def __call__(self, root):
-        worker = StandardGraphBuilderWorker(root)
-        return dict(
+        worker = EhnStandardGraphBuilderWorker(root)
+        return EhnStandardGraph(
             nodes=worker.nodes,
             edges=worker.edges,
             functions=worker.functions,
@@ -27,8 +46,8 @@ class StandardGraphBuilder:
             root_id=worker.root_id,
         )
 
-class StandardGraphBuilderWorker:
-
+class EhnStandardGraphBuilderWorker:
+    """The standard E-HowNet graph builder worker."""
 
     def __init__(self, root):
         self.nodes = {}

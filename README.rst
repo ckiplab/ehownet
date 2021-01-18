@@ -72,7 +72,8 @@ Requirements
 
 * `Python <https://www.python.org>`__ 3.6+
 * `PLY (Python Lex-Yacc) <https://www.dabeaz.com/ply>`__ 3.11+
-* `TreeLib <https://pypi.org/project/treelib>`__ 1.6.0+
+* `TreeLib <https://treelib.readthedocs.io>`__ 1.6.0+
+* `dataclasses <https://pypi.org/project/dataclasses/>`__ 0.8+
 * `wcwidth <https://pypi.org/project/wcwidth>`__ 0.2.5+
 
 Installation
@@ -85,92 +86,7 @@ Installation
 Usage
 =====
 
-- See https://ehownet.readthedocs.io/en/latest/main/grammar.html for E-HowNet grammar.
-- See https://ehownet.readthedocs.io/en/latest/main/parse_node.html for E-HowNet parsing nodes usage.
-
-E-HowNet Parser
----------------
-
-CLI
-^^^
-
-.. code-block:: bash
-
-   # Usage
-   ehn-parser <text> [<text> ...]
-
-   # Example
-   ehn-parser \
-      "{MusicTool|樂器_x:predication={own|有:possession={按鈕|PushingButton:whole={x}}}}" \
-      "{InstitutePlace|場所:telic={or({experiment|實驗:location={~}},{research|研究:location={~}})}}" \
-      "TimePoint={},manner={urgent|急}" \
-      "direction={toward()}"
-
-Output:
-
-.. code-block::
-
-   #1
-   [Entity $x] MusicTool|樂器
-   └── [Feature] predication
-       └── [Entity] own|有
-           └── [Feature] possession
-               └── [Entity] 按鈕|PushingButton
-                   └── [Feature] whole
-                       └── $x
-
-   #2
-   [Entity] InstitutePlace|場所
-   └── [Feature] telic
-       └── [FunctionEntity]
-           └── [Function] or
-               ├── [Entity] experiment|實驗
-               │   └── [Feature] location
-               │       └── [Tilde]
-               └── [Entity] research|研究
-                   └── [Feature] location
-                       └── [Tilde]
-
-   #3
-   [Subject $x?]
-   ├── [Feature] TimePoint
-   │   └── [Any]
-   └── [Feature] manner
-       └── [Entity] urgent|急
-
-   #4
-   [Subject $x?]
-   └── [Feature] direction
-       └── [FunctionEntity]
-           └── [Function] toward
-               └── [Any]
-
-
-Python API
-^^^^^^^^^^
-
-.. code-block:: python
-
-   from ehn.parse import EhnParser
-
-   text = '{MusicTool|樂器_x:predication={own|有:possession={按鈕|PushingButton:whole={x}}}}'
-
-   parser = EhnParser()
-   ress = parser(text, debug=False)
-   for res in ress:
-      res.tree().show()
-
-Output:
-
-.. code-block::
-
-   [Entity $x] MusicTool|樂器
-   └── [Feature] predication
-       └── [Entity] own|有
-           └── [Feature] possession
-               └── [Entity] 按鈕|PushingButton
-                   └── [Feature] whole
-                       └── $x
+- See https://ehownet.readthedocs.io/en/latest/main/tutorial.html for the package usage.
 
 License
 =======

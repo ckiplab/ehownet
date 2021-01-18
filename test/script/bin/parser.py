@@ -18,23 +18,21 @@ def _test(text, result):
         parser_main([text])
         output = buf.getvalue()
 
-    print(output)
-
     assert output == result
 
 ################################################################################################################################
 
 def test_1():
 
-    text = '{MusicTool|樂器_x:predication={own|有:possession={按鈕|PushingButton:whole={x}}}}'
+    text = '{MusicTool|樂器_x1:predication={own|有:possession={按鈕|PushingButton:whole={x1}}}}'
     result = '''#1
-[Entity $x] MusicTool|樂器
+[Entity $x1] MusicTool|樂器
 └── [Feature] predication
     └── [Entity] own|有
         └── [Feature] possession
             └── [Entity] 按鈕|PushingButton
                 └── [Feature] whole
-                    └── [Reference] $x\n\n'''
+                    └── [Reference] $x1\n\n'''
     _test(text, result)
 
 ################################################################################################################################
@@ -59,19 +57,6 @@ def test_2():
 
 def test_3():
 
-    text = 'TimePoint={},manner={urgent|急}'
-    result = '''#1
-[Subject $x?]
-├── [Feature] TimePoint
-│   └── [Any]
-└── [Feature] manner
-    └── [Entity] urgent|急\n\n'''
-    _test(text, result)
-
-################################################################################################################################
-
-def test_4():
-
     text = '{festival|節:TimePoint={x?},telic={congratulate|祝賀:content={year|年:qualification={new|新}}}}'
     result = '''#1
 [Entity] festival|節
@@ -83,4 +68,31 @@ def test_4():
             └── [Entity] year|年
                 └── [Feature] qualification
                     └── [Entity] new|新\n\n'''
+    _test(text, result)
+
+################################################################################################################################
+
+def test_4():
+
+    text = 'TimePoint={},manner={urgent|急}'
+    result = '''#1
+[Subject $x?]
+├── [Feature] TimePoint
+│   └── [Any]
+└── [Feature] manner
+    └── [Entity] urgent|急\n\n'''
+    _test(text, result)
+
+
+################################################################################################################################
+
+def test_5():
+
+    text = 'direction={toward()}'
+    result = '''#1
+[Subject $x?]
+└── [Feature] direction
+    └── [FunctionEntity]
+        └── [Function] toward
+            └── [Any]\n\n'''
     _test(text, result)
