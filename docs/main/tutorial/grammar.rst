@@ -51,9 +51,13 @@ Entities are basic elements in E-HowNet definition.
 
    - Description:
 
-      - ``TEXT`` is the head (the name of the inherited concept) of this entity.
+      - ``TEXT`` is the head (the label of the inherited concept) of this entity.
       - ``FEATURE``\ s are the additional features to this entity.
       - ``COINDEX`` is the anchor of this entity for further reference.
+
+   - Example:
+
+      {human|人:kind={other|另}}
 
 - :class:`~ehn.parse.node.entity.EhnParseFunctionEntity`
 
@@ -86,7 +90,7 @@ Entities are basic elements in E-HowNet definition.
 
       - ``{country|國家:location={Europe|歐洲},quantifier={definite|定指},name={"英國"}}``
 
-         The name of this country is "英國".
+         The name of this country is **英國**.
 
 - :class:`~ehn.parse.node.entity.EhnParseNumberEntity`
 
@@ -95,6 +99,12 @@ Entities are basic elements in E-HowNet definition.
    - Syntaxes:
 
       - ``{NUMBER}``
+
+   - Example:
+
+      - ``{month|月:sequence={1}}``
+
+         The sequence of this mouth if **1**.
 
 Reference
 ^^^^^^^^^
@@ -118,7 +128,11 @@ References refer to other entities.
 
       - ``{A_x1:r={B:b={x1}}}``
 
-         ``{x1}`` refers to ``{A_x1:...}``
+         ``{x1}`` refers to ``{A_x1:...}``.
+
+      - ``{vehicle|交通工具_x1:predication={fly|飛:theme={x1}}}``
+
+         ``{x1}`` refers to ``{vehicle|交通工具_x1:...}``.
 
 - :class:`~ehn.parse.node.reference.EhnParseSubjectReference`
 
@@ -132,7 +146,11 @@ References refer to other entities.
 
       - ``r={B:b={x?}}``
 
-         ``{x?}`` refers the unmentioned subject entity ``S`` with the following attribute ``{S_x1:r={B:b={x1}}}``.
+         ``{x?}`` refers to the unmentioned subject entity ``S`` with the following attribute ``{S_x1:r={B:b={x1}}}``.
+
+      - 現役: ``predication={當兵|ServeInArmy:agent={x?},aspect={Vgoingon|進展}}``
+
+         ``{x?}`` refers to the unmentioned subject entity ``S``. For example, the word **軍人** of **現役軍人**.
 
 - :class:`~ehn.parse.node.reference.EhnParseTildeReference`
 
@@ -146,7 +164,11 @@ References refer to other entities.
 
       - ``{A:r={B:b={~}}}``
 
-         ``{~}`` refers to ``{A:...}``
+         ``{~}`` refers to ``{A:...}``.
+
+      - ``{vehicle|交通工具_x1:predication={fly|飛:theme={~}}}``
+
+         ``{~}`` refers to the root entity ``{vehicle|交通工具_x1:...}``.
 
    .. note::
 
@@ -170,6 +192,12 @@ Placeholders represent any entities under the given restriction.
 
       - ``ENTITY`` shows that this node can be replace by any hyponymy/instance(s) of the ``ENTITY``.
       - ``COINDEX`` is the anchor of this restriction for further reference.
+
+   - Example:
+
+      - ``{CentrePart(/{place|地方})}``
+
+         The argument of **CentrePart** must be a hyponymy/instance of **place|地方**.
 
 - :class:`~ehn.parse.node.placeholder.EhnParseAnyPlaceholder`
 
@@ -210,9 +238,16 @@ Features provides extra information to entities.
       - ``TEXT`` is the head (the name) of the this feature.
       - ``ENTITY``/``RESTRICTION`` is the value of this feature.
 
+   - Example:
+
+      - ``{thing|萬物:qualification={concrete|具體}}``
+
+         The **qualification** of **thing|萬物** is **concrete|具體**.
+         Here ``qualification={concrete|具體}`` is a normal feature.
+
 - :class:`~ehn.parse.node.feature.EhnParseFunctionFeature`
 
-   A normal feature.
+   A function feature.
 
    - Syntaxes:
 
@@ -224,6 +259,13 @@ Features provides extra information to entities.
    - Description:
 
       Similar to normal feature, but replace the head by a function (``FUNCTION``) of entity/entities.
+
+   - Example:
+
+      - ``{animate|生物:ability({SelfMove|自移})={very|很}}``
+
+         The **ability** of **SelfMove|自移** of **animate|生物** is **very|很**.
+         Here ``ability({SelfMove|自移})={very|很}`` is a function feature.
 
 Function
 ^^^^^^^^

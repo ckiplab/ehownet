@@ -62,6 +62,12 @@ https://ehownet.readthedocs.io/
 .. |ReadTheDocs Home| image:: https://img.shields.io/website/https/ehownet.readthedocs.io.svg?maxAge=3600&up_message=online&down_message=offline
    :target: https://ehownet.readthedocs.io
 
+Related Websites
+----------------
+
+- E-HowNet Website http://ehownet.iis.sinica.edu.tw
+- E-HowNet Visualization Demo https://ckip.iis.sinica.edu.tw/service/ehnvis
+
 Author
 ------
 
@@ -82,11 +88,6 @@ Installation
 .. code-block:: bash
 
    pip install -U ehownet
-
-Usage
-=====
-
-- See https://ehownet.readthedocs.io/en/latest/main/tutorial.html for the package usage.
 
 License
 =======
