@@ -3,6 +3,7 @@
 
 __author__ = 'Mu Yang <http://muyang.pro>'
 __copyright__ = '2018-2020 CKIP Lab'
+__license__ = 'GPL-3.0'
 
 from setuptools import setup, find_namespace_packages
 import ehn as about
