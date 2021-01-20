@@ -90,7 +90,7 @@ Installation
    pip install -U ehownet
 
 License
-=======
+-------
 
 |GPL-3.0|
 
