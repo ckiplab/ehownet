@@ -33,7 +33,7 @@ class EhnVisGraph:
 class EhnVisGraphBuilder:
     """The E-HowNet graph builder for vis.js."""
 
-    def __init__(self, definite_labels = None):
+    def __init__(self, definite_labels=None):
         if definite_labels is not None:
             self.definite_labels = definite_labels
         else:
