@@ -5,7 +5,7 @@ Database
 
 This section describes the E-HowNet database.
 
-.. class:: EhnDb(db_file='data/db/ehn.db')
+.. class:: EhnDb(*, db_file)
    :noindex:
 
    The E-HowNet database.

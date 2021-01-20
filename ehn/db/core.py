@@ -33,7 +33,7 @@ from .data import (
 class EhnDb:
     """E-HowNet Database."""
 
-    def __init__(self, *, db_file='data/db/ehn.db'):
+    def __init__(self, *, db_file):
 
         assert os.path.isfile(db_file), f'{db_file} is not a file!'
 
