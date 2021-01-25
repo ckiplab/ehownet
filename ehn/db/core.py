@@ -33,8 +33,10 @@ from .data import (
 class EhnDb:
     """E-HowNet Database."""
 
-    def __init__(self, *, db_file):
+    def __init__(self, *, db_file=None):
 
+        assert db_file is not None, \
+            'Please download the database file manually from https://ckip.iis.sinica.edu.tw/CKIP/ehownet_reg/'
         assert os.path.isfile(db_file), f'{db_file} is not a file!'
 
         self.tree = Tree(node_class=EhnDbNode)

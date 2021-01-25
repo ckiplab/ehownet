@@ -89,6 +89,8 @@ Installation
 
    pip install -U ehownet
 
+One may download the database file manually from https://ckip.iis.sinica.edu.tw/CKIP/ehownet_reg/ .
+
 License
 -------
 
