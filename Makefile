@@ -36,3 +36,4 @@ clean:
 	- ( cd test && make clean )
 	- $(PY) setup.py clean -a
 	- $(RM) build dist *.egg-info __pycache__
+	- $(RM) code/ehn/parse/parsetab.py
