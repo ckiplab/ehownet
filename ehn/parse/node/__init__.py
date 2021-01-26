@@ -2,30 +2,40 @@
 # -*- coding:utf-8 -*-
 
 """
-Please refer the tutorial ":ref:`main-parse_node`".
+Please refer the tutorial ":ref:`tutorial-parse_node`".
 """
 
 __author__ = 'Mu Yang <http://muyang.pro>'
 __copyright__ = '2018-2020 CKIP Lab'
+__license__ = 'GPL-3.0'
 
 from .base import (
     EhnParseNode,
+    EhnParseEntityLike,
     EhnParseEntityBase,
+    EhnParseReferenceBase,
+    EhnParsePlaceholderBase,
     EhnParseFeatureBase,
     EhnParseFunctionBase,
-    EhnParseRestrictionBase,
-    EhnParseRootBase,
     EhnParseAnchor,
 )
 
 from .entity import (
     EhnParseNormalEntity,
     EhnParseFunctionEntity,
-    EhnParseAnyEntity,
-    EhnParseTildeEntity,
     EhnParseNameEntity,
     EhnParseNumberEntity,
-    EhnParseCoindexEntity,
+)
+
+from .reference import (
+    EhnParseCoindexReference,
+    EhnParseSubjectReference,
+    EhnParseTildeReference,
+)
+
+from .placeholder import (
+    EhnParseRestrictionPlaceholder,
+    EhnParseAnyPlaceholder,
 )
 
 from .feature import (
@@ -34,7 +44,6 @@ from .feature import (
 )
 
 from .other import (
-    EhnParseRoot,
+    EhnParseSubject,
     EhnParseFunction,
-    EhnParseRestriction,
 )

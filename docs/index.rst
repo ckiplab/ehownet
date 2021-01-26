@@ -8,11 +8,10 @@ CKIP E-HowNet
    main/readme
 
 .. toctree::
-   :caption: Tutorial
+   :caption: Tutorials
    :maxdepth: 2
 
-   main/grammar
-   main/parse_node
+   main/tutorial
 
 .. toctree::
    :maxdepth: 2

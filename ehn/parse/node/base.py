@@ -2,11 +2,12 @@
 # -*- coding:utf-8 -*-
 
 """
-Please refer the tutorial ":ref:`main-parse_node`".
+Please refer the tutorial ":ref:`tutorial-parse_node`".
 """
 
 __author__ = 'Mu Yang <http://muyang.pro>'
 __copyright__ = '2018-2020 CKIP Lab'
+__license__ = 'GPL-3.0'
 
 # pylint: disable=protected-access
 # pylint: disable=too-few-public-methods
@@ -16,13 +17,30 @@ from abc import (
     abstractmethod as _abstractmethod,
 )
 
-from collections import (
-    defaultdict as _defaultdict,
+from collections.abc import (
+    Sequence as _Sequence,
 )
 
 from treelib import (
     Tree as _Tree,
 )
+
+################################################################################################################################
+# Tree
+#
+class EhnParseTree(_Tree):
+
+    def show(self, *args, data_property='_tree_label', **kwargs):  # pylint: disable=arguments-differ
+        """Print the tree structure."""
+        super().show(*args, data_property=data_property, **kwargs)
+
+    def to_str(self, *args, data_property='_tree_label', **kwargs):
+        def write(line):
+            nonlocal ret
+            ret += line.decode() + '\n'
+        ret = ''
+        self._Tree__print_backend(*args, data_property=data_property, **kwargs, func=write)  # pylint: disable=no-member
+        return ret
 
 ################################################################################################################################
 # Base
@@ -40,7 +58,7 @@ class EhnParseNode(metaclass=_ABCMeta):
         return NotImplemented
 
     @_abstractmethod
-    def decode(self):
+    def dumps(self):
         return NotImplemented
 
     @property
@@ -52,13 +70,8 @@ class EhnParseNode(metaclass=_ABCMeta):
     def __str__(self):
         return f'<{self.__class__.__name__} {self.head}>'  # pylint: disable=no-member
 
-    # def __str__(self):
-    #     def write(line):
-    #         nonlocal ret
-    #         ret += line.decode() + '\n'
-    #     ret = ''
-    #     self.tree()._Tree__print_backend(data_property='_tree_label', func=write)
-    #     return ret
+    def __repr__(self):
+        return str(self)
 
     #################################################################################
 
@@ -83,8 +96,9 @@ class EhnParseNode(metaclass=_ABCMeta):
 
     #################################################################################
 
-    def get_features(self):
-        return getattr(self, 'features', [])
+    def get_features(self, key=None):
+        res = getattr(self, 'features', [])
+        return res if not key else [feature for feature in res if feature.head == key]
 
     def get_arguments(self):
         return getattr(self, 'arguments', [])
@@ -98,21 +112,24 @@ class EhnParseNode(metaclass=_ABCMeta):
     def get_anchor(self):
         return getattr(self, 'anchor', None)
 
-################################################################################################################################
-# Tree
-#
-class EhnParseTree(_Tree):
-
-    def show(self, *args, data_property='_tree_label', **kwargs):  # pylint: disable=arguments-differ
-        super().show(*args, data_property=data_property, **kwargs)
-
+    def get_coindex(self):
+        return getattr(self.get_anchor(), 'head', None)
 
 ################################################################################################################################
 # Base Types
 #
 
-class EhnParseEntityBase(EhnParseNode):  # pylint: disable=abstract-method
+class EhnParseEntityLike(EhnParseNode):  # pylint: disable=abstract-method
+    """E-HowNet Parsing: Entity Like Node"""
+
+class EhnParseEntityBase(EhnParseEntityLike):  # pylint: disable=abstract-method
     """E-HowNet Parsing: Base Entity Node"""
+
+class EhnParseReferenceBase(EhnParseEntityLike):  # pylint: disable=abstract-method
+    """E-HowNet Parsing: Base Reference Node"""
+
+class EhnParsePlaceholderBase(EhnParseEntityLike):  # pylint: disable=abstract-method
+    """E-HowNet Parsing: Base Placeholder Node"""
 
 class EhnParseFeatureBase(EhnParseNode):  # pylint: disable=abstract-method
     """E-HowNet Parsing: Base Feature Node"""
@@ -120,11 +137,8 @@ class EhnParseFeatureBase(EhnParseNode):  # pylint: disable=abstract-method
 class EhnParseFunctionBase(EhnParseNode):  # pylint: disable=abstract-method
     """E-HowNet Parsing: Base Function Node"""
 
-class EhnParseRestrictionBase(EhnParseNode):  # pylint: disable=abstract-method
-    """E-HowNet Parsing: Base Function Node"""
-
-class EhnParseRootBase(EhnParseNode):  # pylint: disable=abstract-method
-    """E-HowNet Parsing: Base Root Node"""
+class EhnParseSubjectBase(EhnParseNode):  # pylint: disable=abstract-method
+    """E-HowNet Parsing: Base Subject Node"""
 
 ################################################################################################################################
 # Anchor
@@ -142,7 +156,7 @@ class EhnParseAnchor:
     def __repr__(self):
         return str(self)
 
-    def decode(self):
+    def dumps(self):
         return f'_{self.head}' if self.head else ''
 
 ################################################################################################################################
@@ -213,7 +227,7 @@ class EhnParseValueBody(metaclass=_ABCMeta):
         assert isinstance(value, self.value_type), f'‘{value}’ is not a {self.value_type}!'
         self._value = value  # pylint: disable=attribute-defined-outside-init
 
-class EhnParseFeatureBody(metaclass=_ABCMeta):
+class EhnParseFeatureBody(_Sequence, metaclass=_ABCMeta):
     """E-HowNet Parsing: Base Node with Feature"""
 
     @property
@@ -222,7 +236,6 @@ class EhnParseFeatureBody(metaclass=_ABCMeta):
         return NotImplemented
 
     def __init__(self, *features):
-        self._featuremap = _defaultdict(list)
         self.features = features
 
     @property
@@ -238,12 +251,14 @@ class EhnParseFeatureBody(metaclass=_ABCMeta):
     def add_feature(self, feature):
         assert isinstance(feature, self.feature_type), f'‘{feature}’ is not a {self.feature_type}!'
         self._features.append(feature)
-        self._featuremap[feature.head].append(feature)
 
     def __getitem__(self, key):
-        return self._featuremap.get(key, [])
+        return self._features[key]
 
-class EhnParseArgumentBody(metaclass=_ABCMeta):
+    def __len__(self):
+        return len(self._features)
+
+class EhnParseArgumentBody(_Sequence, metaclass=_ABCMeta):
     """E-HowNet Parsing: Base Node with Argument"""
 
     @property
@@ -271,13 +286,16 @@ class EhnParseArgumentBody(metaclass=_ABCMeta):
     def __getitem__(self, key):
         return self._arguments[key]
 
+    def __len__(self):
+        return len(self._arguments)
+
 ################################################################
 
 class EhnParseAnchorBody(metaclass=_ABCMeta):
     """E-HowNet Parsing: Base Node with Anchor"""
 
-    def __init__(self, anchor=None):
-        self.anchor = anchor or EhnParseAnchor()
+    def __init__(self, *, coindex=None, anchor=None):
+        self.anchor = anchor or EhnParseAnchor(coindex)
 
     @property
     def anchor(self):

@@ -3,6 +3,7 @@
 
 __author__ = 'Mu Yang <http://muyang.pro>'
 __copyright__ = '2018-2020 CKIP Lab'
+__license__ = 'GPL-3.0'
 
 import argparse
 
@@ -36,3 +37,6 @@ def main(argv=None):
             print(exc)
             print(text)
             print(exc.show_pos(text))
+
+if __name__ == '__main__':
+    main()

@@ -62,6 +62,12 @@ https://ehownet.readthedocs.io/
 .. |ReadTheDocs Home| image:: https://img.shields.io/website/https/ehownet.readthedocs.io.svg?maxAge=3600&up_message=online&down_message=offline
    :target: https://ehownet.readthedocs.io
 
+Related Websites
+----------------
+
+- E-HowNet Website http://ehownet.iis.sinica.edu.tw
+- E-HowNet Visualization Demo https://ckip.iis.sinica.edu.tw/service/ehnvis
+
 Author
 ------
 
@@ -72,8 +78,9 @@ Requirements
 
 * `Python <https://www.python.org>`__ 3.6+
 * `PLY (Python Lex-Yacc) <https://www.dabeaz.com/ply>`__ 3.11+
-* `TreeLib <https://pypi.org/project/treelib>`__ 1.5.5+
-* `wcwidth <https://pypi.org/project/wcwidth>`__ 0.1.7+
+* `TreeLib <https://treelib.readthedocs.io>`__ 1.6.0+
+* `dataclasses <https://pypi.org/project/dataclasses/>`__ 0.8+
+* `wcwidth <https://pypi.org/project/wcwidth>`__ 0.2.5+
 
 Installation
 ------------
@@ -82,94 +89,14 @@ Installation
 
    pip install -U ehownet
 
-Usage
-=====
-
-- See https://ehownet.readthedocs.io/en/latest/main/grammar.html for E-HowNet grammar.
-- See https://ehownet.readthedocs.io/en/latest/main/parse_node.html for E-HowNet parsing nodes usage.
-
-E-HowNet Parser
----------------
-
-CLI
-^^^
-
-.. code-block:: bash
-
-   # Usage
-   ehn-parser <text> [<text> ...]
-
-   # Example
-   ehn-parser \
-      "{MusicTool|樂器_x:predication={own|有:possession={按鈕|PushingButton:whole={x}}}}" \
-      "{InstitutePlace|場所:telic={or({experiment|實驗:location={~}},{research|研究:location={~}})}}" \
-      "TimePoint={},manner={urgent|急}"
-
-Output:
-
-.. code-block::
-
-   #1
-   [Entity $x] MusicTool|樂器
-   └── [Feature] predication
-       └── [Entity] own|有
-           └── [Feature] possession
-               └── [Entity] 按鈕|PushingButton
-                   └── [Feature] whole
-                       └── $x
-
-   #2
-   [Entity] InstitutePlace|場所
-   └── [Feature] telic
-       └── [FunctionEntity]
-           └── [Function] or
-               ├── [Entity] experiment|實驗
-               │   └── [Feature] location
-               │       └── [TildeEntity]
-               └── [Entity] research|研究
-                   └── [Feature] location
-                       └── [TildeEntity]
-
-   #3
-  [Root]
-  ├── [Feature] TimePoint
-  │   └── [AnyEntity]
-  └── [Feature] manner
-      └── [Entity] urgent|急
-
-
-Python API
-^^^^^^^^^^
-
-.. code-block:: python
-
-   from ehn.parse import EhnParser
-
-   text = '{MusicTool|樂器_x:predication={own|有:possession={按鈕|PushingButton:whole={x}}}}'
-
-   parser = EhnParser()
-   ress = parser(text, debug=False)
-   for res in ress:
-      res.tree().show()
-
-Output:
-
-.. code-block::
-
-   [Entity $x] MusicTool|樂器
-   └── [Feature] predication
-       └── [Entity] own|有
-           └── [Feature] possession
-               └── [Entity] 按鈕|PushingButton
-                   └── [Feature] whole
-                       └── $x
+One may download the database file manually from https://ckip.iis.sinica.edu.tw/CKIP/ehownet_reg/ .
 
 License
-=======
+-------
 
-|CC BY-NC-SA 4.0|
+|GPL-3.0|
 
-Copyright (c) 2018-2020 CKIP Lab under the `CC BY-NC-SA 4.0 License <https://creativecommons.org/licenses/by-nc-sa/4.0/>`__.
+Copyright (c) 2020 `CKIP Lab <https://ckip.iis.sinica.edu.tw>`__ under the `GPL-3.0 License <https://www.gnu.org/licenses/gpl-3.0.html>`__.
 
-.. |CC BY-NC-SA 4.0| image:: https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png
-   :target: https://creativecommons.org/licenses/by-nc-sa/4.0/
+.. |GPL-3.0| image:: https://www.gnu.org/graphics/gplv3-with-text-136x68.png
+   :target: https://www.gnu.org/licenses/gpl-3.0.html
