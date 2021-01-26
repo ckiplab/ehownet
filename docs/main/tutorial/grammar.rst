@@ -172,7 +172,7 @@ References refer to other entities.
 
    .. note::
 
-      .. deprecated:: 0.6
+      .. deprecated:: 3.0
 
 Placeholder
 ^^^^^^^^^^^
