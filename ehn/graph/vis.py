@@ -7,6 +7,7 @@ Please refer the tutorial ":ref:`tutorial-graph`".
 
 __author__ = 'Mu Yang <http://muyang.pro>'
 __copyright__ = '2018-2020 CKIP Lab'
+__license__ = 'GPL-3.0'
 
 # pylint: disable=too-few-public-methods
 
@@ -32,7 +33,7 @@ class EhnVisGraph:
 class EhnVisGraphBuilder:
     """The E-HowNet graph builder for vis.js."""
 
-    def __init__(self, definite_labels = None):
+    def __init__(self, definite_labels=None):
         if definite_labels is not None:
             self.definite_labels = definite_labels
         else:

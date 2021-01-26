@@ -3,6 +3,7 @@
 
 __author__ = 'Mu Yang <http://muyang.pro>'
 __copyright__ = '2018-2020 CKIP Lab'
+__license__ = 'GPL-3.0'
 
 from setuptools import setup, find_namespace_packages
 import ehn as about
@@ -27,7 +28,7 @@ def main():
         platforms=['linux_x86_64'],
         license=about.__license__,
         classifiers=[
-            'Development Status :: 4 - Beta',
+            'Development Status :: 5 - Production/Stable',
             'Environment :: Console',
             'Programming Language :: Python',
             'Programming Language :: Python :: 3',
@@ -40,10 +41,10 @@ def main():
         ],
         packages=find_namespace_packages(include=['ehn', 'ehn.*',]),
         install_requires=[
-            'dataclasses>=0.8',
             'ply>=3.11',
             'treelib>=1.6.0',
             'wcwidth>=0.2.5',
+            'dataclasses; python_version < "3.7"',
         ],
         entry_points={
             'console_scripts': [

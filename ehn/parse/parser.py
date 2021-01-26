@@ -9,6 +9,7 @@ Please refer the tutorial ":ref:`tutorial-parse_parser`".
 
 __author__ = 'Mu Yang <http://muyang.pro>'
 __copyright__ = '2018-2020 CKIP Lab'
+__license__ = 'GPL-3.0'
 
 import re as _re
 from wcwidth import wcswidth as _wcswidth

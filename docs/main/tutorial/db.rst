@@ -5,14 +5,16 @@ Database
 
 This section describes the E-HowNet database.
 
-.. class:: EhnDb(db_file='data/db/ehn.db')
+One may download the database file manually from https://ckip.iis.sinica.edu.tw/CKIP/ehownet_reg/ .
+
+.. class:: EhnDb(*, db_file)
    :noindex:
 
    The E-HowNet database.
 
-   :param str db_file: The path to the SQLite3 file.
-
    See also: :class:`ehn.db.core.EhnDb`
+
+   :param str db_file: The path to the SQLite3 database file.
 
    .. attribute:: tree
       :type: treelib.Tree

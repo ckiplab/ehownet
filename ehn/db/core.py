@@ -7,6 +7,7 @@ Please refer the tutorial ":ref:`tutorial-db`".
 
 __author__ = 'Mu Yang <http://muyang.pro>'
 __copyright__ = '2018-2020 CKIP Lab'
+__license__ = 'GPL-3.0'
 
 import os
 import sqlite3
@@ -32,8 +33,10 @@ from .data import (
 class EhnDb:
     """E-HowNet Database."""
 
-    def __init__(self, *, db_file='data/db/ehn.db'):
+    def __init__(self, *, db_file=None):
 
+        assert db_file is not None, \
+            'Please download the database file manually from https://ckip.iis.sinica.edu.tw/CKIP/ehownet_reg/'
         assert os.path.isfile(db_file), f'{db_file} is not a file!'
 
         self.tree = Tree(node_class=EhnDbNode)
