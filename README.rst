@@ -79,8 +79,8 @@ Requirements
 * `Python <https://www.python.org>`__ 3.6+
 * `PLY (Python Lex-Yacc) <https://www.dabeaz.com/ply>`__ 3.11+
 * `TreeLib <https://treelib.readthedocs.io>`__ 1.6.0+
-* `dataclasses <https://pypi.org/project/dataclasses/>`__ 0.8+
 * `wcwidth <https://pypi.org/project/wcwidth>`__ 0.2.5+
+* `dataclasses <https://pypi.org/project/dataclasses/>`__ (Python 3.6 only)
 
 Installation
 ------------
