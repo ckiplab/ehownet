@@ -3,7 +3,7 @@
 
 __author_name__ = "Mu Yang"
 __author_email__ = "emfomy@gmail.com"
-__copyright__ = "2018-2020 CKIP Lab"
+__copyright__ = "2018-2021 CKIP Lab"
 
 __title__ = "E-HowNet"
 __version__ = "3.0.2"
