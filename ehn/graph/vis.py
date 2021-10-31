@@ -9,7 +9,6 @@ __author__ = "Mu Yang <http://muyang.pro>"
 __copyright__ = "2018-2020 CKIP Lab"
 __license__ = "GPL-3.0"
 
-
 from dataclasses import (
     dataclass,
 )
@@ -155,6 +154,16 @@ class EhnVisGraphBuilderWorker:
         return node_id
 
     def _expand_feature(self, feature):
-        if feature.get_function():
-            return self._expand_node(feature), "FEATURE"
-        return self._expand_node(feature.value), feature.head
+        if not feature.get_function():
+            return self._expand_node(feature.value), feature.head
+
+        node_id = self._expand_node(feature)
+        tail_id = self._expand_node(feature.value)
+        self.edges.append(
+            {
+                "from": node_id,
+                "to": tail_id,
+                "label": "VALUE",
+            }
+        )
+        return node_id, "FEATURE"
