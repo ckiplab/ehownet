@@ -4,29 +4,29 @@ CKIP E-HowNet Tools
 Git
 ---
 
-https://github.com/emfomy/ehownet
+https://github.com/ckiplab/ehownet
 
 |GitHub Version| |GitHub Release| |GitHub Issues|
 
-.. |GitHub Version| image:: https://img.shields.io/github/release/emfomy/ehownet/all.svg?maxAge=3600
-   :target: https://github.com/emfomy/ehownet/releases
+.. |GitHub Version| image:: https://img.shields.io/github/release/ckiplab/ehownet/all.svg?maxAge=3600
+   :target: https://github.com/ckiplab/ehownet/releases
 
-.. |GitHub License| image:: https://img.shields.io/github/license/emfomy/ehownet.svg?maxAge=3600
-   :target: https://github.com/emfomy/ehownet/blob/master/LICENSE
+.. |GitHub License| image:: https://img.shields.io/github/license/ckiplab/ehownet.svg?maxAge=3600
+   :target: https://github.com/ckiplab/ehownet/blob/master/LICENSE
 
-.. |GitHub Release| image:: https://img.shields.io/github/release-date/emfomy/ehownet.svg?maxAge=3600
+.. |GitHub Release| image:: https://img.shields.io/github/release-date/ckiplab/ehownet.svg?maxAge=3600
 
-.. |GitHub Downloads| image:: https://img.shields.io/github/downloads/emfomy/ehownet/total.svg?maxAge=3600
-   :target: https://github.com/emfomy/ehownet/releases/latest
+.. |GitHub Downloads| image:: https://img.shields.io/github/downloads/ckiplab/ehownet/total.svg?maxAge=3600
+   :target: https://github.com/ckiplab/ehownet/releases/latest
 
-.. |GitHub Issues| image:: https://img.shields.io/github/issues/emfomy/ehownet.svg?maxAge=3600
-   :target: https://github.com/emfomy/ehownet/issues
+.. |GitHub Issues| image:: https://img.shields.io/github/issues/ckiplab/ehownet.svg?maxAge=3600
+   :target: https://github.com/ckiplab/ehownet/issues
 
-.. |GitHub Forks| image:: https://img.shields.io/github/forks/emfomy/ehownet.svg?style=social&label=Fork&maxAge=3600
+.. |GitHub Forks| image:: https://img.shields.io/github/forks/ckiplab/ehownet.svg?style=social&label=Fork&maxAge=3600
 
-.. |GitHub Stars| image:: https://img.shields.io/github/stars/emfomy/ehownet.svg?style=social&label=Star&maxAge=3600
+.. |GitHub Stars| image:: https://img.shields.io/github/stars/ckiplab/ehownet.svg?style=social&label=Star&maxAge=3600
 
-.. |GitHub Watchers| image:: https://img.shields.io/github/watchers/emfomy/ehownet.svg?style=social&label=Watch&maxAge=3600
+.. |GitHub Watchers| image:: https://img.shields.io/github/watchers/ckiplab/ehownet.svg?style=social&label=Watch&maxAge=3600
 
 PyPI
 ----
@@ -39,7 +39,7 @@ https://pypi.org/project/ehownet
    :target: https://pypi.org/project/ehownet
 
 .. |PyPI License| image:: https://img.shields.io/pypi/l/ehownet.svg?maxAge=3600
-   :target: https://github.com/emfomy/ehownet/blob/master/LICENSE
+   :target: https://github.com/ckiplab/ehownet/blob/master/LICENSE
 
 .. |PyPI Downloads| image:: https://img.shields.io/pypi/dm/ehownet.svg?maxAge=3600
    :target: https://pypi.org/project/ehownet#files
