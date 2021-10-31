@@ -1,10 +1,12 @@
 [MASTER]
 
-max-line-length = 128
-
 disable =
 	duplicate-code,
 	missing-docstring,
 	too-many-ancestors,
 	too-many-locals,
 	too-many-public-methods,
+
+[FORMAT]
+
+max-line-length = 128

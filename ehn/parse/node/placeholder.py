@@ -5,16 +5,15 @@
 Please refer the tutorial ":ref:`tutorial-parse_node`".
 """
 
-__author__ = 'Mu Yang <http://muyang.pro>'
-__copyright__ = '2018-2020 CKIP Lab'
-__license__ = 'GPL-3.0'
+__author__ = "Mu Yang <http://muyang.pro>"
+__copyright__ = "2018-2020 CKIP Lab"
+__license__ = "GPL-3.0"
 
 # pylint: disable=too-few-public-methods
 
 from .base import (
     EhnParseEntityBase,
     EhnParsePlaceholderBase,
-
     EhnParseAnchorBody,
     EhnParseValueBody,
 )
@@ -23,10 +22,11 @@ from .base import (
 # Restriction
 #
 
+
 class EhnParseRestrictionPlaceholder(EhnParsePlaceholderBase, EhnParseValueBody, EhnParseAnchorBody):
     """E-HowNet Parsing: Restriction Placeholder Node"""
 
-    node_type = 'Restriction'
+    node_type = "Restriction"
     value_type = EhnParseEntityBase
 
     def __init__(self, value, *, coindex=None, anchor=None):
@@ -42,23 +42,25 @@ class EhnParseRestrictionPlaceholder(EhnParsePlaceholderBase, EhnParseValueBody,
         yield self.value
 
     def dumps(self):
-        return f'/{self.value.dumps()}{self.anchor.dumps()}'
+        return f"/{self.value.dumps()}{self.anchor.dumps()}"
+
 
 ################################################################################################################################
 # Any
 #
 
+
 class EhnParseAnyPlaceholder(EhnParsePlaceholderBase):
     """E-HowNet Parsing: Any Placeholder Node"""
 
-    node_type = 'Any'
+    node_type = "Any"
 
     def __init__(self):
         EhnParsePlaceholderBase.__init__(self)
 
     @property
     def head(self):
-        return 'ANY'
+        return "ANY"
 
     @property
     def value(self):
@@ -69,4 +71,4 @@ class EhnParseAnyPlaceholder(EhnParsePlaceholderBase):
 
     @staticmethod
     def dumps():
-        return '{}'
+        return "{}"

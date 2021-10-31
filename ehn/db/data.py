@@ -5,9 +5,9 @@
 Please refer the tutorial ":ref:`tutorial-db`".
 """
 
-__author__ = 'Mu Yang <http://muyang.pro>'
-__copyright__ = '2018-2020 CKIP Lab'
-__license__ = 'GPL-3.0'
+__author__ = "Mu Yang <http://muyang.pro>"
+__copyright__ = "2018-2020 CKIP Lab"
+__license__ = "GPL-3.0"
 
 from enum import (
     Enum,
@@ -28,11 +28,13 @@ from treelib import (
 
 ################################################################################################################################
 
+
 class EhnDbNodeType(Enum):
     """E-HowNet Database Node Type."""
 
-    C = 'C'  #: concept.
-    W = 'W'  #: word.
+    C = "C"  #: concept.
+    W = "W"  #: word.
+
 
 @dataclass
 class EhnDbWordData:
@@ -42,7 +44,8 @@ class EhnDbWordData:
     sense_no: int  #: the sense number.
 
     def __repr__(self):
-        return f'<Word {self.word}#{self.sense_no}>'
+        return f"<Word {self.word}#{self.sense_no}>"
+
 
 @dataclass
 class EhnDbNodeData:
@@ -52,6 +55,7 @@ class EhnDbNodeData:
     defn: str = None  #: the definition.
     words: List[EhnDbWordData] = field(default_factory=list)  #: the attached words.
     definite: bool = False  #: whether is an instance of not.
+
 
 class EhnDbNode(Node):
     """E-HowNet Database Node."""

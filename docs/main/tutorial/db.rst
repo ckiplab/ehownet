@@ -7,6 +7,7 @@ This section describes the E-HowNet database.
 
 One may download the database file manually from https://ckip.iis.sinica.edu.tw/CKIP/ehownet_reg/ .
 
+
 .. class:: EhnDb(*, db_file)
    :noindex:
 

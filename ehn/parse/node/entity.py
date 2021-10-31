@@ -5,16 +5,15 @@
 Please refer the tutorial ":ref:`tutorial-parse_node`".
 """
 
-__author__ = 'Mu Yang <http://muyang.pro>'
-__copyright__ = '2018-2020 CKIP Lab'
-__license__ = 'GPL-3.0'
+__author__ = "Mu Yang <http://muyang.pro>"
+__copyright__ = "2018-2020 CKIP Lab"
+__license__ = "GPL-3.0"
 
 # pylint: disable=too-few-public-methods
 
 from .base import (
     EhnParseEntityBase,
     EhnParseFeatureBase,
-
     EhnParseAnchorBody,
     EhnParseFeatureBody,
     EhnParseFunctionHead,
@@ -23,10 +22,11 @@ from .base import (
 
 ################################################################################################################################
 
+
 class EhnParseNormalEntity(EhnParseEntityBase, EhnParseStrHead, EhnParseFeatureBody, EhnParseAnchorBody):
     """E-HowNet Parsing: Normal Entity Node"""
 
-    node_type = 'Entity'
+    node_type = "Entity"
     feature_type = EhnParseFeatureBase
 
     def __init__(self, head, *features, coindex=None, anchor=None):
@@ -39,15 +39,17 @@ class EhnParseNormalEntity(EhnParseEntityBase, EhnParseStrHead, EhnParseFeatureB
         yield from self.features
 
     def dumps(self):
-        _features = ':' + ','.join(feature.dumps() for feature in self.features) if self.features else ''
-        return f'{{{self.head}{self.anchor.dumps()}{_features}}}'
+        _features = ":" + ",".join(feature.dumps() for feature in self.features) if self.features else ""
+        return f"{{{self.head}{self.anchor.dumps()}{_features}}}"
+
 
 ################################################################################################################################
+
 
 class EhnParseFunctionEntity(EhnParseEntityBase, EhnParseFunctionHead, EhnParseFeatureBody, EhnParseAnchorBody):
     """E-HowNet Parsing: Function Entity Node"""
 
-    node_type = 'FunctionEntity'
+    node_type = "FunctionEntity"
     feature_type = EhnParseFeatureBase
 
     def __init__(self, function, *features, coindex=None, anchor=None):
@@ -61,15 +63,18 @@ class EhnParseFunctionEntity(EhnParseEntityBase, EhnParseFunctionHead, EhnParseF
         yield from self.features
 
     def dumps(self):
-        _features = ':' + ','.join(feature.dumps() for feature in self.features) if self.features else ''
-        return f'{{{self.function.dumps()}{self.anchor.dumps()}{_features}}}'
+        _features = ":" + ",".join(feature.dumps() for feature in self.features) if self.features else ""
+        return f"{{{self.function.dumps()}{self.anchor.dumps()}{_features}}}"
+
 
 ################################################################################################################################
+
 
 class EhnParseNameEntity(EhnParseEntityBase, EhnParseStrHead):
     """E-HowNet Parsing: Name Entity Node"""
 
-    node_type = 'NameEntity'
+    node_type = "NameEntity"
+
     def __init__(self, head):
         EhnParseEntityBase.__init__(self)
         EhnParseStrHead.__init__(self, head)
@@ -84,12 +89,15 @@ class EhnParseNameEntity(EhnParseEntityBase, EhnParseStrHead):
     def dumps(self):
         return f'{{"{self.head}"}}'
 
+
 ################################################################################################################################
+
 
 class EhnParseNumberEntity(EhnParseEntityBase, EhnParseStrHead):
     """E-HowNet Parsing: Number Entity Node"""
 
-    node_type = 'NumberEntity'
+    node_type = "NumberEntity"
+
     def __init__(self, head):
         EhnParseEntityBase.__init__(self)
         EhnParseStrHead.__init__(self, head)
@@ -102,4 +110,4 @@ class EhnParseNumberEntity(EhnParseEntityBase, EhnParseStrHead):
         return []
 
     def dumps(self):
-        return f'{{{self.head}}}'
+        return f"{{{self.head}}}"
