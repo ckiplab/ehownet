@@ -5,9 +5,9 @@
 Please refer the tutorial ":ref:`tutorial-db`".
 """
 
-__author__ = 'Mu Yang <http://muyang.pro>'
-__copyright__ = '2018-2020 CKIP Lab'
-__license__ = 'GPL-3.0'
+__author__ = "Mu Yang <http://muyang.pro>"
+__copyright__ = "2018-2021 CKIP Lab"
+__license__ = "GPL-3.0"
 
 import os
 import sqlite3
@@ -30,14 +30,16 @@ from .data import (
 
 ################################################################################################################################
 
+
 class EhnDb:
     """E-HowNet Database."""
 
     def __init__(self, *, db_file=None):
 
-        assert db_file is not None, \
-            'Please download the database file manually from https://ckip.iis.sinica.edu.tw/CKIP/ehownet_reg/'
-        assert os.path.isfile(db_file), f'{db_file} is not a file!'
+        assert (
+            db_file is not None
+        ), "Please download the database file manually from https://ckip.iis.sinica.edu.tw/CKIP/ehownet_reg/"
+        assert os.path.isfile(db_file), f"{db_file} is not a file!"
 
         self.tree = Tree(node_class=EhnDbNode)
 
@@ -46,7 +48,7 @@ class EhnDb:
         self.text2nid_partial = defaultdict(list)
 
         # Load Database
-        lite_db = sqlite3.connect(db_file)
+        lite_db = sqlite3.connect(db_file)  # pylint: disable=no-member
         self._load_db(lite_db.cursor())
         lite_db.close()
 
@@ -72,10 +74,10 @@ class EhnDb:
     def _load_db(self, cursor):
 
         cid2child = defaultdict(list)
-        cid2data = dict()
+        cid2data = {}
 
         # Load Concept
-        cursor.execute('SELECT `id`, `parent_id`, `label`, `defn`, `is_definite` FROM concept')
+        cursor.execute("SELECT `id`, `parent_id`, `label`, `defn`, `is_definite` FROM concept")
         for cid, pid, label, defn, definite in cursor.fetchall():
             if pid is None:
                 pid = 0
@@ -83,7 +85,8 @@ class EhnDb:
             cid2data[cid] = (label, defn, definite, pid)
 
         # Build Concept
-        self.tree.create_node(tag='ROOT', identifier=0)
+        self.tree.create_node(tag="ROOT", identifier=0)
+
         def _build_concept(pid):
             for cid in cid2child[pid]:
                 label, defn, definite, _ = cid2data.pop(cid)
@@ -92,7 +95,8 @@ class EhnDb:
                 self.tree.create_node(
                     tag=label,
                     identifier=cid,
-                    parent=pid, data=EhnDbNodeData(
+                    parent=pid,
+                    data=EhnDbNodeData(
                         type=EhnDbNodeType.C,
                         defn=defn,
                         definite=bool(definite),
@@ -101,7 +105,7 @@ class EhnDb:
 
                 # Register key mapping
                 self.text2nid_concept[label].append(cid)
-                for sublabel in label.split('|'):
+                for sublabel in label.split("|"):
                     if sublabel != label:
                         self.text2nid_partial[sublabel].append(cid)
 
@@ -111,26 +115,40 @@ class EhnDb:
         _build_concept(0)
 
         # Check tree
-        for cid, (label, _, _, pid,) in cid2data.items():
-            warnings.warn(f'Invalid parent ID #{pid}! of Concept#{cid} {label}!')
+        for cid, (
+            label,
+            _,
+            _,
+            pid,
+        ) in cid2data.items():
+            warnings.warn(f"Invalid parent ID #{pid}! of Concept#{cid} {label}!")
 
         # Load Word
         defn2words = defaultdict(list)
-        cursor.execute('SELECT `id`, `parent_id`, `label`, `sense_no`, `defn`, `is_definite`, `is_attached` FROM word')
+        cursor.execute("SELECT `id`, `parent_id`, `label`, `sense_no`, `defn`, `is_definite`, `is_attached` FROM word")
         for wid, pid, label, sense_no, defn, definite, is_attached in cursor.fetchall():
             if pid not in self.tree:
-                warnings.warn(f'Invalid parent ID #{pid}! of Word#{wid} {label}#{sense_no}!')
+                warnings.warn(f"Invalid parent ID #{pid}! of Word#{wid} {label}#{sense_no}!")
                 continue
 
             if is_attached:
-                self.tree[pid].words.append(EhnDbWordData(
-                    word=label,
-                    sense_no=sense_no,
-                ))
+                self.tree[pid].words.append(
+                    EhnDbWordData(
+                        word=label,
+                        sense_no=sense_no,
+                    )
+                )
                 self.text2nid_word[label].append(pid)
 
             else:
-                defn2words[pid, defn].append((wid, label, sense_no, definite,))
+                defn2words[pid, defn].append(
+                    (
+                        wid,
+                        label,
+                        sense_no,
+                        definite,
+                    )
+                )
 
         # Build Words
         for (pid, defn), words in defn2words.items():
@@ -140,7 +158,8 @@ class EhnDb:
             node = self.tree.create_node(
                 tag=label,
                 identifier=nid,
-                parent=pid, data=EhnDbNodeData(
+                parent=pid,
+                data=EhnDbNodeData(
                     type=EhnDbNodeType.W,
                     defn=defn,
                     definite=bool(definite0),
@@ -148,8 +167,10 @@ class EhnDb:
             )
 
             for _, label, sense_no, _ in words:
-                node.words.append(EhnDbWordData(
-                    word=label,
-                    sense_no=sense_no,
-                ))
+                node.words.append(
+                    EhnDbWordData(
+                        word=label,
+                        sense_no=sense_no,
+                    )
+                )
                 self.text2nid_word[label].append(nid)

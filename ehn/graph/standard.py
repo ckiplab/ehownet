@@ -5,11 +5,10 @@
 Please refer the tutorial ":ref:`tutorial-graph`".
 """
 
-__author__ = 'Mu Yang <http://muyang.pro>'
-__copyright__ = '2018-2020 CKIP Lab'
-__license__ = 'GPL-3.0'
+__author__ = "Mu Yang <http://muyang.pro>"
+__copyright__ = "2018-2021 CKIP Lab"
+__license__ = "GPL-3.0"
 
-# pylint: disable=too-few-public-methods
 
 from dataclasses import (
     dataclass,
@@ -21,6 +20,7 @@ from ..parse.node import (
 
 ################################################################################################################################
 
+
 @dataclass
 class EhnStandardGraph:
     """The standard E-HowNet graph."""
@@ -30,6 +30,7 @@ class EhnStandardGraph:
     functions: list
     restrictions: list
     root_id: int
+
 
 class EhnStandardGraphBuilder:
     """The standard E-HowNet graph builder."""
@@ -46,6 +47,7 @@ class EhnStandardGraphBuilder:
             restrictions=worker.restrictions,
             root_id=worker.root_id,
         )
+
 
 class EhnStandardGraphBuilderWorker:
     """The standard E-HowNet graph builder worker."""
@@ -73,7 +75,12 @@ class EhnStandardGraphBuilderWorker:
                 tail_id = self.expand_entity(node.value)
             else:
                 tail_id = None
-            self.restrictions.append((node_id, tail_id,))
+            self.restrictions.append(
+                (
+                    node_id,
+                    tail_id,
+                )
+            )
 
         # Entity
         else:
@@ -81,13 +88,24 @@ class EhnStandardGraphBuilderWorker:
             if node.get_function():
                 for argument in node.function.arguments:
                     tail_id = self.expand_entity(argument)
-                    self.functions.append((node_id, tail_id,))
+                    self.functions.append(
+                        (
+                            node_id,
+                            tail_id,
+                        )
+                    )
 
             # Features
             for feature in node.get_features():
                 feature_id = self.expand_feature(feature)
                 tail_id = self.expand_entity(feature.value)
-                self.edges.append((node_id, feature_id, tail_id,))
+                self.edges.append(
+                    (
+                        node_id,
+                        feature_id,
+                        tail_id,
+                    )
+                )
 
         return node_id
 
@@ -99,7 +117,12 @@ class EhnStandardGraphBuilderWorker:
         if node.get_function():
             for argument in node.function.arguments:
                 tail_id = self.expand_entity(argument)
-                self.functions.append((node_id, tail_id,))
+                self.functions.append(
+                    (
+                        node_id,
+                        tail_id,
+                    )
+                )
 
         return node_id
 

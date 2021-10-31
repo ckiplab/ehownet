@@ -3,6 +3,7 @@ RM = rm -rf
 TWINE = twine
 TOX = tox
 LINT = pylint --rcfile=./.pylintrc
+FORMAT = black --color
 
 .PHONY: all check dist sdist test tox tox-v tox-vv tox-report lint doc upload clean
 
@@ -16,6 +17,7 @@ sdist bdist_wheel:
 	$(PY) setup.py $@
 
 lint:
+	$(FORMAT) ehn
 	$(LINT) ehn
 
 check:
