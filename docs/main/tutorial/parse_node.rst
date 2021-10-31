@@ -79,6 +79,8 @@ Node Prototype
 
       Generates a tree representation of this node and all its descendant nodes.
 
+      One may use ``node.tree().show()`` to show a pretty tree representation.
+
 Entity-Like Nodes
 -----------------
 

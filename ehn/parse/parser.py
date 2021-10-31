@@ -11,12 +11,28 @@ __author__ = "Mu Yang <http://muyang.pro>"
 __copyright__ = "2018-2020 CKIP Lab"
 __license__ = "GPL-3.0"
 
-import re as _re
-from wcwidth import wcswidth as _wcswidth
-from ply.lex import lex as _lex
-from ply.yacc import yacc as _yacc
+import re
+from wcwidth import wcswidth
 
-from . import node as _node
+from ply.lex import lex
+from ply.yacc import yacc
+
+from .node import (
+    EhnParseAnchor,
+    EhnParseAnyPlaceholder,
+    EhnParseCoindexReference,
+    EhnParseFunction,
+    EhnParseFunctionEntity,
+    EhnParseFunctionFeature,
+    EhnParseNameEntity,
+    EhnParseNormalEntity,
+    EhnParseNormalFeature,
+    EhnParseNumberEntity,
+    EhnParseRestrictionPlaceholder,
+    EhnParseSubject,
+    EhnParseSubjectReference,
+    EhnParseTildeReference,
+)
 
 ################################################################################################################################
 # Core
@@ -51,10 +67,10 @@ class EhnSyntaxError(SyntaxError):
 
         Parameters
         ----------
-        text : str
+        text
             original input text
         """
-        return " " * _wcswidth(text[: self.pos]) + "^"
+        return " " * wcswidth(text[: self.pos]) + "^"
 
 
 ################################################################################################################################
@@ -64,7 +80,7 @@ class EhnSyntaxError(SyntaxError):
 
 class _EhnLexer:
     def __init__(self, **kwargs):
-        self._lexer = _lex(module=self, **kwargs)
+        self._lexer = lex(module=self, **kwargs)
 
     tokens = EHN_TOKENS
 
@@ -97,7 +113,7 @@ class _EhnLexer:
         elif _is_coindex(t.value):
             t.type = "COINDEX"
         else:
-            match = _re.search(r"[+\-.?]", t.value)
+            match = re.search(r"[+\-.?]", t.value)
             if match:
                 pos = t.lexpos + match.start()
                 raise EhnSyntaxError(f"Illegal character ‘{match.group(0)}’ at position {pos}.", pos=pos)
@@ -105,7 +121,7 @@ class _EhnLexer:
         return t
 
     # Invoke the lexer
-    def __call__(self, data, *args, **kwargs):
+    def __call__(self, data):
         self._lexer.input(data)
         return iter(self._lexer)
 
@@ -113,7 +129,7 @@ class _EhnLexer:
 class EhnLexer(_EhnLexer):
     """E-HowNet Lexer.
 
-    .. method:: __call__(data)
+    .. method:: __call__(self, data)
 
         Run tokenization.
     """
@@ -131,7 +147,7 @@ class _EhnParser:
             self.lexer = lexer
         else:
             self.lexer = EhnLexer()
-        self._parser = _yacc(module=self, **kwargs)
+        self._parser = yacc(module=self, **kwargs)
 
     @property
     def _lexer(self):
@@ -173,7 +189,7 @@ class _EhnParser:
         """subject : feature
         | subject COMMA feature"""
         if len(p) == 2:
-            p[0] = _node.EhnParseSubject(p[1])
+            p[0] = EhnParseSubject(p[1])
         else:
             p[1].add_feature(p[3])
             p[0] = p[1]
@@ -181,19 +197,19 @@ class _EhnParser:
     # Entity
     def p_entity_number(self, p):
         """entity : LBRACE NUMBER RBRACE"""
-        p[0] = _node.EhnParseNumberEntity(p[2])
+        p[0] = EhnParseNumberEntity(p[2])
 
     def p_entity_name(self, p):
         """entity : LBRACE QUOTE TEXT QUOTE RBRACE"""
-        p[0] = _node.EhnParseNameEntity(p[3])
+        p[0] = EhnParseNameEntity(p[3])
 
     def p_entity_normal_open(self, p):
         """entityOpen : LBRACE TEXT"""
-        p[0] = _node.EhnParseNormalEntity(p[2])
+        p[0] = EhnParseNormalEntity(p[2])
 
     def p_entity_function_open(self, p):
         """entityOpen : LBRACE function"""
-        p[0] = _node.EhnParseFunctionEntity(p[2])
+        p[0] = EhnParseFunctionEntity(p[2])
 
     def p_entity_anchor(self, p):
         """entityAnchor : entityOpen anchor"""
@@ -220,30 +236,30 @@ class _EhnParser:
     # Reference
     def p_reference_coindex(self, p):
         """reference : LBRACE COINDEX RBRACE"""
-        p[0] = _node.EhnParseCoindexReference(p[2])
+        p[0] = EhnParseCoindexReference(p[2])
 
     def p_reference_subject(self, p):
         """reference : LBRACE COINDEX0 RBRACE"""
-        p[0] = _node.EhnParseSubjectReference()
+        p[0] = EhnParseSubjectReference()
 
     def p_reference_tilde(self, p):
         """reference : LBRACE TILDE RBRACE"""
-        p[0] = _node.EhnParseTildeReference()
+        p[0] = EhnParseTildeReference()
 
     # Placeholder
     def p_restriction(self, p):
         """restriction : SLASH entity
         | SLASH reference"""
-        p[0] = _node.EhnParseRestrictionPlaceholder(p[2])
+        p[0] = EhnParseRestrictionPlaceholder(p[2])
 
     def p_restriction_anchor(self, p):
         """restriction : SLASH entity anchor
         | SLASH reference anchor"""
-        p[0] = _node.EhnParseRestrictionPlaceholder(p[2], anchor=p[3])
+        p[0] = EhnParseRestrictionPlaceholder(p[2], anchor=p[3])
 
     def p_any(self, p):
         """any : LBRACE RBRACE"""
-        p[0] = _node.EhnParseAnyPlaceholder()
+        p[0] = EhnParseAnyPlaceholder()
 
     # Feature
     def p_feature(self, p):
@@ -251,28 +267,28 @@ class _EhnParser:
         | TEXT EQUAL reference
         | TEXT EQUAL restriction
         | TEXT EQUAL any"""
-        p[0] = _node.EhnParseNormalFeature(p[1], p[3])
+        p[0] = EhnParseNormalFeature(p[1], p[3])
 
     def p_function_feature(self, p):
         """feature : function EQUAL entity
         | function EQUAL reference
         | function EQUAL restriction
         | function EQUAL any"""
-        p[0] = _node.EhnParseFunctionFeature(p[1], p[3])
+        p[0] = EhnParseFunctionFeature(p[1], p[3])
 
     # Function
     def p_function_any(self, p):
         """function : TEXT LPAREN RPAREN"""
-        p[0] = _node.EhnParseFunction(p[1], _node.EhnParseAnyPlaceholder())
+        p[0] = EhnParseFunction(p[1], EhnParseAnyPlaceholder())
 
     def p_function_restriction(self, p):
         """function : TEXT LPAREN restriction RPAREN"""
-        p[0] = _node.EhnParseFunction(p[1], p[3])
+        p[0] = EhnParseFunction(p[1], p[3])
 
     def p_function_open(self, p):
         """functionOpen : TEXT LPAREN entity
         | TEXT LPAREN reference"""
-        p[0] = _node.EhnParseFunction(p[1], p[3])
+        p[0] = EhnParseFunction(p[1], p[3])
 
     def p_function_argument(self, p):
         """functionArgument : functionOpen     COMMA entity
@@ -290,10 +306,10 @@ class _EhnParser:
     # Anchor
     def p_anchor(self, p):
         """anchor : ULINE COINDEX"""
-        p[0] = _node.EhnParseAnchor(p[2])
+        p[0] = EhnParseAnchor(p[2])
 
     # Invoke the parser
-    def __call__(self, data, *args, debug=False, **kwargs):
+    def __call__(self, data: str, *args, debug=False, **kwargs):
         if debug:
             print(data)
             for tok in self.lexer(data):
@@ -305,7 +321,7 @@ class _EhnParser:
 class EhnParser(_EhnParser):
     """E-HowNet Parser.
 
-    .. method:: __call__(data)
+    .. method:: __call__(self, data: str)
 
         Run parsing.
     """
@@ -328,4 +344,4 @@ def _is_coindex(name):
     return _is_coindex.pattern.match(name)
 
 
-_is_coindex.pattern = _re.compile(r"x[0-9]*")
+_is_coindex.pattern = re.compile(r"x[0-9]*")

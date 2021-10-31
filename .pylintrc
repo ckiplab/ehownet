@@ -3,6 +3,7 @@
 disable =
 	duplicate-code,
 	missing-docstring,
+	too-few-public-methods,
 	too-many-ancestors,
 	too-many-locals,
 	too-many-public-methods,

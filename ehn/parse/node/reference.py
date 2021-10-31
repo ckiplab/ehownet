@@ -9,9 +9,8 @@ __author__ = "Mu Yang <http://muyang.pro>"
 __copyright__ = "2018-2020 CKIP Lab"
 __license__ = "GPL-3.0"
 
-# pylint: disable=too-few-public-methods
 
-import warnings as _warnings
+import warnings
 
 from .base import (
     EhnParseReferenceBase,
@@ -88,7 +87,7 @@ class EhnParseTildeReference(EhnParseReferenceBase):
 
     def __init__(self):
         EhnParseReferenceBase.__init__(self)
-        _warnings.warn("‘~’ is deprecated.", FutureWarning)
+        warnings.warn("‘~’ is deprecated.", FutureWarning)
 
     @property
     def head(self):

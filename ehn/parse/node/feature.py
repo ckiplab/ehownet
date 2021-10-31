@@ -9,9 +9,13 @@ __author__ = "Mu Yang <http://muyang.pro>"
 __copyright__ = "2018-2020 CKIP Lab"
 __license__ = "GPL-3.0"
 
-# pylint: disable=too-few-public-methods
-
-from .base import EhnParseEntityLike, EhnParseFeatureBase, EhnParseFunctionHead, EhnParseStrHead, EhnParseValueBody
+from .base import (
+    EhnParseEntityLike,
+    EhnParseFeatureBase,
+    EhnParseFunctionHead,
+    EhnParseStrHead,
+    EhnParseValueBody,
+)
 
 ################################################################################################################################
 

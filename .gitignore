@@ -1,6 +1,14 @@
 .venv
 activate
 
+# PLY
+ehn/parse/parser.out
+ehn/parse/parsetab.py
+
+# Docs
+docs/_api/
+docs/_build/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -65,9 +73,6 @@ instance/
 
 # Scrapy stuff:
 .scrapy
-
-# Sphinx documentation
-docs/_build/
 
 # PyBuilder
 target/
