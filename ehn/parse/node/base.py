@@ -52,7 +52,7 @@ class EhnParseNode(metaclass=_ABCMeta):
     """E-HowNet Parsing: Base Node"""
 
     def __init__(self):
-        self.__tree = None
+        self.__tree = None  # pylint: disable=unused-private-member
 
     @property
     @_abstractmethod
@@ -242,7 +242,9 @@ class EhnParseValueBody(metaclass=_ABCMeta):
 
     @value.setter
     def value(self, value):
-        assert isinstance(value, self.value_type), f"‘{value}’ is not a {self.value_type}!"
+        assert isinstance(  # pylint: disable=isinstance-second-argument-not-valid-type
+            value, self.value_type
+        ), f"‘{value}’ is not a {self.value_type}!"
         self._value = value  # pylint: disable=attribute-defined-outside-init
 
 
@@ -268,7 +270,9 @@ class EhnParseFeatureBody(_Sequence, metaclass=_ABCMeta):
             self.add_feature(feature)
 
     def add_feature(self, feature):
-        assert isinstance(feature, self.feature_type), f"‘{feature}’ is not a {self.feature_type}!"
+        assert isinstance(  # pylint: disable=isinstance-second-argument-not-valid-type
+            feature, self.feature_type
+        ), f"‘{feature}’ is not a {self.feature_type}!"
         self._features.append(feature)
 
     def __getitem__(self, key):
@@ -300,7 +304,9 @@ class EhnParseArgumentBody(_Sequence, metaclass=_ABCMeta):
             self.add_argument(argument)
 
     def add_argument(self, argument):
-        assert isinstance(argument, self.argument_type), f"‘{argument}’ is not a {self.argument_type}!"
+        assert isinstance(  # pylint: disable=isinstance-second-argument-not-valid-type
+            argument, self.argument_type
+        ), f"‘{argument}’ is not a {self.argument_type}!"
         self._arguments.append(argument)
 
     def __getitem__(self, key):

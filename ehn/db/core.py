@@ -48,7 +48,7 @@ class EhnDb:
         self.text2nid_partial = defaultdict(list)
 
         # Load Database
-        lite_db = sqlite3.connect(db_file)
+        lite_db = sqlite3.connect(db_file)  # pylint: disable=no-member
         self._load_db(lite_db.cursor())
         lite_db.close()
 
@@ -74,7 +74,7 @@ class EhnDb:
     def _load_db(self, cursor):
 
         cid2child = defaultdict(list)
-        cid2data = dict()
+        cid2data = {}
 
         # Load Concept
         cursor.execute("SELECT `id`, `parent_id`, `label`, `defn`, `is_definite` FROM concept")

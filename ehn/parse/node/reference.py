@@ -64,7 +64,7 @@ class EhnParseSubjectReference(EhnParseReferenceBase):
 
     @property
     def _tree_label(self):
-        return f"[SubjectReference] $x?"
+        return "[SubjectReference] $x?"
 
     @staticmethod
     def dumps():
